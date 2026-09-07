@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Interactive component showcase for Hearth UI">
+    <title>Hearth UI — Component Showcase</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .showcase-hero { padding-block: clamp(4rem, 10vw, 8rem); }
+      .showcase-hero__copy { max-width: 46rem; }
+      .showcase-main { padding-bottom: 8rem; }
+      .showcase-section { padding-block: 3.5rem; border-top: 1px solid var(--border); }
+      .showcase-section__header { max-width: 40rem; margin-bottom: 2rem; }
+      .showcase-preview { display: grid; gap: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--muted) 25%, var(--background)); padding: clamp(1rem, 4vw, 2rem); }
+      .swatch { display: grid; min-height: 7rem; align-content: end; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem; box-shadow: var(--shadow-sm); }
+      .demo-dialog { position: static; display: block; margin: 0; }
+      .demo-sidebar { position: sticky; top: 5rem; align-self: start; }
+      .demo-sidebar a { display: block; border-radius: var(--radius-sm); padding: 0.4rem 0.65rem; color: var(--muted-foreground); font-size: 0.875rem; text-decoration: none; }
+      .demo-sidebar a:hover { background: var(--accent); color: var(--foreground); }
+      @media (max-width: 48rem) {
+        .demo-sidebar { display: none; }
+        .showcase-section { padding-block: 2.5rem; }
+        .showcase-preview { margin-inline: -0.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="container nav__inner">
+        <a class="nav__brand" href="#">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path d="M4 11.5 12 4l8 7.5"></path>
+            <path d="M6.5 10v9h11v-9"></path>
+          </svg>
+          Hearth UI
+        </a>
+        <nav class="nav__links" aria-label="Main navigation">
+          <a href="#foundations">Foundations</a>
+          <a href="#actions">Components</a>
+          <a href="README.md">Documentation</a>
+        </nav>
+        <a class="btn btn--outline btn--sm" href="styles.css">View CSS</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="showcase-hero">
+        <div class="container stack showcase-hero__copy" style="--stack-gap: 1.5rem">
+          <span class="badge badge--secondary" style="width: fit-content">Zero dependencies</span>
+          <h1>Good interfaces, without the framework.</h1>
+          <p style="font-size: 1.125rem">A small, semantic HTML and CSS system for polished static sites, prototypes, and agent-built products. Copy one stylesheet and compose predictable classes.</p>
+          <div class="cluster">
+            <a class="btn btn--lg" href="#actions">Browse components</a>
+            <a class="btn btn--outline btn--lg" href="README.md">Read the guide</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="container sidebar-layout showcase-main">
+        <aside class="demo-sidebar stack" style="--stack-gap: 0.25rem" aria-label="Component index">
+          <p class="text-xs font-medium" style="padding: 0.4rem 0.65rem; text-transform: uppercase; letter-spacing: 0.08em">On this page</p>
+          <a href="#foundations">Foundations</a>
+          <a href="#actions">Buttons & badges</a>
+          <a href="#cards">Cards</a>
+          <a href="#forms">Forms</a>
+          <a href="#feedback">Feedback</a>
+          <a href="#navigation">Navigation</a>
+          <a href="#data">Data display</a>
+          <a href="#overlays">Overlays</a>
+          <a href="#states">Loading & empty</a>
+        </aside>
+
+        <div>
+          <section class="showcase-section" id="foundations">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Foundations</h2>
+              <p>Semantic colors and spacing tokens keep every component consistent.</p>
+            </div>
+            <div class="grid grid--3">
+              <div class="swatch" style="background: var(--primary); color: var(--primary-foreground)">
+                <strong>Primary</strong><span class="text-xs">--primary</span>
+              </div>
+              <div class="swatch" style="background: var(--secondary); color: var(--secondary-foreground)">
+                <strong>Secondary</strong><span class="text-xs">--secondary</span>
+              </div>
+              <div class="swatch" style="background: var(--muted); color: var(--muted-foreground)">
+                <strong>Muted</strong><span class="text-xs">--muted</span>
+              </div>
+              <div class="swatch" style="background: var(--destructive); color: var(--destructive-foreground)">
+                <strong>Destructive</strong><span class="text-xs">--destructive</span>
+              </div>
+              <div class="swatch" style="background: var(--success); color: var(--success-foreground)">
+                <strong>Success</strong><span class="text-xs">--success</span>
+              </div>
+              <div class="swatch" style="background: var(--card); color: var(--card-foreground)">
+                <strong>Card</strong><span class="text-xs">--card</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="actions">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Buttons & badges</h2>
+              <p>Use the base class with one optional variant and size modifier.</p>
+            </div>
+            <div class="showcase-preview">
+              <div class="cluster">
+                <button class="btn" type="button">Primary</button>
+                <button class="btn btn--secondary" type="button">Secondary</button>
+                <button class="btn btn--outline" type="button">Outline</button>
+                <button class="btn btn--ghost" type="button">Ghost</button>
+                <button class="btn btn--destructive" type="button">Delete</button>
+                <button class="btn btn--link" type="button">Text link</button>
+              </div>
+              <div class="cluster">
+                <button class="btn btn--sm" type="button">Small</button>
+                <button class="btn" type="button">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                  Create project
+                </button>
+                <button class="btn btn--lg" type="button">Large</button>
+                <button class="btn btn--outline btn--icon" type="button" aria-label="Settings">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path></svg>
+                </button>
+                <button class="btn" type="button" disabled>Disabled</button>
+              </div>
+              <div class="cluster">
+                <span class="badge">Default</span>
+                <span class="badge badge--secondary">Secondary</span>
+                <span class="badge badge--outline">Outline</span>
+                <span class="badge badge--success">Active</span>
+                <span class="badge badge--destructive">Blocked</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="cards">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Cards</h2>
+              <p>Group a title, supporting content, and focused actions.</p>
+            </div>
+            <div class="grid grid--2">
+              <article class="card">
+                <header class="card__header">
+                  <div class="cluster justify-between">
+                    <div class="avatar">AC</div>
+                    <span class="badge badge--success">Live</span>
+                  </div>
+                  <h3 class="card__title">Acme workspace</h3>
+                  <p class="card__description">12 members · Pro plan</p>
+                </header>
+                <div class="card__content">
+                  <div class="stack" style="--stack-gap: 0.5rem">
+                    <div class="cluster justify-between text-sm"><span>Storage</span><span class="text-muted">68%</span></div>
+                    <div class="progress" role="progressbar" aria-label="Storage used" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100">
+                      <div class="progress__bar" style="width: 68%"></div>
+                    </div>
+                  </div>
+                </div>
+                <footer class="card__footer">
+                  <button class="btn btn--outline w-full" type="button">Manage workspace</button>
+                </footer>
+              </article>
+
+              <article class="card">
+                <header class="card__header">
+                  <h3 class="card__title">Create an account</h3>
+                  <p class="card__description">Enter your details to get started.</p>
+                </header>
+                <div class="card__content stack">
+                  <label class="field">
+                    <span class="label">Email</span>
+                    <input class="input" type="email" placeholder="you@example.com">
+                  </label>
+                  <label class="field">
+                    <span class="label">Password</span>
+                    <input class="input" type="password" value="password123">
+                  </label>
+                </div>
+                <footer class="card__footer">
+                  <button class="btn w-full" type="button">Create account</button>
+                </footer>
+              </article>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="forms">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Forms</h2>
+              <p>Accessible native controls with visible labels, hints, errors, and focus states.</p>
+            </div>
+            <div class="showcase-preview">
+              <div class="grid grid--2">
+                <label class="field">
+                  <span class="label">Display name</span>
+                  <input class="input" type="text" placeholder="Ada Lovelace">
+                  <span class="field__hint">Shown on your public profile.</span>
+                </label>
+                <label class="field">
+                  <span class="label">Role</span>
+                  <select class="select">
+                    <option>Select a role</option>
+                    <option>Designer</option>
+                    <option>Developer</option>
+                    <option>Product manager</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span class="label">Email with error</span>
+                  <input class="input" type="email" value="not-an-email" aria-invalid="true" aria-describedby="email-error">
+                  <span class="field__error" id="email-error">Enter a valid email address.</span>
+                </label>
+                <label class="field">
+                  <span class="label">Disabled</span>
+                  <input class="input" type="text" value="Unavailable" disabled>
+                </label>
+              </div>
+              <label class="field">
+                <span class="label">Bio</span>
+                <textarea class="textarea" placeholder="Tell us a little about yourself."></textarea>
+              </label>
+              <div class="input-group">
+                <span class="btn btn--outline" aria-hidden="true">https://</span>
+                <label class="sr-only" for="domain">Domain</label>
+                <input class="input" id="domain" type="text" placeholder="example.com">
+                <button class="btn" type="button">Save</button>
+              </div>
+              <div class="cluster" style="--cluster-gap: 1.5rem">
+                <label class="check"><input type="checkbox" checked><span>Remember me</span></label>
+                <label class="radio"><input type="radio" name="plan" checked><span>Monthly</span></label>
+                <label class="radio"><input type="radio" name="plan"><span>Yearly</span></label>
+                <label class="switch"><input type="checkbox" checked><span class="switch__track" aria-hidden="true"></span><span>Email alerts</span></label>
+              </div>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="feedback">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Feedback</h2>
+              <p>Alerts clearly communicate neutral, successful, and destructive outcomes.</p>
+            </div>
+            <div class="stack">
+              <div class="alert" role="status">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+                <div><div class="alert__title">Heads up</div><p class="alert__description">Your trial ends in 4 days. Add billing details to keep your workspace active.</p></div>
+              </div>
+              <div class="alert alert--success" role="status">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+                <div><div class="alert__title">Changes saved</div><p class="alert__description">Your profile is now up to date.</p></div>
+              </div>
+              <div class="alert alert--destructive" role="alert">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+                <div><div class="alert__title">Something went wrong</div><p class="alert__description">We could not save your changes. Try again in a moment.</p></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="navigation">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Navigation</h2>
+              <p>Wayfinding primitives for compact pages and product interfaces.</p>
+            </div>
+            <div class="showcase-preview">
+              <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Settings</a></li>
+                  <li><span aria-current="page">Billing</span></li>
+                </ol>
+              </nav>
+              <nav class="tabs" aria-label="Account sections">
+                <div class="tabs__list" role="tablist">
+                  <a class="tabs__tab" href="#" role="tab" aria-selected="true">Overview</a>
+                  <a class="tabs__tab" href="#" role="tab" aria-selected="false">Analytics</a>
+                  <a class="tabs__tab" href="#" role="tab" aria-selected="false">Team members</a>
+                  <a class="tabs__tab" href="#" role="tab" aria-selected="false">Settings</a>
+                </div>
+              </nav>
+              <nav aria-label="Pagination">
+                <ul class="pagination">
+                  <li><a href="#" aria-label="Previous page">←</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><span aria-current="page">2</span></li>
+                  <li><a href="#">3</a></li>
+                  <li><span>…</span></li>
+                  <li><a href="#">8</a></li>
+                  <li><a href="#" aria-label="Next page">→</a></li>
+                </ul>
+              </nav>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="data">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Data display</h2>
+              <p>Tables, avatars, progress, and disclosure patterns for dense information.</p>
+            </div>
+            <div class="stack" style="--stack-gap: 2rem">
+              <div class="table-wrap">
+                <table class="table">
+                  <thead><tr><th>Member</th><th>Status</th><th>Role</th><th>Last active</th></tr></thead>
+                  <tbody>
+                    <tr><td><div class="cluster"><span class="avatar avatar--sm">AL</span><span class="font-medium">Ada Lovelace</span></div></td><td><span class="badge badge--success">Active</span></td><td>Owner</td><td class="text-muted">Just now</td></tr>
+                    <tr><td><div class="cluster"><span class="avatar avatar--sm">GH</span><span class="font-medium">Grace Hopper</span></div></td><td><span class="badge badge--secondary">Invited</span></td><td>Developer</td><td class="text-muted">Yesterday</td></tr>
+                    <tr><td><div class="cluster"><span class="avatar avatar--sm">AT</span><span class="font-medium">Alan Turing</span></div></td><td><span class="badge badge--outline">Offline</span></td><td>Viewer</td><td class="text-muted">3 days ago</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="accordion">
+                <details open>
+                  <summary>Can I use this in a commercial project?</summary>
+                  <p class="accordion__content">Yes. The system is designed to be copied, customized, and shipped in any project.</p>
+                </details>
+                <details>
+                  <summary>Does it require JavaScript?</summary>
+                  <p class="accordion__content">No. Visual styles and native interactions work with HTML and CSS alone. Add small scripts only when your product behavior requires them.</p>
+                </details>
+                <details>
+                  <summary>How do I change the brand?</summary>
+                  <p class="accordion__content">Override the semantic custom properties in <code>:root</code>. Components inherit the new theme automatically.</p>
+                </details>
+              </div>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="overlays">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Overlays</h2>
+              <p>CSS-only menus and tooltips, plus a styled native dialog shell.</p>
+            </div>
+            <div class="showcase-preview">
+              <div class="cluster">
+                <details class="dropdown">
+                  <summary class="btn btn--outline">Open menu</summary>
+                  <div class="dropdown__menu">
+                    <div class="dropdown__label">My account</div>
+                    <hr class="dropdown__separator">
+                    <a class="dropdown__item" href="#">Profile <span class="text-xs text-muted" style="margin-left: auto">⇧⌘P</span></a>
+                    <a class="dropdown__item" href="#">Billing</a>
+                    <a class="dropdown__item" href="#">Settings</a>
+                    <hr class="dropdown__separator">
+                    <button class="dropdown__item dropdown__item--destructive" type="button">Log out</button>
+                  </div>
+                </details>
+                <span class="tooltip">
+                  <button class="btn btn--outline btn--icon" type="button" aria-describedby="tooltip-copy">⧉</button>
+                  <span class="tooltip__content" id="tooltip-copy" role="tooltip">Copy to clipboard</span>
+                </span>
+                <span class="text-sm text-muted">Save with <kbd class="kbd">⌘</kbd> <kbd class="kbd">S</kbd></span>
+              </div>
+
+              <dialog class="dialog demo-dialog" open>
+                <header class="dialog__header stack" style="--stack-gap: 0.5rem">
+                  <h3>Are you absolutely sure?</h3>
+                  <p class="text-sm">This action cannot be undone. The workspace and its data will be permanently removed.</p>
+                </header>
+                <footer class="dialog__footer">
+                  <button class="btn btn--outline" type="button">Cancel</button>
+                  <button class="btn btn--destructive" type="button">Delete workspace</button>
+                </footer>
+              </dialog>
+
+              <div class="toast" role="status">
+                <div><div class="toast__title">Event created</div><p class="toast__description">Monday, September 7 at 10:00 AM</p></div>
+                <button class="btn btn--ghost btn--sm" type="button">Undo</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="showcase-section" id="states">
+            <div class="showcase-section__header stack" style="--stack-gap: 0.5rem">
+              <h2>Loading & empty states</h2>
+              <p>Keep layouts stable while content loads and make the next action obvious.</p>
+            </div>
+            <div class="grid grid--2">
+              <div class="card">
+                <div class="card__content stack" style="padding-top: 1.5rem">
+                  <div class="cluster">
+                    <div class="skeleton" style="width: 3rem; height: 3rem; border-radius: 50%"></div>
+                    <div class="stack" style="--stack-gap: 0.5rem; flex: 1">
+                      <div class="skeleton" style="width: 45%; height: 0.875rem"></div>
+                      <div class="skeleton" style="width: 70%; height: 0.75rem"></div>
+                    </div>
+                  </div>
+                  <div class="skeleton" style="width: 100%; height: 5rem"></div>
+                </div>
+              </div>
+              <div class="empty-state">
+                <div class="stack" style="--stack-gap: 1rem">
+                  <div class="empty-state__icon">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5h16v14H4zM4 9h16"></path><path d="M8 13h3M8 16h6"></path></svg>
+                  </div>
+                  <div class="stack" style="--stack-gap: 0.25rem">
+                    <h3>No projects yet</h3>
+                    <p class="text-sm">Create your first project to get started.</p>
+                  </div>
+                  <button class="btn" type="button">Create project</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer style="border-top: 1px solid var(--border); padding-block: 2rem">
+      <div class="container cluster justify-between">
+        <span class="nav__brand">Hearth UI</span>
+        <p class="text-sm">Built with semantic HTML and modern CSS.</p>
+      </div>
+    </footer>
+  </body>
+</html>
