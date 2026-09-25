@@ -873,6 +873,203 @@
   background: var(--border);
 }
 
+/* Toasts. Sonner keeps stacking, swipe, and timing; this layer owns the look.
+   The html prefix outranks Sonner's injected stylesheet without !important. */
+html [data-sonner-toaster] [data-sonner-toast][data-styled='true'] {
+  align-items: center;
+  gap: 12px;
+  padding: 12px 44px 12px 12px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow:
+    var(--overlay-shadow),
+    0 24px 48px -24px rgba(28, 20, 10, 0.22);
+  font-family: inherit;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-content] {
+  gap: 2px;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-title] {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-description] {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted-foreground);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-styled='true'] [data-icon] {
+  --chip: var(--muted-foreground);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border-radius: 10px;
+  color: var(--chip);
+  background: color-mix(in srgb, var(--chip) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--chip) 16%, transparent);
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-icon]
+  svg {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-type='success']
+  [data-icon] {
+  --chip: var(--success);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-icon] {
+  --chip: var(--destructive);
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-type='warning']
+  [data-icon] {
+  --chip: var(--warning);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type='info'] [data-icon],
+html [data-sonner-toaster] [data-sonner-toast][data-type='loading'] [data-icon],
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-promise='true']
+  [data-icon] {
+  --chip: var(--primary-bright);
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-button] {
+  height: 28px;
+  margin-left: auto;
+  padding: 0 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--background);
+  background: var(--foreground);
+  transition: transform 160ms var(--ease-out);
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-button]:active {
+  transform: scale(0.97);
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-cancel] {
+  color: var(--foreground);
+  background: var(--secondary);
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-close-button] {
+  left: auto;
+  right: 10px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+  background: transparent;
+  transform: translateY(-50%);
+  transition:
+    color var(--duration-quick) ease,
+    background-color var(--duration-quick) ease,
+    opacity var(--duration-quick) ease;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-close-button]
+  svg {
+  width: 14px;
+  height: 14px;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-close-button]:hover,
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']:hover
+  [data-close-button]:hover {
+  color: var(--foreground);
+  background: var(--secondary);
+  border: 0;
+}
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']
+  [data-close-button]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  html
+    [data-sonner-toaster]
+    [data-sonner-toast][data-styled='true']
+    [data-close-button] {
+    opacity: 0;
+  }
+  html
+    [data-sonner-toaster]
+    [data-sonner-toast][data-styled='true']:hover
+    [data-close-button],
+  html
+    [data-sonner-toaster]
+    [data-sonner-toast][data-styled='true']
+    [data-close-button]:focus-visible {
+    opacity: 1;
+  }
+}
+/* An action button sits where the close button would; keep them apart. */
+html
+  [data-sonner-toaster]
+  [data-sonner-toast][data-styled='true']:has([data-button]) {
+  padding-right: 44px;
+}
+
+/* iOS zooms the page when a focused field is under 16px. Touch only, so
+   desktop keeps the compact 13px fields. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select,
+  [data-slot='input'],
+  [data-slot='textarea'],
+  [data-slot='command-input'],
+  .composer textarea,
+  .component-search input {
+    font-size: 16px !important;
+  }
+}
+
 /* Keyframes */
 @keyframes material-enter {
   from {

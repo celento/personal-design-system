@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   ArrowUp,
-  Code2,
   Layers2,
   Monitor,
   Moon,
@@ -157,15 +156,6 @@ function App() {
                 </Tooltip>
               ))}
             </div>
-            <a
-              className="icon-control github-link"
-              href="https://github.com/celento/personal-design-system"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub repository"
-            >
-              <Code2 size={17} />
-            </a>
           </div>
         </header>
       </div>

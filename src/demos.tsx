@@ -1067,24 +1067,36 @@ export const specimens: Specimen[] = [
     ),
   },
   {
-    name: 'Sonner',
+    name: 'Toast',
     category: 'Feedback',
-    detail: 'Toast notifications',
+    detail: 'Success · error · action · loading',
     render: () => (
-      <Row>
+      <div className="grid w-full max-w-72 grid-cols-2 gap-3">
         <Button
           variant="outline"
-          onClick={() => toast.success('Changes saved')}
+          onClick={() =>
+            toast.success('Changes saved', {
+              description: 'Your preferences are up to date.',
+            })
+          }
         >
           Success
         </Button>
-        <Button variant="outline" onClick={() => toast.error('Unable to save')}>
+        <Button
+          variant="outline"
+          onClick={() =>
+            toast.error('Unable to save', {
+              description: 'Check your connection and try again.',
+            })
+          }
+        >
           Error
         </Button>
         <Button
           variant="outline"
           onClick={() =>
             toast('Item archived', {
+              description: 'Moved to the archive.',
               action: {
                 label: 'Undo',
                 onClick: () => toast.success('Item restored'),
@@ -1094,7 +1106,19 @@ export const specimens: Specimen[] = [
         >
           With action
         </Button>
-      </Row>
+        <Button
+          variant="outline"
+          onClick={() =>
+            toast.promise(new Promise((resolve) => setTimeout(resolve, 1600)), {
+              loading: 'Publishing tokens…',
+              success: 'Tokens published',
+              error: 'Publishing failed',
+            })
+          }
+        >
+          Loading
+        </Button>
+      </div>
     ),
   },
   {

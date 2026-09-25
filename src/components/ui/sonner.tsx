@@ -5,6 +5,7 @@ import {
   TriangleAlertIcon,
   OctagonXIcon,
   Loader2Icon,
+  XIcon,
 } from 'lucide-react'
 
 const Toaster = ({ ...props }: ToasterProps) => {
@@ -13,12 +14,16 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme="system"
       className="toaster group"
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CircleCheckIcon />,
+        info: <InfoIcon />,
+        warning: <TriangleAlertIcon />,
+        error: <OctagonXIcon />,
+        loading: <Loader2Icon className="animate-spin" />,
+        close: <XIcon />,
       }}
+      gap={10}
+      offset={24}
+      mobileOffset={16}
       style={
         {
           '--normal-bg': 'var(--popover)',

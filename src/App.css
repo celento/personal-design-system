@@ -1047,9 +1047,6 @@ h1 {
   main {
     padding-top: 28px;
   }
-  .github-link {
-    display: none;
-  }
   .page-heading {
     align-items: stretch;
     flex-direction: column;
