@@ -4,7 +4,7 @@ test('effect controls, liquid actions, and composer stay interactive', async ({
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: 'Effects', exact: true }).click()
+  await page.getByRole('button', { name: 'Special', exact: true }).click()
   await expect(page.locator('.specimen')).toHaveCount(6)
   const send = page.getByRole('button', { name: 'Send beam message' })
   await expect(send).toBeDisabled()

@@ -271,16 +271,16 @@ h1 {
   position: absolute;
   top: 50%;
   translate: 0 -50%;
-  left: 14px;
+  left: calc(var(--field-px) + 2px);
+  width: var(--field-icon);
+  height: var(--field-icon);
   z-index: 1;
   color: var(--muted-foreground);
   pointer-events: none;
 }
 .component-search input {
-  height: 40px;
-  padding-left: 38px;
+  padding-left: calc(var(--field-px) + var(--field-icon) + 10px);
   padding-right: 48px;
-  font-size: 13px;
   border-radius: 99px !important;
   background: var(--surface);
 }
@@ -501,9 +501,9 @@ h1 {
 }
 .input-icon {
   position: absolute;
-  width: 15px;
-  height: 15px;
-  left: 12px;
+  width: var(--field-icon);
+  height: var(--field-icon);
+  left: var(--field-px);
   top: 50%;
   translate: 0 -50%;
   color: var(--muted-foreground);

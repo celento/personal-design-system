@@ -1,5 +1,3 @@
-import { BeamInput } from '@/components/effects/beam-input'
-import { BeamSurface } from '@/components/effects/beam-surface'
 import { useState, type ReactNode } from 'react'
 import {
   Archive,
@@ -229,7 +227,6 @@ const Swatch = ({ color }: { color: string }) => (
 )
 export const categories = [
   'All components',
-  'Effects',
   'Actions',
   'Inputs',
   'Data display',
@@ -237,6 +234,7 @@ export const categories = [
   'Feedback',
   'Overlays',
   'Layout',
+  'Special',
 ] as const
 export type Category = (typeof categories)[number]
 export type Specimen = {
@@ -251,11 +249,9 @@ function Buttons() {
   return (
     <Stack>
       <Row>
-        <BeamSurface size="sm" colorVariant="sunset" borderRadius={99}>
-          <Button onClick={() => toast.success('Primary button clicked')}>
-            Primary <ArrowRight />
-          </Button>
-        </BeamSurface>
+        <Button onClick={() => toast.success('Primary button clicked')}>
+          Primary <ArrowRight />
+        </Button>
         <Button
           variant="secondary"
           onClick={() => toast('Secondary button clicked')}
@@ -314,9 +310,11 @@ function Inputs() {
         <Label htmlFor="demo-email">Email</Label>
         <div className="relative">
           <Mail className="input-icon" />
-          <BeamInput
+          <Input
             id="demo-email"
             type="email"
+            autoComplete="off"
+            data-1p-ignore
             placeholder="you@example.com"
             className="pl-9"
           />

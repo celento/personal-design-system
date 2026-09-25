@@ -28,7 +28,7 @@ import { useMotionSettings } from './motion'
 import './App.css'
 import './components/materials.css'
 
-const allSpecimens = [...effectSpecimens, ...specimens]
+const allSpecimens = [...specimens, ...effectSpecimens]
 const easeOut = [0.23, 1, 0.32, 1] as const
 function App() {
   const [theme, setTheme] = useTheme()
@@ -261,7 +261,7 @@ function App() {
                       layout={enabled ? 'position' : false}
                       id={slug(s.name)}
                       key={s.name}
-                      className={`specimen ${s.category === 'Effects' ? 'effect-specimen' : ''}`}
+                      className={`specimen ${s.category === 'Special' ? 'effect-specimen' : ''}`}
                       initial={
                         enabled
                           ? {

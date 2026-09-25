@@ -299,37 +299,37 @@ export function BotDemo() {
 export const effectSpecimens: Specimen[] = [
   {
     name: 'Border Beam',
-    category: 'Effects',
+    category: 'Special',
     detail: 'Animated border · composer',
     render: () => <BeamDemo />,
   },
   {
     name: 'Metal',
-    category: 'Effects',
+    category: 'Special',
     detail: 'Silver · chromatic · gold',
     render: () => <MetalDemo />,
   },
   {
     name: 'Thinking Orb',
-    category: 'Effects',
+    category: 'Special',
     detail: 'Working · searching · solving',
     render: () => <OrbDemo />,
   },
   {
     name: 'Gooey',
-    category: 'Effects',
+    category: 'Special',
     detail: 'Liquid quick actions',
     render: () => <GooeyDemo />,
   },
   {
     name: 'Voice',
-    category: 'Effects',
+    category: 'Special',
     detail: 'Reactive glow · processing',
     render: () => <VoiceDemo />,
   },
   {
     name: 'Bot Avatar',
-    category: 'Effects',
+    category: 'Special',
     detail: 'Idle · working · sleeping',
     render: () => <BotDemo />,
   },

@@ -99,52 +99,101 @@
   opacity: 0.45;
 }
 
-/* Text inputs */
+/* Text fields. One set of size tokens drives every field so inputs,
+   selects, textareas, search, and OTP read as one family. Touch screens
+   get 16px text (iOS zooms below that) with height and labels scaled to
+   match, rather than bumping the text alone. */
+:root {
+  --field-h: 38px;
+  --field-font: 13px;
+  --field-px: 12px;
+  --field-icon: 15px;
+  --field-radius: 12px;
+  --label-font: 13px;
+}
+@media (pointer: coarse) {
+  :root {
+    --field-h: 46px;
+    --field-font: 16px;
+    --field-px: 14px;
+    --field-icon: 18px;
+    --field-radius: 14px;
+    --label-font: 15px;
+  }
+}
 [data-slot='input'],
 [data-slot='textarea'],
 [data-slot='select-trigger'] {
+  height: var(--field-h) !important;
+  min-height: var(--field-h);
+  padding-inline: var(--field-px);
   background: var(--surface);
   border-color: var(--input);
-  border-radius: 12px;
-  font-size: 13px;
-  min-height: 38px;
-  box-shadow: 0 1px 2px rgba(28, 20, 10, 0.03);
+  border-radius: var(--field-radius);
+  font-size: var(--field-font) !important;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  box-shadow: 0 1px 2px rgba(28, 20, 10, 0.04);
   transition:
-    border-color var(--duration-quick),
-    box-shadow var(--duration-fast) var(--ease-smooth-out),
-    background var(--duration-quick);
+    border-color var(--duration-quick) ease,
+    box-shadow var(--duration-fast) var(--ease-out),
+    background-color var(--duration-quick) ease;
 }
-[data-slot='input']:hover:not(:disabled):not(:focus-visible),
-[data-slot='textarea']:hover:not(:disabled):not(:focus-visible),
-[data-slot='select-trigger']:hover:not(:disabled):not(:focus-visible) {
-  border-color: color-mix(in srgb, var(--foreground) 22%, transparent);
+.dark [data-slot='input'],
+.dark [data-slot='textarea'],
+.dark [data-slot='select-trigger'] {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+/* Room for a leading icon (see .input-icon). */
+[data-slot='input'].pl-9 {
+  padding-left: calc(var(--field-px) + var(--field-icon) + 9px);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-slot='input']:hover:not(:disabled):not(:focus-visible),
+  [data-slot='textarea']:hover:not(:disabled):not(:focus-visible),
+  [data-slot='select-trigger']:hover:not(:disabled):not(:focus-visible) {
+    border-color: color-mix(in srgb, var(--foreground) 22%, transparent);
+  }
 }
 [data-slot='input']:focus-visible,
 [data-slot='textarea']:focus-visible,
 [data-slot='select-trigger']:focus-visible,
 [data-slot='select-trigger'][data-state='open'] {
   border-color: var(--ring);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 16%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
 }
 [data-slot='input']:disabled,
 [data-slot='textarea']:disabled,
 [data-slot='select-trigger']:disabled {
   background: var(--muted);
-  opacity: 0.6;
+  border-color: var(--border);
+  box-shadow: none;
+  opacity: 0.7;
 }
 [data-slot='input']::placeholder,
-[data-slot='textarea']::placeholder {
-  color: color-mix(in srgb, var(--muted-foreground) 85%, transparent);
+[data-slot='textarea']::placeholder,
+[data-slot='select-value'][data-placeholder],
+[data-slot='select-trigger'][data-placeholder] {
+  color: var(--muted-foreground);
+  opacity: 0.8;
 }
+/* Invalid shows in the border; the soft ring only appears while focused. */
 [data-slot='input'][aria-invalid='true'],
 [data-slot='textarea'][aria-invalid='true'] {
+  border-color: color-mix(in srgb, var(--destructive) 70%, transparent);
+  box-shadow: none;
+}
+[data-slot='input'][aria-invalid='true']:focus-visible,
+[data-slot='textarea'][aria-invalid='true']:focus-visible {
   border-color: var(--destructive);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--destructive) 12%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--destructive) 16%, transparent);
 }
 [data-slot='textarea'] {
-  min-height: 100px;
-  padding: 10px 12px;
+  height: auto !important;
+  min-height: calc(var(--field-h) * 2.6);
+  padding-block: 10px;
   line-height: 1.55;
+  resize: vertical;
 }
 [data-slot='select-trigger'] svg {
   transition: transform var(--duration-quick) var(--ease-out);
@@ -152,8 +201,31 @@
 [data-slot='select-trigger'][data-state='open'] svg {
   transform: rotate(180deg);
 }
+/* Combobox triggers are buttons in markup but fields in function. */
+[data-ui='button'][role='combobox'] {
+  height: var(--field-h);
+  min-height: var(--field-h);
+  padding-inline: var(--field-px);
+  border-radius: var(--field-radius);
+  font-size: var(--field-font);
+  font-weight: 400;
+  box-shadow:
+    0 1px 2px rgba(28, 20, 10, 0.04),
+    inset 0 0 0 1px var(--input);
+}
+[data-ui='button'][role='combobox']:active:not(:disabled) {
+  transform: none;
+}
+[data-ui='button'][role='combobox'][aria-expanded='true'] {
+  box-shadow:
+    inset 0 0 0 1px var(--ring),
+    0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
+}
+[data-ui='button'][role='combobox'] svg {
+  color: var(--muted-foreground);
+}
 [data-slot='label'] {
-  font-size: 13px;
+  font-size: var(--label-font);
   font-weight: 500;
 }
 
@@ -799,11 +871,11 @@
 }
 [data-slot='input-otp-slot'] {
   width: 42px;
-  height: 48px;
-  font-size: 18px;
+  height: calc(var(--field-h) + 8px);
+  font-size: calc(var(--field-font) + 4px);
   font-weight: 600;
   border: 1px solid var(--input) !important;
-  border-radius: 12px !important;
+  border-radius: var(--field-radius) !important;
   background: var(--surface);
   box-shadow: 0 1px 2px rgba(28, 20, 10, 0.04);
   transition:
@@ -1056,17 +1128,32 @@ html
   padding-right: 44px;
 }
 
-/* iOS zooms the page when a focused field is under 16px. Touch only, so
-   desktop keeps the compact 13px fields. */
+/* Touch: buttons match the taller fields and reach a comfortable target,
+   and the six OTP boxes tighten up to fit a phone-width card. */
 @media (pointer: coarse) {
-  input,
-  textarea,
-  select,
-  [data-slot='input'],
-  [data-slot='textarea'],
+  [data-ui='button']:not([data-size^='icon']):not([data-size='sm']) {
+    min-height: 42px;
+    font-size: 14px;
+  }
+  [data-ui='button'][data-size='sm'] {
+    min-height: 34px;
+  }
+  [data-ui='button'][data-size='icon'] {
+    width: 40px;
+    height: 40px;
+  }
+  [data-slot='input-otp-group'] {
+    gap: 6px;
+  }
+}
+
+/* iOS zooms the page when a focused field is under 16px. The field tokens
+   cover the design-system inputs; this catches the remaining raw fields. */
+@media (pointer: coarse) {
   [data-slot='command-input'],
   .composer textarea,
-  .component-search input {
+  input:not([data-slot]),
+  textarea:not([data-slot]) {
     font-size: 16px !important;
   }
 }

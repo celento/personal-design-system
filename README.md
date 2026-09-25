@@ -17,8 +17,8 @@ npm run dev
 49 interactive examples, searchable by name, category, and state. The original
 43 specimens share a warm neutral palette with an orange accent, pill controls,
 dotted inset stages, material shadows, and spring-based motion (filtering,
-overlay entrances, toggles, and card hover states). Six additional examples
-show animated effects:
+overlay entrances, toggles, and card hover states). Six more examples, grouped
+under Special, show animated effects:
 
 - Border beam: animated borders, composer, primary action, and focused input.
 - Metal: silver, chromatic, and gold controls, with a static CSS metal rim when WebGL2 is unavailable.
@@ -39,7 +39,7 @@ a server or modify repository files. This is a component library, not a backend.
 
 - `src/components/ui/`: editable primitives. Tabs use a shared sliding indicator.
 - `src/components/materials.css`: material styling and motion for all primitives, including portalled overlays.
-- `src/components/effects/`: reusable theme-aware BeamSurface, BeamInput, and MetalSurface adapters.
+- `src/components/effects/`: theme-aware BeamSurface and MetalSurface adapters, used only by the Special examples.
 - `src/index.css`: semantic light/dark tokens and shared motion values.
 - `src/App.css`: gallery shell and example layout.
 - `src/theme.ts`: persisted appearance and OS theme handling.
