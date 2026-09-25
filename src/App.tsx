@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import {
   ArrowDown,
   ArrowUpRight,
-  Check,
   Circle,
   Component,
   Code2,
@@ -11,9 +10,7 @@ import {
   Menu,
   Monitor,
   Moon,
-  RotateCcw,
   Search,
-  SlidersHorizontal,
   Sun,
   X,
 } from 'lucide-react'
@@ -33,48 +30,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Label } from '@/components/ui/label'
-import { Slider } from '@/components/ui/slider'
 import { categories, specimens, slug, type Category } from './demos'
-import { readPreference, savePreference, useTheme } from './theme'
+import { useTheme } from './theme'
 import './App.css'
 
-const accents = [
-  { name: 'Sage', value: '#52734c', dark: '#a6c49a' },
-  { name: 'Neutral', value: '#393936', dark: '#d6d6cf' },
-  { name: 'Blue', value: '#3864bd', dark: '#92b4ff' },
-  { name: 'Violet', value: '#7953b8', dark: '#c4a4ef' },
-  { name: 'Terracotta', value: '#ae583d', dark: '#e8a18a' },
-]
 function App() {
   const [theme, setTheme] = useTheme()
   const [category, setCategory] = useState<Category>('All components')
   const [query, setQuery] = useState('')
   const [tab, setTab] = useState<'components' | 'foundations'>('components')
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [accent, setAccent] = useState(
-    () =>
-      accents.find((a) => a.name === readPreference('pds-accent', 'Sage')) ||
-      accents[0],
-  )
-  const [radius, setRadius] = useState(() => {
-    const n = Number(readPreference('pds-radius', '10'))
-    return Number.isFinite(n) && n >= 0 && n <= 20 ? n : 10
-  })
   const searchRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    const root = document.documentElement
-    root.style.setProperty('--personal-primary', accent.value)
-    root.style.setProperty('--personal-primary-dark', accent.dark)
-    root.style.setProperty('--radius', `${radius / 16}rem`)
-    savePreference('pds-accent', accent.name)
-    savePreference('pds-radius', String(radius))
-  }, [accent, radius])
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -226,61 +192,6 @@ function App() {
               <div>
                 <h1>{tab === 'components' ? 'Components' : 'Foundations'}</h1>
               </div>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="customize-button">
-                    <SlidersHorizontal size={15} />
-                    Customize
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent align="end" className="space-y-5">
-                  <div className="flex justify-between items-center">
-                    <h2 className="font-medium text-sm">Theme settings</h2>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label="Reset theme settings"
-                      onClick={() => {
-                        setAccent(accents[0])
-                        setRadius(10)
-                        setTheme('system')
-                      }}
-                    >
-                      <RotateCcw size={14} />
-                    </Button>
-                  </div>
-                  <Label>Accent color</Label>
-                  <div className="flex gap-2">
-                    {accents.map((a) => (
-                      <button
-                        key={a.name}
-                        className="accent-swatch"
-                        style={{ background: a.value }}
-                        aria-label={`${a.name} accent`}
-                        aria-pressed={accent.name === a.name}
-                        onClick={() => setAccent(a)}
-                      >
-                        {accent.name === a.name && (
-                          <Check size={15} color="white" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex justify-between">
-                    <Label htmlFor="corner-radius">Corner radius</Label>
-                    <span className="text-xs font-mono">{radius}px</span>
-                  </div>
-                  <Slider
-                    id="corner-radius"
-                    aria-label="Corner radius"
-                    value={[radius]}
-                    min={0}
-                    max={20}
-                    step={2}
-                    onValueChange={(v) => setRadius(v[0])}
-                  />
-                </PopoverContent>
-              </Popover>
             </div>
             <div className="view-tabs">
               <button
@@ -410,7 +321,7 @@ function App() {
                     <span>02</span>
                   </div>
                   <div className="type-sample">
-                    <p className="text-5xl tracking-tight">Geist Sans</p>
+                    <p className="text-5xl tracking-tight">Inter</p>
                     <span className="mono">
                       Aa Bb Cc Dd Ee Ff Gg 0123456789
                     </span>

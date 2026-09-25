@@ -1,6 +1,6 @@
 # Personal design system
 
-A React + TypeScript component playground built with Vite, Tailwind CSS v4, and locally owned shadcn/ui components (Radix / New York).
+A React + TypeScript component playground built with Vite, Tailwind CSS v4, and locally owned shadcn/ui components (Radix / Nova).
 
 ## Development
 
@@ -17,8 +17,8 @@ npm run dev
 - Buttons, input controls, date pickers, menus, dialogs, sheets, drawers, tables, navigation, feedback, and layout primitives.
 - Foundations: semantic color tokens, typography, spacing, and corner radius.
 - Light, dark, and system appearance. System is the initial default and responds to OS changes immediately.
-- Persistent accent and radius controls. Preferences are local to each browser; Reset restores the defaults.
-- Responsive navigation, keyboard controls, reduced-motion support, and self-hosted Geist fonts.
+- Exact shadcn preset `b6rtAJsqe`: Nova, Indigo, Olive neutrals and chart colors, Inter, Lucide, default radius.
+- Responsive navigation, keyboard controls, reduced-motion support, and self-hosted Inter fonts.
 
 Examples use local state and preview notifications; they do not send data or modify repository files. The gallery does not include every specialized block in the upstream registry.
 
@@ -26,7 +26,7 @@ Examples use local state and preview notifications; they do not send data or mod
 
 - `src/components/ui/`: editable shadcn primitives.
 - `src/index.css`: Tailwind setup and base semantic tokens.
-- `src/App.css`: personal palette, layout, responsive rules, and specimen styles.
+- `src/App.css`: layout, responsive rules, and specimen styles.
 - `src/theme.ts`: appearance preference and OS theme handling.
 - `src/demos.tsx`: specimen registry and interactive examples.
 - `src/App.tsx`: playground shell, search, filters, and foundations.
@@ -43,7 +43,7 @@ npx playwright install chromium firefox
 npm test
 ```
 
-Browser tests cover desktop Firefox and Chromium, a narrow Firefox viewport, filtering, theme synchronization and persistence, dialogs, selections, forms, navigation, and overflow. CI runs the same checks for pushes and pull requests.
+Browser tests cover desktop Firefox and Chromium, a narrow Firefox viewport, filtering, theme synchronization and persistence, dialogs, selections, forms, navigation, and overflow. CI runs the same checks for pushes and pull requests. Axe checks enforce structural accessibility; contrast findings from the exact user-selected preset are retained as JSON test attachments. The preset has contrast failures in both themes, so passing tests do not imply full WCAG AA conformance.
 
 ## Vercel
 

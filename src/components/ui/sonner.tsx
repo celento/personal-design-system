@@ -1,11 +1,11 @@
+import { Toaster as Sonner, type ToasterProps } from 'sonner'
 import {
   CircleCheckIcon,
   InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
   TriangleAlertIcon,
+  OctagonXIcon,
+  Loader2Icon,
 } from 'lucide-react'
-import { Toaster as Sonner, type ToasterProps } from 'sonner'
 
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
@@ -27,6 +27,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
           '--border-radius': 'var(--radius)',
         } as React.CSSProperties
       }
+      toastOptions={{
+        classNames: {
+          toast: 'cn-toast',
+        },
+      }}
       {...props}
     />
   )

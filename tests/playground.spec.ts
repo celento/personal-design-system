@@ -44,7 +44,7 @@ test('search and category filters return relevant components and recover from em
   await expect(page.locator('.specimen')).toHaveCount(9)
 })
 
-test('system theme follows OS changes, overrides persist, and customization resets', async ({
+test('system theme follows OS changes and theme overrides persist', async ({
   page,
 }) => {
   await page.emulateMedia({ colorScheme: 'dark' })
@@ -59,22 +59,8 @@ test('system theme follows OS changes, overrides persist, and customization rese
     path: `test-results/dark-${test.info().project.name}.png`,
     fullPage: true,
   })
-  await page.getByRole('button', { name: 'Customize', exact: true }).click()
-  await page.getByRole('button', { name: 'Blue accent' }).click()
-  await page.getByRole('slider', { name: 'Corner radius' }).press('ArrowRight')
-  await page.reload()
-  await page.getByRole('button', { name: 'Customize', exact: true }).click()
-  await expect(
-    page.getByRole('button', { name: 'Blue accent' }),
-  ).toHaveAttribute('aria-pressed', 'true')
-  await expect(
-    page.getByRole('slider', { name: 'Corner radius' }),
-  ).toHaveAttribute('aria-valuenow', '12')
-  await page.getByRole('button', { name: 'Reset theme settings' }).click()
+  await page.getByRole('button', { name: 'System theme', exact: true }).click()
   await expect(page.locator('html')).not.toHaveClass(/dark/)
-  await expect(
-    page.getByRole('button', { name: 'Sage accent' }),
-  ).toHaveAttribute('aria-pressed', 'true')
 })
 
 test('dialog traps focus, saves, closes with Escape, and restores focus', async ({
@@ -157,4 +143,46 @@ test('foundations and navigation are available at each viewport', async ({
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true)
+})
+
+test('preset tokens and Inter remain authoritative over legacy preferences', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('pds-accent', 'Sage')
+    localStorage.setItem('pds-radius', '20')
+  })
+  await page.goto('/')
+  for (const [theme, primary] of [
+    ['Light', 'oklch(0.457 0.24 277.023)'],
+    ['Dark', 'oklch(0.398 0.195 277.366)'],
+  ]) {
+    await page
+      .getByRole('button', { name: `${theme} theme`, exact: true })
+      .click()
+    const tokens = await page.evaluate(() => {
+      const style = getComputedStyle(document.documentElement)
+      return {
+        primary: style.getPropertyValue('--primary').trim(),
+        radius: style.getPropertyValue('--radius').trim(),
+        font: style.fontFamily,
+      }
+    })
+    const normalized = await page.evaluate(
+      ({ actual, expected }) => {
+        const probe = document.createElement('span')
+        document.body.append(probe)
+        probe.style.color = actual
+        const actualColor = getComputedStyle(probe).color
+        probe.style.color = expected
+        const expectedColor = getComputedStyle(probe).color
+        probe.remove()
+        return { actualColor, expectedColor }
+      },
+      { actual: tokens.primary, expected: primary },
+    )
+    expect(normalized.actualColor).toBe(normalized.expectedColor)
+    expect(parseFloat(tokens.radius)).toBe(0.625)
+    expect(tokens.font).toContain('Inter Variable')
+  }
 })

@@ -697,7 +697,7 @@ export const specimens: Specimen[] = [
     render: () => (
       <Stack>
         <Label htmlFor="select-font">Typeface</Label>
-        <Select defaultValue="geist">
+        <Select defaultValue="inter">
           <SelectTrigger id="select-font" className="w-full">
             <SelectValue placeholder="Select typeface" />
           </SelectTrigger>
