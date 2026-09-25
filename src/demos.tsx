@@ -672,8 +672,8 @@ export const specimens: Specimen[] = [
         </Row>
         <Row>
           <span className="status-badge">
-            <span className="status-dot" data-pulse />
-            Live
+            <span className="status-dot" />
+            Active
           </span>
           <Badge variant="outline">
             <span className="status-dot text-warning" />

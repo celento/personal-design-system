@@ -85,7 +85,7 @@ function TabsTrigger({
           className="absolute inset-0 rounded-full bg-background"
           transition={
             enabled
-              ? { type: 'spring', stiffness: 380, damping: 30 }
+              ? { type: 'spring', duration: 0.3, bounce: 0 }
               : { duration: 0 }
           }
         />

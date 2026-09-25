@@ -99,28 +99,7 @@
   opacity: 0.45;
 }
 
-/* Text fields. One set of size tokens drives every field so inputs,
-   selects, textareas, search, and OTP read as one family. Touch screens
-   get 16px text (iOS zooms below that) with height and labels scaled to
-   match, rather than bumping the text alone. */
-:root {
-  --field-h: 38px;
-  --field-font: 13px;
-  --field-px: 12px;
-  --field-icon: 15px;
-  --field-radius: 12px;
-  --label-font: 13px;
-}
-@media (pointer: coarse) {
-  :root {
-    --field-h: 46px;
-    --field-font: 16px;
-    --field-px: 14px;
-    --field-icon: 18px;
-    --field-radius: 14px;
-    --label-font: 15px;
-  }
-}
+/* Text fields. Sizes come from the field tokens in styles/tokens.css. */
 [data-slot='input'],
 [data-slot='textarea'],
 [data-slot='select-trigger'] {
@@ -625,6 +604,13 @@
   inset: 10px 10px 10px auto;
   height: auto;
   border-radius: 22px;
+}
+@media (max-width: 580px) {
+  [data-slot='sheet-content'][data-side='right'] {
+    inset: 8px;
+    width: auto;
+    max-width: none;
+  }
 }
 [data-slot='drawer-content'] {
   border-radius: 26px 26px 0 0;

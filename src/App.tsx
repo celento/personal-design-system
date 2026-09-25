@@ -181,17 +181,11 @@ function App() {
               }}
               transition={{ duration: 0.3, ease: easeOut }}
             >
-              <span className="eyebrow">
-                <span className="eyebrow-dot" />
-                {tab === 'components'
-                  ? `${allSpecimens.length} components`
-                  : 'Design tokens'}
-              </span>
               <h1>{tab === 'components' ? 'Components' : 'Foundations'}</h1>
               <p className="page-lede">
                 {tab === 'components'
-                  ? 'Accessible, keyboard-friendly components with warm materials, considered motion, and a few animated effects.'
-                  : 'Color, type, spacing, and radius that every component in the library shares.'}
+                  ? `${allSpecimens.length} components with keyboard support, light and dark themes, and touch sizing.`
+                  : 'Color, type, spacing, radius, and motion shared by every component.'}
               </p>
             </motion.div>
             {tab === 'components' && (
