@@ -15,8 +15,9 @@ npm run dev
 ## Components
 
 49 interactive examples, searchable by name, category, and state. The original
-43 specimens share a neutral surface palette, pill controls, inset stages,
-material shadows, and consistent motion. Six additional examples use actual
+43 specimens share a warm neutral palette with an orange accent, pill controls,
+dotted inset stages, material shadows, and spring-based motion (filtering,
+overlay entrances, toggles, and card hover states). Six additional examples use actual
 Libraries.dev packages:
 
 - `border-beam`: animated borders, composer, primary action, and focused input.

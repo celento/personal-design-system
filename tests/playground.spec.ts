@@ -142,8 +142,8 @@ test('Libraries.dev tokens and Inter remain authoritative over legacy preference
   })
   await page.goto('/')
   for (const [theme, primary] of [
-    ['Light', '#0073e5'],
-    ['Dark', '#55cfff'],
+    ['Light', '#cc4b0a'],
+    ['Dark', '#ff8a3d'],
   ]) {
     await page
       .getByRole('button', { name: `${theme} theme`, exact: true })

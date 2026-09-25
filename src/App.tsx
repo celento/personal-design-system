@@ -12,7 +12,7 @@ import {
   Sun,
   X,
 } from 'lucide-react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -38,6 +38,13 @@ function App() {
   const [query, setQuery] = useState('')
   const [tab, setTab] = useState<'components' | 'foundations'>('components')
   const searchRef = useRef<HTMLInputElement>(null)
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -61,8 +68,8 @@ function App() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div className="app-shell" id="top">
-        <header className="topbar">
+      <div className="topbar-wrap" data-scrolled={scrolled || undefined}>
+        <header className="topbar app-shell">
           <a
             className="brand"
             href="#top"
@@ -72,7 +79,9 @@ function App() {
               setQuery('')
             }}
           >
-            <Layers2 size={23} strokeWidth={2.4} />
+            <span className="brand-mark" aria-hidden="true">
+              <Layers2 size={16} strokeWidth={2.4} />
+            </span>
             <span>
               personal<span className="brand-dot">.</span>
             </span>
@@ -161,9 +170,30 @@ function App() {
             </a>
           </div>
         </header>
+      </div>
+      <div className="app-shell" id="top">
         <main id="main">
           <div className="page-heading">
-            <h1>{tab === 'components' ? 'Components' : 'Foundations'}</h1>
+            <motion.div
+              className="page-title"
+              key={tab}
+              initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span className="eyebrow">
+                <span className="eyebrow-dot" />
+                {tab === 'components'
+                  ? `${allSpecimens.length} components`
+                  : 'Design tokens'}
+              </span>
+              <h1>{tab === 'components' ? 'Components' : 'Foundations'}</h1>
+              <p className="page-lede">
+                {tab === 'components'
+                  ? 'Accessible Radix primitives with warm materials, spring motion, and a handful of Libraries.dev effects.'
+                  : 'Color, type, spacing, and radius that every component in the library shares.'}
+              </p>
+            </motion.div>
             {tab === 'components' && (
               <div className="component-search">
                 <Search size={15} />
@@ -220,35 +250,69 @@ function App() {
                   </button>
                 ))}
               </nav>
-              <div className="specimen-grid" id="components">
-                {visible.map((s) => (
-                  <section
-                    id={slug(s.name)}
-                    key={s.name}
-                    className={`specimen ${s.category === 'Effects' ? 'effect-specimen' : ''}`}
-                  >
-                    <div className="specimen-stage">{s.render()}</div>
-                    <header className="specimen-header">
-                      <h2>{s.name}</h2>
-                      <a
-                        href={
-                          s.docs ??
-                          `https://ui.shadcn.com/docs/components/${s.name === 'Switch & Checkbox' ? 'switch' : s.name === 'Toggle & Toggle Group' ? 'toggle-group' : s.name === 'Form' ? 'input' : slug(s.name)}`
-                        }
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`${s.name} documentation`}
-                      >
-                        <ArrowUpRight size={15} />
-                      </a>
-                    </header>
-                  </section>
-                ))}
-              </div>
+              <motion.div
+                className="specimen-grid"
+                id="components"
+                layout={enabled}
+              >
+                <AnimatePresence mode="popLayout" initial={enabled}>
+                  {visible.map((s, i) => (
+                    <motion.section
+                      layout={enabled ? 'position' : false}
+                      id={slug(s.name)}
+                      key={s.name}
+                      className={`specimen ${s.category === 'Effects' ? 'effect-specimen' : ''}`}
+                      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        transition: {
+                          type: 'spring',
+                          stiffness: 260,
+                          damping: 28,
+                          delay: Math.min(i, 12) * 0.035,
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.97,
+                        transition: { duration: 0.15 },
+                      }}
+                    >
+                      <div className="specimen-stage">{s.render()}</div>
+                      <header className="specimen-header">
+                        <div>
+                          <h2>{s.name}</h2>
+                          <p>{s.detail}</p>
+                        </div>
+                        <a
+                          href={
+                            s.docs ??
+                            `https://ui.shadcn.com/docs/components/${s.name === 'Switch & Checkbox' ? 'switch' : s.name === 'Toggle & Toggle Group' ? 'toggle-group' : s.name === 'Form' ? 'input' : slug(s.name)}`
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${s.name} documentation`}
+                        >
+                          <ArrowUpRight size={15} />
+                        </a>
+                      </header>
+                    </motion.section>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
               {visible.length === 0 && (
-                <div className="empty-state">
-                  <Search size={24} />
+                <motion.div
+                  className="empty-state"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <span className="empty-icon">
+                    <Search size={20} />
+                  </span>
                   <h2>No components found</h2>
+                  <p>Try a different name or clear the filters.</p>
                   <Button
                     variant="outline"
                     onClick={() => {
@@ -258,14 +322,25 @@ function App() {
                   >
                     Clear filters
                   </Button>
-                </div>
+                </motion.div>
               )}
             </>
           ) : (
             <Foundations />
           )}
           <footer className="page-footer">
-            <a href="#top" aria-label="Back to top">
+            <p>
+              Built on shadcn/ui and Radix. Effects from{' '}
+              <a
+                href="https://github.com/Jakubantalik/Libraries.dev"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Libraries.dev
+              </a>
+              .
+            </p>
+            <a href="#top" className="to-top" aria-label="Back to top">
               <ArrowUp size={15} />
             </a>
           </footer>

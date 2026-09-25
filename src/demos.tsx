@@ -2,21 +2,27 @@ import { BeamInput } from '@/components/effects/beam-input'
 import { BeamSurface } from '@/components/effects/beam-surface'
 import { useState, type ReactNode } from 'react'
 import {
+  Archive,
   ArrowDown,
   ArrowRight,
   Bold,
+  CalendarDays,
   Check,
   ChevronsUpDown,
+  CircleAlert,
+  ClipboardPaste,
   Copy,
   Download,
   Italic,
   Loader2,
   Mail,
+  MapPin,
   MoreHorizontal,
+  Pencil,
   Plus,
   Search,
   Settings2,
-  Terminal,
+  Sparkles,
   Underline,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -53,7 +59,9 @@ import {
 import { Calendar } from '@/components/ui/calendar'
 import {
   Card,
+  CardAction,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -84,6 +92,7 @@ import {
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
+  ContextMenuShortcut,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu'
 import {
@@ -110,7 +119,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -130,6 +141,7 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
+  MenubarShortcut,
   MenubarTrigger,
 } from '@/components/ui/menubar'
 import {
@@ -206,6 +218,15 @@ const Row = ({ children }: { children: ReactNode }) => (
 const Stack = ({ children }: { children: ReactNode }) => (
   <div className="w-full space-y-5">{children}</div>
 )
+const people = [
+  { initials: 'AM', from: '#ffb27a', to: '#f76b15' },
+  { initials: 'JL', from: '#fcd9a8', to: '#e89a3c' },
+  { initials: 'SK', from: '#f5b3a1', to: '#d9573a' },
+  { initials: 'RP', from: '#e8d5c4', to: '#9c7a5e' },
+]
+const Swatch = ({ color }: { color: string }) => (
+  <span style={{ background: color }} />
+)
 export const categories = [
   'All components',
   'Effects',
@@ -231,7 +252,7 @@ function Buttons() {
   return (
     <Stack>
       <Row>
-        <BeamSurface size="sm" colorVariant="ocean" borderRadius={99}>
+        <BeamSurface size="sm" colorVariant="sunset" borderRadius={99}>
           <Button onClick={() => toast.success('Primary button clicked')}>
             Primary <ArrowRight />
           </Button>
@@ -350,9 +371,11 @@ function SliderDemo() {
   const [value, setValue] = useState([64])
   return (
     <Stack>
-      <div className="flex justify-between text-sm">
+      <div className="flex justify-between">
         <Label htmlFor="volume">Volume</Label>
-        <span className="font-mono text-muted-foreground">{value[0]}%</span>
+        <span className="font-mono text-xs text-muted-foreground">
+          {value[0]}%
+        </span>
       </div>
       <Slider
         id="volume"
@@ -368,14 +391,7 @@ function SliderDemo() {
 }
 function CalendarDemo() {
   const [date, setDate] = useState<Date | undefined>(new Date())
-  return (
-    <Calendar
-      mode="single"
-      selected={date}
-      onSelect={setDate}
-      className="rounded-lg border"
-    />
-  )
+  return <Calendar mode="single" selected={date} onSelect={setDate} />
 }
 function DialogDemo() {
   return (
@@ -389,7 +405,9 @@ function DialogDemo() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>Name</DialogDescription>
+          <DialogDescription>
+            Update how your name appears across the library.
+          </DialogDescription>
         </DialogHeader>
         <form
           onSubmit={(e) => {
@@ -507,9 +525,11 @@ function ProgressDemo() {
   const [value, setValue] = useState(60)
   return (
     <Stack>
-      <div className="flex justify-between text-sm">
-        <span>Upload progress</span>
-        <span className="font-mono">{value}%</span>
+      <div className="flex items-baseline justify-between text-[13px]">
+        <span className="font-medium">Upload progress</span>
+        <span className="font-mono text-xs text-muted-foreground">
+          {value}%
+        </span>
       </div>
       <Progress value={value} aria-label="Upload progress" />
       <Button
@@ -645,21 +665,30 @@ export const specimens: Specimen[] = [
     render: () => (
       <Stack>
         <Row>
-          <Badge>Default</Badge>
+          <Badge>
+            <Sparkles />
+            New
+          </Badge>
           <Badge variant="secondary">Secondary</Badge>
           <Badge variant="outline">Outline</Badge>
-          <Badge variant="destructive">Destructive</Badge>
+          <Badge variant="destructive">Deprecated</Badge>
         </Row>
         <Row>
           <span className="status-badge">
-            <span />
-            Active
+            <span className="status-dot" data-pulse />
+            Live
           </span>
-          <Badge variant="outline" className="gap-1">
-            <span className="size-1.5 rounded-full bg-amber-500" />
+          <Badge variant="outline">
+            <span className="status-dot text-warning" />
             Pending
           </Badge>
-          <Badge variant="secondary">⌘ K</Badge>
+          <Badge variant="outline">
+            <span className="status-dot text-muted-foreground" />
+            Draft
+          </Badge>
+          <Badge variant="secondary" className="font-mono">
+            ⌘ K
+          </Badge>
         </Row>
       </Stack>
     ),
@@ -671,27 +700,46 @@ export const specimens: Specimen[] = [
     render: () => (
       <Stack>
         <Row>
-          {['AM', 'JL', 'SK'].map((n, i) => (
-            <Avatar key={n} className={i === 0 ? 'size-12' : 'size-10'}>
-              <AvatarFallback
-                className={
-                  i === 0 ? 'bg-primary/15 text-foreground' : 'bg-muted'
-                }
-              >
-                {n}
-              </AvatarFallback>
-            </Avatar>
+          {people.slice(0, 3).map((p, i) => (
+            <div key={p.initials} className="relative">
+              <Avatar className={['size-12', 'size-10', 'size-8'][i]}>
+                <AvatarFallback
+                  className="text-white"
+                  style={{
+                    background: `linear-gradient(145deg, ${p.from}, ${p.to})`,
+                  }}
+                >
+                  {p.initials}
+                </AvatarFallback>
+              </Avatar>
+              {i === 0 && (
+                <span className="absolute right-0 bottom-0 size-3 rounded-full bg-success ring-2 ring-[var(--stage)]" />
+              )}
+            </div>
           ))}
-          <Avatar className="size-8">
-            <AvatarFallback>+3</AvatarFallback>
-          </Avatar>
         </Row>
-        <div className="flex -space-x-2">
-          {['AM', 'JL', 'SK', '+4'].map((n) => (
-            <Avatar key={n} className="ring-2 ring-card">
-              <AvatarFallback>{n}</AvatarFallback>
+        <div className="flex items-center gap-3">
+          <div className="flex -space-x-1">
+            {people.map((p) => (
+              <Avatar
+                key={p.initials}
+                className="size-9 ring-2 ring-[var(--stage)] transition-transform duration-300 hover:z-10 hover:-translate-y-1"
+              >
+                <AvatarFallback
+                  className="text-[11px] text-white"
+                  style={{
+                    background: `linear-gradient(145deg, ${p.from}, ${p.to})`,
+                  }}
+                >
+                  {p.initials}
+                </AvatarFallback>
+              </Avatar>
+            ))}
+            <Avatar className="size-9 ring-2 ring-[var(--stage)]">
+              <AvatarFallback className="text-[11px]">+4</AvatarFallback>
             </Avatar>
-          ))}
+          </div>
+          <span className="text-xs text-muted-foreground">8 editors</span>
         </div>
       </Stack>
     ),
@@ -736,15 +784,33 @@ export const specimens: Specimen[] = [
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="tab-preview">
-          <span className="size-2 rounded-full bg-primary" />
-          12 components · 3 updated
+          <span>Components shipped</span>
+          <div className="flex items-end justify-between">
+            <strong>49</strong>
+            <span className="status-badge">+3 this week</span>
+          </div>
         </TabsContent>
         <TabsContent value="activity" className="tab-preview">
-          Button updated · just now
+          <div className="flex items-center gap-3">
+            <span className="grid size-8 place-items-center rounded-full bg-primary-soft text-primary-soft-foreground">
+              <Pencil size={14} />
+            </span>
+            <div>
+              <p className="font-medium text-foreground">
+                Button updated · just now
+              </p>
+              <p>New sunset beam on primary</p>
+            </div>
+          </div>
         </TabsContent>
         <TabsContent value="settings" className="tab-preview">
-          <Label htmlFor="tab-grid">Show grid</Label>
-          <Switch id="tab-grid" defaultChecked />
+          <div className="flex items-center justify-between">
+            <Label htmlFor="tab-grid" className="text-foreground">
+              Show grid
+            </Label>
+            <Switch id="tab-grid" defaultChecked />
+          </div>
+          <span>Overlay a 4px grid on every stage.</span>
         </TabsContent>
       </Tabs>
     ),
@@ -796,32 +862,47 @@ export const specimens: Specimen[] = [
     category: 'Data display',
     detail: 'Header · content · footer',
     render: () => (
-      <Card className="w-full shadow-none">
+      <Card className="w-full">
         <CardHeader>
-          <div className="flex justify-between">
-            <CardTitle className="text-base">Project settings</CardTitle>
-            <Settings2 size={16} className="text-muted-foreground" />
-          </div>
+          <CardTitle className="text-[15px]">Design review</CardTitle>
+          <CardDescription className="text-xs">
+            Component library · v0.2
+          </CardDescription>
+          <CardAction>
+            <Badge>
+              <span className="status-dot" />
+              In progress
+            </Badge>
+          </CardAction>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-3">
-            <Avatar>
-              <AvatarFallback>PD</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium">Personal</p>
-              <p className="text-xs text-muted-foreground">Design system</p>
-            </div>
+        <CardContent className="space-y-3">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <CalendarDays size={13} />
+              Due Friday
+            </span>
+            <span className="font-mono text-foreground">72%</span>
           </div>
+          <Progress value={72} aria-label="Review progress" />
         </CardContent>
-        <CardFooter>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full"
-            onClick={() => toast.success('Settings saved')}
-          >
-            Save settings
+        <CardFooter className="justify-between gap-3">
+          <div className="flex -space-x-1">
+            {people.slice(0, 3).map((p) => (
+              <Avatar key={p.initials} className="size-8 ring-2 ring-surface">
+                <AvatarFallback
+                  className="text-[10px] text-white"
+                  style={{
+                    background: `linear-gradient(145deg, ${p.from}, ${p.to})`,
+                  }}
+                >
+                  {p.initials}
+                </AvatarFallback>
+              </Avatar>
+            ))}
+          </div>
+          <Button size="sm" onClick={() => toast.success('Review opened')}>
+            Open
+            <ArrowRight />
           </Button>
         </CardFooter>
       </Card>
@@ -876,15 +957,21 @@ export const specimens: Specimen[] = [
             <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="w-48">
+          <DropdownMenuLabel>Component</DropdownMenuLabel>
           <DropdownMenuItem onSelect={() => toast('Edit selected')}>
+            <Pencil />
             Edit
+            <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => toast.success('Duplicated')}>
+            <Copy />
             Duplicate
+            <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={() => toast('Archived')}>
+            <Archive />
             Archive
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -966,11 +1053,12 @@ export const specimens: Specimen[] = [
     render: () => (
       <Stack>
         <Alert>
-          <Terminal />
+          <Sparkles />
           <AlertTitle>Update available</AlertTitle>
           <AlertDescription>Version 0.2 is ready to install.</AlertDescription>
         </Alert>
         <Alert variant="destructive">
+          <CircleAlert />
           <AlertTitle>Unable to save</AlertTitle>
           <AlertDescription>
             Check your connection and try again.
@@ -1021,15 +1109,19 @@ export const specimens: Specimen[] = [
     category: 'Feedback',
     detail: 'Loading placeholders',
     render: () => (
-      <div className="w-full space-y-5">
-        <div className="flex gap-3">
+      <div className="w-full space-y-4 rounded-2xl bg-surface p-4 shadow-[var(--material-shadow)]">
+        <div className="flex items-center gap-3">
           <Skeleton className="size-10 rounded-full" />
-          <div className="flex-1 space-y-2 pt-1">
-            <Skeleton className="h-3 w-2/3" />
-            <Skeleton className="h-3 w-1/2" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-3 w-2/3 rounded-full" />
+            <Skeleton className="h-3 w-1/3 rounded-full" />
           </div>
         </div>
-        <Skeleton className="h-20 w-full" />
+        <Skeleton className="h-24 w-full rounded-xl" />
+        <div className="flex gap-2">
+          <Skeleton className="h-7 w-16 rounded-full" />
+          <Skeleton className="h-7 w-20 rounded-full" />
+        </div>
       </div>
     ),
   },
@@ -1082,7 +1174,7 @@ export const specimens: Specimen[] = [
         </PopoverTrigger>
         <PopoverContent>
           <div className="space-y-4">
-            <h4 className="font-medium">Dimensions</h4>
+            <h4 className="text-sm font-semibold">Dimensions</h4>
             <Label htmlFor="width">Width</Label>
             <Input id="width" defaultValue="100%" />
             <Label htmlFor="height">Height</Label>
@@ -1107,7 +1199,9 @@ export const specimens: Specimen[] = [
         <SheetContent>
           <SheetHeader>
             <SheetTitle>Component settings</SheetTitle>
-            <SheetDescription>Label</SheetDescription>
+            <SheetDescription>
+              Adjust how this component is labelled.
+            </SheetDescription>
           </SheetHeader>
           <div className="px-4 space-y-3">
             <Label htmlFor="sheet-label">Label</Label>
@@ -1140,7 +1234,7 @@ export const specimens: Specimen[] = [
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader>
               <DrawerTitle>Spacing</DrawerTitle>
-              <DrawerDescription>Spacing</DrawerDescription>
+              <DrawerDescription>Set the base spacing unit.</DrawerDescription>
             </DrawerHeader>
             <div className="p-4">
               <Slider aria-label="Drawer spacing" defaultValue={[40]} />
@@ -1186,18 +1280,31 @@ export const specimens: Specimen[] = [
     category: 'Overlays',
     detail: 'Profile preview',
     render: () => (
-      <HoverCard>
+      <HoverCard openDelay={150}>
         <HoverCardTrigger asChild>
           <Button variant="link">@alexmorgan</Button>
         </HoverCardTrigger>
-        <HoverCardContent>
+        <HoverCardContent className="w-72">
           <div className="flex gap-3">
-            <Avatar>
-              <AvatarFallback>AM</AvatarFallback>
+            <Avatar className="size-11">
+              <AvatarFallback
+                className="text-white"
+                style={{
+                  background: `linear-gradient(145deg, ${people[0].from}, ${people[0].to})`,
+                }}
+              >
+                AM
+              </AvatarFallback>
             </Avatar>
-            <div>
-              <p className="font-medium">Alex Morgan</p>
-              <p className="text-sm text-muted-foreground">Designer</p>
+            <div className="space-y-1">
+              <p className="text-sm font-semibold">Alex Morgan</p>
+              <p className="text-xs text-muted-foreground">
+                Product designer. Builds the components you are looking at.
+              </p>
+              <p className="flex items-center gap-1 pt-1 text-xs text-muted-foreground">
+                <MapPin size={12} />
+                Lisbon
+              </p>
             </div>
           </div>
         </HoverCardContent>
@@ -1210,15 +1317,20 @@ export const specimens: Specimen[] = [
     detail: 'Right-click actions',
     render: () => (
       <ContextMenu>
-        <ContextMenuTrigger className="flex h-28 w-full items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+        <ContextMenuTrigger className="flex h-32 w-full flex-col items-center justify-center gap-2 rounded-2xl border-[1.5px] border-dashed border-[var(--input)] text-[13px] text-muted-foreground transition-colors hover:border-[var(--ring)] hover:bg-primary-soft/40 data-[state=open]:border-[var(--ring)]">
+          <MoreHorizontal size={18} />
           Right-click here
         </ContextMenuTrigger>
-        <ContextMenuContent>
+        <ContextMenuContent className="w-48">
           <ContextMenuItem onSelect={() => toast('Copied')}>
+            <Copy />
             Copy
+            <ContextMenuShortcut>⌘C</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem onSelect={() => toast('Pasted')}>
+            <ClipboardPaste />
             Paste
+            <ContextMenuShortcut>⌘V</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem onSelect={() => toast('Selection cleared')}>
@@ -1236,7 +1348,7 @@ export const specimens: Specimen[] = [
       <Command
         defaultValue="__none__"
         label="Search actions"
-        className="rounded-lg border"
+        className="w-full"
       >
         <CommandInput placeholder="Search actions…" />
         <CommandList>
@@ -1249,6 +1361,10 @@ export const specimens: Specimen[] = [
             <CommandItem onSelect={() => toast('Settings selected')}>
               <Settings2 />
               Settings
+            </CommandItem>
+            <CommandItem onSelect={() => toast('Export selected')}>
+              <Download />
+              Export tokens
             </CommandItem>
           </CommandGroup>
         </CommandList>
@@ -1299,9 +1415,12 @@ export const specimens: Specimen[] = [
                 : v === 'Edit'
                   ? ['Undo', 'Redo', 'Copy']
                   : ['Zoom in', 'Zoom out', 'Reset zoom']
-              ).map((a) => (
+              ).map((a, i) => (
                 <MenubarItem key={a} onSelect={() => toast(a + ' selected')}>
                   {a}
+                  <MenubarShortcut>
+                    {v === 'View' ? ['⌘+', '⌘−', '⌘0'][i] : '⌘' + a[0]}
+                  </MenubarShortcut>
                 </MenubarItem>
               ))}
             </MenubarContent>
@@ -1344,17 +1463,26 @@ export const specimens: Specimen[] = [
     render: () => (
       <Collapsible className="w-full space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">3 design tokens</span>
+          <span className="text-[13px] font-medium">3 design tokens</span>
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="Toggle tokens">
               <ChevronsUpDown />
             </Button>
           </CollapsibleTrigger>
         </div>
-        <div className="token-row">--background</div>
+        <div className="token-row">
+          <Swatch color="var(--background)" />
+          --background
+        </div>
         <CollapsibleContent className="space-y-3">
-          <div className="token-row">--foreground</div>
-          <div className="token-row">--primary</div>
+          <div className="token-row">
+            <Swatch color="var(--foreground)" />
+            --foreground
+          </div>
+          <div className="token-row">
+            <Swatch color="var(--primary)" />
+            --primary
+          </div>
         </CollapsibleContent>
       </Collapsible>
     ),
@@ -1364,16 +1492,19 @@ export const specimens: Specimen[] = [
     category: 'Layout',
     detail: 'Draggable panels',
     render: () => (
-      <ResizablePanelGroup
-        orientation="horizontal"
-        className="min-h-36 rounded-lg border"
-      >
-        <ResizablePanel defaultSize="50%">
-          <div className="panel-label">Panel A</div>
+      <ResizablePanelGroup orientation="horizontal" className="min-h-40">
+        <ResizablePanel defaultSize="40%" minSize="20%">
+          <div className="panel-label">
+            Sidebar
+            <span>drag the handle</span>
+          </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize="50%">
-          <div className="panel-label">Panel B</div>
+        <ResizablePanel defaultSize="60%" minSize="20%">
+          <div className="panel-label">
+            Canvas
+            <span>fills the rest</span>
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     ),
@@ -1383,11 +1514,30 @@ export const specimens: Specimen[] = [
     category: 'Layout',
     detail: 'Contained overflow',
     render: () => (
-      <ScrollArea className="h-40 w-full rounded-lg border">
-        <div className="p-4 space-y-3">
-          {Array.from({ length: 12 }, (_, i) => (
-            <div key={i} className="text-sm border-b pb-3">
-              Component {String(i + 1).padStart(2, '0')}
+      <ScrollArea className="h-44 w-full">
+        <div className="p-2">
+          {[
+            'Accordion',
+            'Alert',
+            'Avatar',
+            'Badge',
+            'Button',
+            'Calendar',
+            'Card',
+            'Carousel',
+            'Checkbox',
+            'Command',
+            'Dialog',
+            'Drawer',
+          ].map((name, i) => (
+            <div
+              key={name}
+              className="flex items-center justify-between rounded-lg px-3 py-2 text-[13px] transition-colors hover:bg-secondary"
+            >
+              <span>{name}</span>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                {String(i + 1).padStart(2, '0')}
+              </span>
             </div>
           ))}
         </div>
@@ -1400,9 +1550,14 @@ export const specimens: Specimen[] = [
     detail: 'Horizontal · vertical',
     render: () => (
       <Stack>
-        <div className="text-sm font-medium">Separator</div>
+        <div className="space-y-1">
+          <div className="text-[13px] font-medium">Personal design system</div>
+          <p className="text-xs text-muted-foreground">
+            Radix primitives with warm materials.
+          </p>
+        </div>
         <Separator />
-        <div className="flex h-5 items-center gap-4 text-sm text-muted-foreground">
+        <div className="flex h-5 items-center gap-4 text-[13px] text-muted-foreground">
           <span>Components</span>
           <Separator orientation="vertical" />
           <span>Tokens</span>
@@ -1432,10 +1587,15 @@ export const specimens: Specimen[] = [
     render: () => (
       <Carousel className="mx-10 w-[calc(100%-5rem)]">
         <CarouselContent>
-          {['01', '02', '03'].map((n) => (
+          {[
+            ['01', 'Materials', 'linear-gradient(145deg, #ffb27a, #f76b15)'],
+            ['02', 'Motion', 'linear-gradient(145deg, #3a2a20, #1a1310)'],
+            ['03', 'Tokens', 'linear-gradient(145deg, #f5b3a1, #c2410c)'],
+          ].map(([n, label, bg]) => (
             <CarouselItem key={n}>
-              <div className="flex h-36 items-center justify-center rounded-lg bg-muted text-4xl font-light">
-                {n}
+              <div className="slide-card" style={{ background: bg }}>
+                <span>{label}</span>
+                <strong>{n}</strong>
               </div>
             </CarouselItem>
           ))}
