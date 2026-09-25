@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   ArrowUp,
-  ArrowUpRight,
   Code2,
   Layers2,
   Monitor,
@@ -74,6 +73,7 @@ function App() {
           <a
             className="brand"
             href="#top"
+            aria-label="Home"
             onClick={() => {
               setTab('components')
               setCategory('All components')
@@ -82,9 +82,6 @@ function App() {
           >
             <span className="brand-mark" aria-hidden="true">
               <Layers2 size={16} strokeWidth={2.4} />
-            </span>
-            <span>
-              personal<span className="brand-dot">.</span>
             </span>
           </a>
           <nav className="view-tabs" aria-label="Views">
@@ -203,7 +200,7 @@ function App() {
               <h1>{tab === 'components' ? 'Components' : 'Foundations'}</h1>
               <p className="page-lede">
                 {tab === 'components'
-                  ? 'Accessible Radix primitives with warm materials, spring motion, and a handful of Libraries.dev effects.'
+                  ? 'Accessible, keyboard-friendly components with warm materials, considered motion, and a few animated effects.'
                   : 'Color, type, spacing, and radius that every component in the library shares.'}
               </p>
             </motion.div>
@@ -304,17 +301,6 @@ function App() {
                           <h2>{s.name}</h2>
                           <p>{s.detail}</p>
                         </div>
-                        <a
-                          href={
-                            s.docs ??
-                            `https://ui.shadcn.com/docs/components/${s.name === 'Switch & Checkbox' ? 'switch' : s.name === 'Toggle & Toggle Group' ? 'toggle-group' : s.name === 'Form' ? 'input' : slug(s.name)}`
-                          }
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`${s.name} documentation`}
-                        >
-                          <ArrowUpRight size={15} />
-                        </a>
                       </header>
                     </motion.section>
                   ))}
@@ -352,17 +338,6 @@ function App() {
             <Foundations />
           )}
           <footer className="page-footer">
-            <p>
-              Built on shadcn/ui and Radix. Effects from{' '}
-              <a
-                href="https://github.com/Jakubantalik/Libraries.dev"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Libraries.dev
-              </a>
-              .
-            </p>
             <a href="#top" className="to-top" aria-label="Back to top">
               <ArrowUp size={15} />
             </a>

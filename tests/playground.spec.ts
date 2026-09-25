@@ -133,7 +133,7 @@ test('foundations and navigation are available at each viewport', async ({
   ).toBe(true)
 })
 
-test('Libraries.dev tokens and Inter remain authoritative over legacy preferences', async ({
+test('design tokens and Inter remain authoritative over legacy preferences', async ({
   page,
 }) => {
   await page.addInitScript(() => {

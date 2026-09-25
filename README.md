@@ -1,7 +1,7 @@
-# Personal design system
+# Design system
 
-React, TypeScript, Vite, Tailwind CSS v4, and locally owned shadcn/ui components.
-Visuals and motion are adapted from [Libraries.dev](https://github.com/Jakubantalik/Libraries.dev), with Radix retaining keyboard interaction, focus management, and semantics.
+A component library built with React, TypeScript, Vite, and Tailwind CSS v4.
+Every component handles keyboard interaction, focus management, and semantics.
 
 ## Development
 
@@ -17,19 +17,19 @@ npm run dev
 49 interactive examples, searchable by name, category, and state. The original
 43 specimens share a warm neutral palette with an orange accent, pill controls,
 dotted inset stages, material shadows, and spring-based motion (filtering,
-overlay entrances, toggles, and card hover states). Six additional examples use actual
-Libraries.dev packages:
+overlay entrances, toggles, and card hover states). Six additional examples
+show animated effects:
 
-- `border-beam`: animated borders, composer, primary action, and focused input.
-- `metal-fx`: silver, chromatic, and gold controls, with a static CSS metal rim when WebGL2 is unavailable.
-- `thinking-orbs`: working, searching, and solving states.
-- `liquid-gooey`: expanding quick actions with crisp DOM controls.
-- `voice-glow`: manually controlled level and processing animation. No microphone access.
-- `bot-avatars`: idle, working, and sleeping animated avatars.
+- Border beam: animated borders, composer, primary action, and focused input.
+- Metal: silver, chromatic, and gold controls, with a static CSS metal rim when WebGL2 is unavailable.
+- Thinking orb: working, searching, and solving states.
+- Gooey: expanding quick actions with crisp DOM controls.
+- Voice: manually controlled level and processing animation. No microphone access.
+- Bot avatar: idle, working, and sleeping animated avatars.
 
 Light, dark, and system appearance are supported. System is the default. Inter
 is self-hosted. The motion control pauses effects and persists across reloads;
-OS reduced-motion settings take priority. The effect libraries pause rendering
+OS reduced-motion settings take priority. The effects pause rendering
 offscreen where supported. Menus and forms remain usable without animation.
 
 Examples use local state and preview notifications; they do not submit data to
@@ -37,7 +37,7 @@ a server or modify repository files. This is a component library, not a backend.
 
 ## Customization
 
-- `src/components/ui/`: editable shadcn/Radix primitives. Tabs use a shared spring indicator.
+- `src/components/ui/`: editable primitives. Tabs use a shared sliding indicator.
 - `src/components/materials.css`: material styling and motion for all primitives, including portalled overlays.
 - `src/components/effects/`: reusable theme-aware BeamSurface, BeamInput, and MetalSurface adapters.
 - `src/index.css`: semantic light/dark tokens and shared motion values.
@@ -47,10 +47,9 @@ a server or modify repository files. This is a component library, not a backend.
 - `src/demos.tsx`, `src/effect-demos.tsx`: specimen registries and interactions.
 - `src/components/foundations.tsx`: token reference.
 
-Add a primitive with `npx shadcn@latest add <component>`, then register a specimen.
-The shadcn registry configuration is Radix/Nova, but the current visual system
-is customized. Reapplying the old preset or overwriting components would replace
-local behavior; review CLI changes before accepting them.
+To add a component, create it in `src/components/ui/` and register a specimen in
+`src/demos.tsx`. Overwriting existing components with generated code replaces
+local styling and behavior, so review those changes before accepting them.
 
 ## Verification
 
@@ -72,9 +71,3 @@ CI runs these checks for pushes and pull requests.
 Import `celento/personal-design-system`. `vercel.json` sets Vite, `npm run build`,
 `dist`, and SPA fallback. Use the repository root and Node.js 22.x. No environment
 variables or backend services are required.
-
-## Attribution
-
-See [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md) for shadcn/ui and Libraries.dev
-license notices. The implementation uses public MIT packages and source;
-no paid Studio exports or proprietary font assets are included.

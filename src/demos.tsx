@@ -244,7 +244,6 @@ export type Specimen = {
   category: Category
   detail: string
   render: () => ReactNode
-  docs?: string
   wide?: boolean
 }
 
@@ -1444,13 +1443,7 @@ export const specimens: Specimen[] = [
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink
-              href="https://ui.shadcn.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Documentation
-            </NavigationMenuLink>
+            <NavigationMenuLink href="#top">Overview</NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
@@ -1551,9 +1544,9 @@ export const specimens: Specimen[] = [
     render: () => (
       <Stack>
         <div className="space-y-1">
-          <div className="text-[13px] font-medium">Personal design system</div>
+          <div className="text-[13px] font-medium">Design system</div>
           <p className="text-xs text-muted-foreground">
-            Radix primitives with warm materials.
+            Warm materials and considered motion.
           </p>
         </div>
         <Separator />
