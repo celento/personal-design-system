@@ -19,7 +19,7 @@
       }
     },
     {
-      "files": ["src/demos.tsx"],
+      "files": ["src/demos.tsx", "src/effect-demos.tsx", "src/motion.tsx"],
       "rules": {
         "react/only-export-components": "off"
       }

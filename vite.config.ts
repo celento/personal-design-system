@@ -10,6 +10,16 @@ export default defineConfig({
         codeSplitting: {
           groups: [
             {
+              name: 'effects',
+              test: /node_modules\/(border-beam|metal-fx|liquid-gooey|voice-glow|thinking-orbs|bot-avatars)\//,
+              priority: 25,
+            },
+            {
+              name: 'motion',
+              test: /node_modules\/(motion|motion-dom|motion-utils|framer-motion)\//,
+              priority: 25,
+            },
+            {
               name: 'react',
               test: /node_modules\/(react|react-dom|scheduler)\//,
               priority: 30,

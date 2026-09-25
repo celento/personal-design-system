@@ -1,3 +1,5 @@
+import { BeamInput } from '@/components/effects/beam-input'
+import { BeamSurface } from '@/components/effects/beam-surface'
 import { useState, type ReactNode } from 'react'
 import {
   ArrowDown,
@@ -206,6 +208,7 @@ const Stack = ({ children }: { children: ReactNode }) => (
 )
 export const categories = [
   'All components',
+  'Effects',
   'Actions',
   'Inputs',
   'Data display',
@@ -220,6 +223,7 @@ export type Specimen = {
   category: Category
   detail: string
   render: () => ReactNode
+  docs?: string
   wide?: boolean
 }
 
@@ -227,9 +231,11 @@ function Buttons() {
   return (
     <Stack>
       <Row>
-        <Button onClick={() => toast.success('Primary button clicked')}>
-          Primary <ArrowRight />
-        </Button>
+        <BeamSurface size="sm" colorVariant="ocean" borderRadius={99}>
+          <Button onClick={() => toast.success('Primary button clicked')}>
+            Primary <ArrowRight />
+          </Button>
+        </BeamSurface>
         <Button
           variant="secondary"
           onClick={() => toast('Secondary button clicked')}
@@ -288,7 +294,7 @@ function Inputs() {
         <Label htmlFor="demo-email">Email</Label>
         <div className="relative">
           <Mail className="input-icon" />
-          <Input
+          <BeamInput
             id="demo-email"
             type="email"
             placeholder="you@example.com"

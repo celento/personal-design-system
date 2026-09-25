@@ -9,7 +9,7 @@ test('renders the gallery without browser errors or horizontal overflow', async 
   await expect(
     page.getByRole('heading', { name: 'Components', exact: true }),
   ).toBeVisible()
-  await expect(page.locator('.specimen')).toHaveCount(43)
+  await expect(page.locator('.specimen')).toHaveCount(49)
   expect(await page.evaluate(() => window.scrollY)).toBe(0)
   expect(
     await page.evaluate(
@@ -35,12 +35,8 @@ test('search and category filters return relevant components and recover from em
     page.getByRole('heading', { name: 'No components found' }),
   ).toBeVisible()
   await page.getByRole('button', { name: 'Clear filters' }).click()
-  await expect(page.locator('.specimen')).toHaveCount(43)
-  if (test.info().project.name === 'mobile') {
-    await page.getByLabel('Category', { exact: true }).selectOption('Overlays')
-  } else {
-    await page.getByRole('button', { name: /^Overlays/ }).click()
-  }
+  await expect(page.locator('.specimen')).toHaveCount(49)
+  await page.getByRole('button', { name: /^Overlays/ }).click()
   await expect(page.locator('.specimen')).toHaveCount(9)
 })
 
@@ -120,18 +116,10 @@ test('foundations and navigation are available at each viewport', async ({
   page,
 }) => {
   await page.goto('/')
-  if (test.info().project.name === 'mobile') {
-    await page.getByRole('button', { name: 'Open navigation' }).click()
-    await page
-      .getByRole('dialog')
-      .getByRole('button', { name: /^Foundations/ })
-      .click()
-  } else {
-    await page
-      .locator('.view-tabs')
-      .getByRole('button', { name: 'Foundations' })
-      .click()
-  }
+  await page
+    .locator('.view-tabs')
+    .getByRole('button', { name: 'Foundations' })
+    .click()
   await expect(
     page.getByRole('heading', { name: 'Foundations', exact: true }),
   ).toBeVisible()
@@ -145,7 +133,7 @@ test('foundations and navigation are available at each viewport', async ({
   ).toBe(true)
 })
 
-test('preset tokens and Inter remain authoritative over legacy preferences', async ({
+test('Libraries.dev tokens and Inter remain authoritative over legacy preferences', async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -154,8 +142,8 @@ test('preset tokens and Inter remain authoritative over legacy preferences', asy
   })
   await page.goto('/')
   for (const [theme, primary] of [
-    ['Light', 'oklch(0.457 0.24 277.023)'],
-    ['Dark', 'oklch(0.398 0.195 277.366)'],
+    ['Light', '#0073e5'],
+    ['Dark', '#55cfff'],
   ]) {
     await page
       .getByRole('button', { name: `${theme} theme`, exact: true })
@@ -182,7 +170,7 @@ test('preset tokens and Inter remain authoritative over legacy preferences', asy
       { actual: tokens.primary, expected: primary },
     )
     expect(normalized.actualColor).toBe(normalized.expectedColor)
-    expect(parseFloat(tokens.radius)).toBe(0.625)
+    expect(parseFloat(tokens.radius)).toBe(0.875)
     expect(tokens.font).toContain('Inter Variable')
   }
 })

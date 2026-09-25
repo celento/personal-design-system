@@ -24,6 +24,7 @@ export function useTheme() {
     const apply = () => {
       const dark = theme === 'dark' || (theme === 'system' && media.matches)
       document.documentElement.classList.toggle('dark', dark)
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light'
       document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
     }
     apply()
