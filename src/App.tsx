@@ -31,6 +31,7 @@ import './App.css'
 import './components/materials.css'
 
 const allSpecimens = [...effectSpecimens, ...specimens]
+const easeOut = [0.23, 1, 0.32, 1] as const
 function App() {
   const [theme, setTheme] = useTheme()
   const { enabled, reduced, paused, toggle } = useMotionSettings()
@@ -99,7 +100,7 @@ function App() {
                     layoutId="view-indicator"
                     transition={
                       enabled
-                        ? { type: 'spring', stiffness: 400, damping: 32 }
+                        ? { type: 'spring', duration: 0.3, bounce: 0 }
                         : { duration: 0 }
                     }
                   />
@@ -177,9 +178,21 @@ function App() {
             <motion.div
               className="page-title"
               key={tab}
-              initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              initial={
+                enabled
+                  ? {
+                      opacity: 0,
+                      transform: 'translateY(6px)',
+                      filter: 'blur(2px)',
+                    }
+                  : false
+              }
+              animate={{
+                opacity: 1,
+                transform: 'translateY(0px)',
+                filter: 'blur(0px)',
+              }}
+              transition={{ duration: 0.3, ease: easeOut }}
             >
               <span className="eyebrow">
                 <span className="eyebrow-dot" />
@@ -232,7 +245,7 @@ function App() {
                         layoutId="category-indicator"
                         transition={
                           enabled
-                            ? { type: 'spring', stiffness: 420, damping: 35 }
+                            ? { type: 'spring', duration: 0.3, bounce: 0 }
                             : { duration: 0 }
                         }
                       />
@@ -262,22 +275,27 @@ function App() {
                       id={slug(s.name)}
                       key={s.name}
                       className={`specimen ${s.category === 'Effects' ? 'effect-specimen' : ''}`}
-                      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                      initial={
+                        enabled
+                          ? {
+                              opacity: 0,
+                              transform: 'translateY(12px) scale(0.98)',
+                            }
+                          : false
+                      }
                       animate={{
                         opacity: 1,
-                        y: 0,
-                        scale: 1,
+                        transform: 'translateY(0px) scale(1)',
                         transition: {
-                          type: 'spring',
-                          stiffness: 260,
-                          damping: 28,
-                          delay: Math.min(i, 12) * 0.035,
+                          duration: 0.3,
+                          ease: easeOut,
+                          delay: Math.min(i, 8) * 0.03,
                         },
                       }}
                       exit={{
                         opacity: 0,
-                        scale: 0.97,
-                        transition: { duration: 0.15 },
+                        transform: 'translateY(0px) scale(0.97)',
+                        transition: { duration: 0.15, ease: easeOut },
                       }}
                     >
                       <div className="specimen-stage">{s.render()}</div>
@@ -305,8 +323,13 @@ function App() {
               {visible.length === 0 && (
                 <motion.div
                   className="empty-state"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={
+                    enabled
+                      ? { opacity: 0, transform: 'translateY(8px)' }
+                      : false
+                  }
+                  animate={{ opacity: 1, transform: 'translateY(0px)' }}
+                  transition={{ duration: 0.25, ease: easeOut }}
                 >
                   <span className="empty-icon">
                     <Search size={20} />

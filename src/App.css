@@ -104,10 +104,12 @@ kbd {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 4px 12px -4px rgba(226, 86, 13, 0.6);
-  transition: transform var(--duration-medium) var(--ease-spring);
+  transition: transform var(--duration-quick) var(--ease-out);
 }
-.brand:hover .brand-mark {
-  transform: rotate(-8deg) scale(1.06);
+@media (hover: hover) and (pointer: fine) {
+  .brand:hover .brand-mark {
+    transform: rotate(-8deg) scale(1.06);
+  }
 }
 .brand-dot {
   color: var(--primary-bright);
@@ -163,15 +165,14 @@ kbd {
   transition:
     color var(--duration-quick),
     background var(--duration-quick),
-    transform var(--duration-fast) var(--ease-spring);
+    transform var(--duration-quick) var(--ease-out);
 }
 .icon-control:hover:not(:disabled) {
   color: var(--foreground);
   background: var(--accent);
-  transform: translateY(-1px);
 }
 .icon-control:active:not(:disabled) {
-  transform: scale(0.92);
+  transform: scale(0.95);
 }
 .icon-control:disabled {
   opacity: 0.5;
@@ -204,7 +205,7 @@ kbd {
   box-shadow: var(--material-shadow);
 }
 .theme-switch button[aria-pressed='true'] svg {
-  animation: icon-pop var(--duration-medium) var(--ease-spring);
+  animation: icon-pop var(--duration-fast) var(--ease-out);
 }
 
 /* Page heading */
@@ -385,13 +386,30 @@ h1 {
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
   scroll-margin-top: 90px;
-  transition:
-    box-shadow var(--duration-medium) var(--ease-smooth-out),
-    border-color var(--duration-medium) var(--ease-smooth-out);
+  transition: border-color var(--duration-medium) ease;
 }
-.specimen:hover {
+.specimen::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
   box-shadow: var(--card-shadow-hover);
-  border-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+  opacity: 0;
+  transition: opacity var(--duration-medium) ease;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .specimen:hover {
+    border-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+  }
+  .specimen:hover::after,
+  .specimen:hover .specimen-stage::after {
+    opacity: 1;
+  }
+  .specimen:hover .specimen-stage::before {
+    opacity: 1;
+  }
 }
 .specimen-stage {
   position: relative;
@@ -427,7 +445,7 @@ h1 {
     transparent 80%
   );
   opacity: 0.8;
-  transition: opacity var(--duration-slow) var(--ease-smooth-out);
+  transition: opacity var(--duration-medium) var(--ease-out);
 }
 .specimen-stage::after {
   content: '';
@@ -437,14 +455,8 @@ h1 {
   z-index: -1;
   background: radial-gradient(closest-side, var(--glow), transparent);
   opacity: 0;
-  transition: opacity var(--duration-slow) var(--ease-smooth-out);
+  transition: opacity var(--duration-medium) var(--ease-out);
   pointer-events: none;
-}
-.specimen:hover .specimen-stage::after {
-  opacity: 1;
-}
-.specimen:hover .specimen-stage::before {
-  opacity: 1;
 }
 .effect-specimen .specimen-stage {
   padding: 28px;
@@ -484,12 +496,11 @@ h1 {
   transition:
     color var(--duration-quick),
     background var(--duration-fast),
-    transform var(--duration-medium) var(--ease-spring);
+    transform var(--duration-quick) var(--ease-out);
 }
 .specimen-header > a:hover {
   color: var(--primary-foreground);
   background: var(--primary);
-  transform: translate(1px, -1px) scale(1.06);
 }
 .input-icon {
   position: absolute;
@@ -708,11 +719,15 @@ h1 {
   background: var(--secondary);
   transition:
     color var(--duration-quick),
-    transform var(--duration-medium) var(--ease-spring);
+    transform var(--duration-quick) var(--ease-out);
 }
 .to-top:hover {
   color: var(--foreground);
-  transform: translateY(-3px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .to-top:hover {
+    transform: translateY(-2px);
+  }
 }
 
 /* Effect specimens */
@@ -904,10 +919,12 @@ h1 {
   border-radius: 14px;
   box-shadow: inset 0 0 0 1px var(--border);
   margin-bottom: 10px;
-  transition: transform var(--duration-medium) var(--ease-spring);
+  transition: transform var(--duration-quick) var(--ease-out);
 }
-.color-token:hover > div {
-  transform: translateY(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .color-token:hover > div {
+    transform: translateY(-2px);
+  }
 }
 .color-token > span {
   display: block;
@@ -997,7 +1014,7 @@ h1 {
 }
 @keyframes icon-pop {
   0% {
-    transform: scale(0.6) rotate(-30deg);
+    transform: scale(0.8) rotate(-20deg);
   }
   100% {
     transform: scale(1) rotate(0);

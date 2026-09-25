@@ -39,7 +39,7 @@ export function MotionProvider({ children }: { children: ReactNode }) {
     >
       <MotionConfig
         reducedMotion={enabled ? 'never' : 'always'}
-        transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+        transition={{ type: 'spring', duration: 0.3, bounce: 0 }}
       >
         {children}
       </MotionConfig>
