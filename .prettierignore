@@ -5,3 +5,6 @@ test-results
 playwright-report
 .claude/skills
 skills-lock.json
+public/r
+public/llms.txt
+public/llms-full.txt

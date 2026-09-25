@@ -1,5 +1,14 @@
 # Design system
 
+> Components, tokens, and rules for building web interfaces with AI models.
+> Follow this document unless the person you are building for says otherwise.
+
+- Install everything into a React + Tailwind v4 project: `npx shadcn@latest add https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json`
+- Component registry: https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/registry.json
+- Spec with component source: https://raw.githubusercontent.com/celento/personal-design-system/main/public/llms-full.txt
+- Repository: https://github.com/celento/personal-design-system
+
+
 This repository is the design reference for web apps, tools, and
 visualizations built by AI models. When a model is pointed here, it should
 build with these components, these tokens, and these writing rules instead of
@@ -30,23 +39,6 @@ Read it before writing UI code or UI text, and follow it unless I say otherwise.
 `llms.txt` is this README plus the token values in one file.
 `llms-full.txt` adds the source of every component. Both are generated from
 the repository on every build, so they never drift from the code.
-
-## Contents
-
-- [For models: how to use this repo](#for-models-how-to-use-this-repo)
-- [Principles](#principles)
-- [Writing copy](#writing-copy)
-- [Color](#color)
-- [Typography](#typography)
-- [Spacing and layout](#spacing-and-layout)
-- [Radius and elevation](#radius-and-elevation)
-- [Motion](#motion)
-- [Mobile and touch](#mobile-and-touch)
-- [Choosing components](#choosing-components)
-- [Component notes](#component-notes)
-- [Accessibility](#accessibility)
-- [Before you hand it back](#before-you-hand-it-back)
-- [Development](#development)
 
 ## For models: how to use this repo
 
@@ -540,51 +532,159 @@ Check the result against this list:
 - [ ] Motion stays under 300ms (sheets 400ms), nothing loops except loaders.
 - [ ] Empty, loading, and error states exist for anything that fetches data.
 
-## Development
+## Token file
 
-Requires Node.js 22.12+ and npm.
+`src/styles/tokens.css`:
 
-```sh
-npm ci
-npm run dev
+```css
+/*
+  Design tokens. This file is the single source of truth for color,
+  elevation, radius, motion, and field sizing. It is plain CSS with no
+  build step, so another project can copy it as-is. See README.md for
+  how each token is meant to be used.
+
+  Light values live on :root, dark values on .dark (toggle the class on
+  <html>). Field tokens switch to touch sizes under (pointer: coarse).
+
+  Surface and motion values adapted from MIT-licensed sources; see
+  THIRD_PARTY_NOTICES.md.
+*/
+:root {
+  --background: #fcfcfb;
+  --foreground: #111110;
+  --card: #ffffff;
+  --card-foreground: #111110;
+  --popover: #ffffff;
+  --popover-foreground: #111110;
+  --primary: #cc4b0a;
+  --primary-foreground: #ffffff;
+  --primary-bright: #f76b15;
+  --primary-soft: #fff1e7;
+  --primary-soft-foreground: #9a3a08;
+  --secondary: #f2f1ef;
+  --secondary-foreground: #1c1b19;
+  --muted: #f4f3f1;
+  --muted-foreground: #66635e;
+  --accent: #eeece9;
+  --accent-foreground: #111110;
+  --destructive: #c52635;
+  --success: #1f8a4c;
+  --warning: #c77700;
+  --border: rgba(28, 20, 10, 0.08);
+  --input: rgba(28, 20, 10, 0.13);
+  --ring: #f76b15;
+  --chart-1: #ffd8b5;
+  --chart-2: #ffa66b;
+  --chart-3: #f76b15;
+  --chart-4: #c2410c;
+  --chart-5: #7c2d12;
+  --radius: 0.875rem;
+  --sidebar: #f8f7f5;
+  --sidebar-foreground: #111110;
+  --sidebar-primary: #cc4b0a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f2f1ef;
+  --sidebar-accent-foreground: #111110;
+  --sidebar-border: rgba(28, 20, 10, 0.08);
+  --sidebar-ring: #f76b15;
+  --stage: #f8f7f5;
+  --stage-border: rgba(28, 20, 10, 0.045);
+  --stage-dot: rgba(28, 20, 10, 0.07);
+  --surface: #ffffff;
+  --glow: rgba(247, 107, 21, 0.14);
+  --material-shadow:
+    0 4px 24px rgba(28, 20, 10, 0.04), 0 2px 6px rgba(28, 20, 10, 0.04),
+    0 0 0 1px rgba(28, 20, 10, 0.06);
+  --card-shadow: 0 1px 2px rgba(28, 20, 10, 0.03);
+  --card-shadow-hover:
+    0 18px 40px -18px rgba(28, 20, 10, 0.16), 0 2px 6px rgba(28, 20, 10, 0.04);
+  --overlay-shadow:
+    0 0 0 1px rgba(28, 20, 10, 0.06), 0 16px 48px -12px rgba(28, 20, 10, 0.2),
+    0 4px 12px rgba(28, 20, 10, 0.05);
+  --duration-micro: 100ms;
+  --duration-quick: 150ms;
+  --duration-fast: 200ms;
+  --duration-medium: 250ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-smooth-out: var(--ease-out);
+}
+
+.dark {
+  --background: #0f0f0e;
+  --foreground: #f4f3f1;
+  --card: #161615;
+  --card-foreground: #f4f3f1;
+  --popover: #1f1e1d;
+  --popover-foreground: #f4f3f1;
+  --primary: #ff8a3d;
+  --primary-foreground: #1a0b02;
+  --primary-bright: #ff9a55;
+  --primary-soft: rgba(255, 138, 61, 0.13);
+  --primary-soft-foreground: #ffb784;
+  --secondary: #252422;
+  --secondary-foreground: #ecebe8;
+  --muted: #22211f;
+  --muted-foreground: #a3a09a;
+  --accent: #2e2d2a;
+  --accent-foreground: #ffffff;
+  --destructive: #ff7783;
+  --success: #4fd08a;
+  --warning: #f5b544;
+  --border: rgba(255, 245, 235, 0.08);
+  --input: rgba(255, 245, 235, 0.13);
+  --ring: #ff8a3d;
+  --chart-1: #7c2d12;
+  --chart-2: #c2410c;
+  --chart-3: #f76b15;
+  --chart-4: #ffa66b;
+  --chart-5: #ffd8b5;
+  --radius: 0.875rem;
+  --sidebar: #161615;
+  --sidebar-foreground: #ecebe8;
+  --sidebar-primary: #ff8a3d;
+  --sidebar-primary-foreground: #1a0b02;
+  --sidebar-accent: #252422;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 245, 235, 0.08);
+  --sidebar-ring: #ff8a3d;
+  --stage: #121211;
+  --stage-border: rgba(255, 245, 235, 0.04);
+  --stage-dot: rgba(255, 245, 235, 0.06);
+  --surface: #1f1e1d;
+  --glow: rgba(255, 138, 61, 0.12);
+  --material-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --card-shadow-hover:
+    0 18px 40px -18px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 245, 235, 0.06);
+  --overlay-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(255, 245, 235, 0.08), 0 20px 56px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Text fields. One set of size tokens drives every field so inputs,
+   selects, textareas, search, and OTP read as one family. Touch screens
+   get 16px text (iOS zooms below that) with height and labels scaled to
+   match, rather than bumping the text alone. */
+:root {
+  --field-h: 38px;
+  --field-font: 13px;
+  --field-px: 12px;
+  --field-icon: 15px;
+  --field-radius: 12px;
+  --label-font: 13px;
+}
+@media (pointer: coarse) {
+  :root {
+    --field-h: 46px;
+    --field-font: 16px;
+    --field-px: 14px;
+    --field-icon: 18px;
+    --field-radius: 14px;
+    --label-font: 15px;
+  }
+}
 ```
-
-The gallery (`src/App.tsx`) shows every component in light and dark with
-realistic content. Component examples live in `src/demos.tsx` and
-`src/effect-demos.tsx`; the gallery shell styles are in `src/App.css`.
-
-To add a component, create it in `src/components/ui/`, style it through its
-`data-slot` in `materials.css` using tokens, register an example in
-`src/demos.tsx`, add it to `registry.json`, and document it here. Then run
-`npm run build:dist` and commit the regenerated `public/llms*.txt` and
-`public/r/` files; CI fails if they are out of date. Overwriting existing components with
-generated code replaces local styling and behavior, so review those changes
-before accepting them.
-
-```sh
-npm run lint
-npm run format:check
-npm run check:dist
-npm run build
-npx playwright install chromium firefox
-npm test
-```
-
-Tests run against the production build in Firefox, Chromium, and a narrow
-viewport. They cover filtering, themes, forms, overlays, keyboard focus,
-effect controls, reduced motion, and automated accessibility checks. CI runs
-them on every push.
-
-### Deploying
-
-`vercel.json` configures Vite, `npm run build`, the `dist` output, and SPA
-fallback. Use the repository root and Node.js 22.x. No environment variables
-or backend services are required.
-
-Once deployed, the same files are served from the site: `/llms.txt`,
-`/llms-full.txt`, and `/r/design-system.json`, with CORS enabled. The GitHub
-raw URLs used above work whether or not the site is deployed.
-
-`scripts/build-distribution.mjs` produces those files from `README.md`,
-`registry.json`, the tokens, and the component source. `skills/design-system/`
-holds the agent skill.

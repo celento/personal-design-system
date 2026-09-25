@@ -20,7 +20,7 @@ import { Slider } from '@/components/ui/slider'
 import { Label } from '@/components/ui/label'
 import { BeamSurface } from '@/components/effects/beam-surface'
 import { MetalSurface } from '@/components/effects/metal-surface'
-import { useMotionSettings, useResolvedTheme } from './motion'
+import { useMotionSettings, useResolvedTheme } from '@/lib/motion'
 import type { Specimen } from './demos'
 
 export function BeamDemo() {

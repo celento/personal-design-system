@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "description": "Placeholder shaped like content that is loading.",
+  "dependencies": [
+    "cn@^0.4.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/skeleton.tsx",
+      "content": "import { cn } from 'cn'\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn('animate-pulse rounded-md bg-muted', className)}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+  "type": "registry:ui"
+}

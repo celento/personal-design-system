@@ -23,10 +23,9 @@ import { Toaster } from '@/components/ui/sonner'
 import { Foundations } from '@/components/foundations'
 import { categories, specimens, slug, type Category } from './demos'
 import { effectSpecimens } from './effect-demos'
-import { useTheme } from './theme'
-import { useMotionSettings } from './motion'
+import { useTheme } from '@/lib/theme'
+import { useMotionSettings } from '@/lib/motion'
 import './App.css'
-import './components/materials.css'
 
 const allSpecimens = [...specimens, ...effectSpecimens]
 const easeOut = [0.23, 1, 0.32, 1] as const

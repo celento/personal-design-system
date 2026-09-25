@@ -1,0 +1,1325 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "design-system",
+  "homepage": "https://github.com/celento/personal-design-system",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "design-system",
+      "title": "Design system",
+      "description": "Everything: tokens, component styles, motion and theme helpers, and every component. Install this first.",
+      "dependencies": [
+        "@fontsource-variable/inter@^5.3.0",
+        "class-variance-authority@^0.7.1",
+        "cmdk@^1.1.1",
+        "cn@^0.4.0",
+        "embla-carousel-react@^8.6.0",
+        "input-otp@^1.5.0",
+        "lucide-react@^1.48.0",
+        "motion@^13.4.3",
+        "radix-ui@^1.6.7",
+        "react-day-picker@^10.0.1",
+        "react-resizable-panels@^4.13.3",
+        "shadcn@^4.21.0",
+        "sonner@^2.0.8",
+        "tw-animate-css@^1.4.0",
+        "vaul@^1.1.2"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/calendar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/carousel.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/hover-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input-otp.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/menubar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/resizable.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/select.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/slider.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/styles/materials.css",
+          "type": "registry:file",
+          "target": "src/styles/materials.css"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "font-heading": "var(--font-sans)",
+          "font-sans": "'Inter Variable', sans-serif",
+          "color-primary-soft": "var(--primary-soft)",
+          "color-primary-soft-foreground": "var(--primary-soft-foreground)",
+          "color-success": "var(--success)",
+          "color-warning": "var(--warning)",
+          "color-surface": "var(--surface)",
+          "color-sidebar-ring": "var(--sidebar-ring)",
+          "color-sidebar-border": "var(--sidebar-border)",
+          "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
+          "color-sidebar-accent": "var(--sidebar-accent)",
+          "color-sidebar-primary-foreground": "var(--sidebar-primary-foreground)",
+          "color-sidebar-primary": "var(--sidebar-primary)",
+          "color-sidebar-foreground": "var(--sidebar-foreground)",
+          "color-sidebar": "var(--sidebar)",
+          "color-chart-5": "var(--chart-5)",
+          "color-chart-4": "var(--chart-4)",
+          "color-chart-3": "var(--chart-3)",
+          "color-chart-2": "var(--chart-2)",
+          "color-chart-1": "var(--chart-1)",
+          "color-ring": "var(--ring)",
+          "color-input": "var(--input)",
+          "color-border": "var(--border)",
+          "color-destructive": "var(--destructive)",
+          "color-accent-foreground": "var(--accent-foreground)",
+          "color-accent": "var(--accent)",
+          "color-muted-foreground": "var(--muted-foreground)",
+          "color-muted": "var(--muted)",
+          "color-secondary-foreground": "var(--secondary-foreground)",
+          "color-secondary": "var(--secondary)",
+          "color-primary-foreground": "var(--primary-foreground)",
+          "color-primary": "var(--primary)",
+          "color-popover-foreground": "var(--popover-foreground)",
+          "color-popover": "var(--popover)",
+          "color-card-foreground": "var(--card-foreground)",
+          "color-card": "var(--card)",
+          "color-foreground": "var(--foreground)",
+          "color-background": "var(--background)",
+          "radius-sm": "calc(var(--radius) * 0.6)",
+          "radius-md": "calc(var(--radius) * 0.8)",
+          "radius-lg": "var(--radius)",
+          "radius-xl": "calc(var(--radius) * 1.4)",
+          "radius-2xl": "calc(var(--radius) * 1.8)",
+          "radius-3xl": "calc(var(--radius) * 2.2)",
+          "radius-4xl": "calc(var(--radius) * 2.6)"
+        },
+        "light": {
+          "background": "#fcfcfb",
+          "foreground": "#111110",
+          "card": "#ffffff",
+          "card-foreground": "#111110",
+          "popover": "#ffffff",
+          "popover-foreground": "#111110",
+          "primary": "#cc4b0a",
+          "primary-foreground": "#ffffff",
+          "primary-bright": "#f76b15",
+          "primary-soft": "#fff1e7",
+          "primary-soft-foreground": "#9a3a08",
+          "secondary": "#f2f1ef",
+          "secondary-foreground": "#1c1b19",
+          "muted": "#f4f3f1",
+          "muted-foreground": "#66635e",
+          "accent": "#eeece9",
+          "accent-foreground": "#111110",
+          "destructive": "#c52635",
+          "success": "#1f8a4c",
+          "warning": "#c77700",
+          "border": "rgba(28, 20, 10, 0.08)",
+          "input": "rgba(28, 20, 10, 0.13)",
+          "ring": "#f76b15",
+          "chart-1": "#ffd8b5",
+          "chart-2": "#ffa66b",
+          "chart-3": "#f76b15",
+          "chart-4": "#c2410c",
+          "chart-5": "#7c2d12",
+          "radius": "0.875rem",
+          "sidebar": "#f8f7f5",
+          "sidebar-foreground": "#111110",
+          "sidebar-primary": "#cc4b0a",
+          "sidebar-primary-foreground": "#ffffff",
+          "sidebar-accent": "#f2f1ef",
+          "sidebar-accent-foreground": "#111110",
+          "sidebar-border": "rgba(28, 20, 10, 0.08)",
+          "sidebar-ring": "#f76b15",
+          "stage": "#f8f7f5",
+          "stage-border": "rgba(28, 20, 10, 0.045)",
+          "stage-dot": "rgba(28, 20, 10, 0.07)",
+          "surface": "#ffffff",
+          "glow": "rgba(247, 107, 21, 0.14)",
+          "material-shadow": "0 4px 24px rgba(28, 20, 10, 0.04), 0 2px 6px rgba(28, 20, 10, 0.04), 0 0 0 1px rgba(28, 20, 10, 0.06)",
+          "card-shadow": "0 1px 2px rgba(28, 20, 10, 0.03)",
+          "card-shadow-hover": "0 18px 40px -18px rgba(28, 20, 10, 0.16), 0 2px 6px rgba(28, 20, 10, 0.04)",
+          "overlay-shadow": "0 0 0 1px rgba(28, 20, 10, 0.06), 0 16px 48px -12px rgba(28, 20, 10, 0.2), 0 4px 12px rgba(28, 20, 10, 0.05)",
+          "duration-micro": "100ms",
+          "duration-quick": "150ms",
+          "duration-fast": "200ms",
+          "duration-medium": "250ms",
+          "ease-out": "cubic-bezier(0.23, 1, 0.32, 1)",
+          "ease-in-out": "cubic-bezier(0.77, 0, 0.175, 1)",
+          "ease-drawer": "cubic-bezier(0.32, 0.72, 0, 1)",
+          "ease-smooth-out": "var(--ease-out)",
+          "field-h": "38px",
+          "field-font": "13px",
+          "field-px": "12px",
+          "field-icon": "15px",
+          "field-radius": "12px",
+          "label-font": "13px"
+        },
+        "dark": {
+          "background": "#0f0f0e",
+          "foreground": "#f4f3f1",
+          "card": "#161615",
+          "card-foreground": "#f4f3f1",
+          "popover": "#1f1e1d",
+          "popover-foreground": "#f4f3f1",
+          "primary": "#ff8a3d",
+          "primary-foreground": "#1a0b02",
+          "primary-bright": "#ff9a55",
+          "primary-soft": "rgba(255, 138, 61, 0.13)",
+          "primary-soft-foreground": "#ffb784",
+          "secondary": "#252422",
+          "secondary-foreground": "#ecebe8",
+          "muted": "#22211f",
+          "muted-foreground": "#a3a09a",
+          "accent": "#2e2d2a",
+          "accent-foreground": "#ffffff",
+          "destructive": "#ff7783",
+          "success": "#4fd08a",
+          "warning": "#f5b544",
+          "border": "rgba(255, 245, 235, 0.08)",
+          "input": "rgba(255, 245, 235, 0.13)",
+          "ring": "#ff8a3d",
+          "chart-1": "#7c2d12",
+          "chart-2": "#c2410c",
+          "chart-3": "#f76b15",
+          "chart-4": "#ffa66b",
+          "chart-5": "#ffd8b5",
+          "radius": "0.875rem",
+          "sidebar": "#161615",
+          "sidebar-foreground": "#ecebe8",
+          "sidebar-primary": "#ff8a3d",
+          "sidebar-primary-foreground": "#1a0b02",
+          "sidebar-accent": "#252422",
+          "sidebar-accent-foreground": "#ffffff",
+          "sidebar-border": "rgba(255, 245, 235, 0.08)",
+          "sidebar-ring": "#ff8a3d",
+          "stage": "#121211",
+          "stage-border": "rgba(255, 245, 235, 0.04)",
+          "stage-dot": "rgba(255, 245, 235, 0.06)",
+          "surface": "#1f1e1d",
+          "glow": "rgba(255, 138, 61, 0.12)",
+          "material-shadow": "0 4px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 0 0 1px rgba(255, 255, 255, 0.06)",
+          "card-shadow": "0 1px 2px rgba(0, 0, 0, 0.2)",
+          "card-shadow-hover": "0 18px 40px -18px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 245, 235, 0.06)",
+          "overlay-shadow": "inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(255, 245, 235, 0.08), 0 20px 56px -12px rgba(0, 0, 0, 0.6)"
+        }
+      },
+      "css": {
+        "@import \"tw-animate-css\"": {},
+        "@import \"shadcn/tailwind.css\"": {},
+        "@import \"@fontsource-variable/inter\"": {},
+        "@layer base": {
+          "*": {
+            "@apply border-border outline-ring/50": {}
+          },
+          "body": {
+            "@apply bg-background text-foreground": {}
+          },
+          "html": {
+            "@apply font-sans": {}
+          }
+        },
+        "@media (pointer: coarse)": {
+          ":root": {
+            "--field-h": "46px",
+            "--field-font": "16px",
+            "--field-px": "14px",
+            "--field-icon": "18px",
+            "--field-radius": "14px",
+            "--label-font": "15px"
+          }
+        }
+      },
+      "docs": "Design system installed.\n\n1. Import the component styles once in your global stylesheet, after Tailwind:\n   @import './styles/materials.css';  (adjust the path to where the file was written)\n2. Wrap the app in <MotionProvider> from @/lib/motion.\n3. Mount <Toaster position=\"bottom-right\" closeButton /> once at the root.\n4. Follow the rules at https://raw.githubusercontent.com/celento/personal-design-system/main/public/llms.txt",
+      "type": "registry:item"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "accordion",
+      "title": "Accordion",
+      "description": "Several expandable sections.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "alert-dialog",
+      "title": "Alert Dialog",
+      "description": "Confirmation for irreversible actions.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "alert",
+      "title": "Alert",
+      "description": "Persistent message in the page for problems the user must fix.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "aspect-ratio",
+      "title": "Aspect Ratio",
+      "description": "Keeps media at a fixed ratio.",
+      "dependencies": [
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "avatar",
+      "title": "Avatar",
+      "description": "A person, with an initials fallback.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "badge",
+      "title": "Badge",
+      "description": "Status label with an optional static dot.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "breadcrumb",
+      "title": "Breadcrumb",
+      "description": "Location in a hierarchy of 3 or more levels.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "button",
+      "title": "Button",
+      "description": "Actions. Variants: default, secondary, outline, ghost, destructive, link.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "calendar",
+      "title": "Calendar",
+      "description": "Inline date selection.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7",
+        "react-day-picker@^10.0.1"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "card",
+      "title": "Card",
+      "description": "One object with its details and actions.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "carousel",
+      "title": "Carousel",
+      "description": "Horizontally paged content with previous and next controls.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "embla-carousel-react@^8.6.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/carousel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "checkbox",
+      "title": "Checkbox",
+      "description": "On/off submitted with a form.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "collapsible",
+      "title": "Collapsible",
+      "description": "Shows and hides one block of secondary detail.",
+      "dependencies": [
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "command",
+      "title": "Command",
+      "description": "Search and keyboard selection; the base for combobox and command palette.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cmdk@^1.1.1",
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "context-menu",
+      "title": "Context Menu",
+      "description": "Right-click shortcuts, always duplicated in a visible menu.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "dialog",
+      "title": "Dialog",
+      "description": "Short focused task that blocks the page.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "drawer",
+      "title": "Drawer",
+      "description": "Bottom panel; replaces dialogs and sheets on phones.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "vaul@^1.1.2"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "dropdown-menu",
+      "title": "Dropdown Menu",
+      "description": "A few actions tied to a button.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "hover-card",
+      "title": "Hover Card",
+      "description": "Preview of a linked person or object. Never the only place the info lives.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input-group",
+      "title": "Input Group",
+      "description": "Input or textarea with attached buttons or addons.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input-otp",
+      "title": "Input Otp",
+      "description": "Verification code entry.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "input-otp@^1.5.0",
+        "lucide-react@^1.48.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input",
+      "title": "Input",
+      "description": "Short text field.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "label",
+      "title": "Label",
+      "description": "Visible label for every field.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "menubar",
+      "title": "Menubar",
+      "description": "Application menus.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/menubar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "navigation-menu",
+      "title": "Navigation Menu",
+      "description": "Site navigation with nested links.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "pagination",
+      "title": "Pagination",
+      "description": "Many pages of results.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "popover",
+      "title": "Popover",
+      "description": "Small form or settings tied to a control.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress",
+      "title": "Progress",
+      "description": "Known progress with the value shown.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "radio-group",
+      "title": "Radio Group",
+      "description": "One choice from up to 5 visible options.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "resizable",
+      "title": "Resizable",
+      "description": "Panels the user can resize.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "react-resizable-panels@^4.13.3"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "scroll-area",
+      "title": "Scroll Area",
+      "description": "Contained scrolling region.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "select",
+      "title": "Select",
+      "description": "One choice from about 6 to 15 options.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "separator",
+      "title": "Separator",
+      "description": "Horizontal or vertical divider.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sheet",
+      "title": "Sheet",
+      "description": "Side panel for editing while keeping the page in view.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "skeleton",
+      "title": "Skeleton",
+      "description": "Placeholder shaped like content that is loading.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "slider",
+      "title": "Slider",
+      "description": "Approximate number in a range, with the value shown.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sonner",
+      "title": "Toast",
+      "description": "Toaster for results of user actions. Mount once.",
+      "dependencies": [
+        "lucide-react@^1.48.0",
+        "sonner@^2.0.8"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "switch",
+      "title": "Switch",
+      "description": "On/off that applies immediately.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "table",
+      "title": "Table",
+      "description": "Compare many items across the same fields.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tabs",
+      "title": "Tabs",
+      "description": "Switch between views of the same thing.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "motion@^13.4.3",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "textarea",
+      "title": "Textarea",
+      "description": "Long text field.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toggle-group",
+      "title": "Toggle Group",
+      "description": "Segmented on/off options such as formatting or filters.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toggle",
+      "title": "Toggle",
+      "description": "Single on/off button.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tooltip",
+      "title": "Tooltip",
+      "description": "Names an icon-only button. Never essential information.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "effects",
+      "title": "Special effects",
+      "description": "Border beam and metal surface adapters. Only for explicit requests; never on regular inputs, buttons, or cards.",
+      "dependencies": [
+        "border-beam@^1.4.1",
+        "metal-fx@^2.0.11",
+        "motion@^13.4.3"
+      ],
+      "files": [
+        {
+          "path": "src/components/effects/beam-surface.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/effects/metal-surface.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:item"
+    }
+  ]
+}

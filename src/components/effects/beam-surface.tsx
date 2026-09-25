@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import { BorderBeam } from 'border-beam'
-import { useMotionSettings, useResolvedTheme } from '@/motion'
+import { useMotionSettings, useResolvedTheme } from '@/lib/motion'
 export function BeamSurface({
   active = true,
   ...props

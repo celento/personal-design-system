@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run build:dist && tsc -b && vite build",
+    "build:dist": "node scripts/build-distribution.mjs",
+    "check:dist": "node scripts/build-distribution.mjs --check",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "playwright test --workers=3",

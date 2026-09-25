@@ -27,9 +27,13 @@ and writing rules.
 ## Working on this repository
 
 - Style components through their `data-slot` in
-  `src/components/materials.css`, using tokens. Keep new values in
+  `src/styles/materials.css`, using tokens. Keep new values in
   `tokens.css`.
 - When you add or change a component, update its example in
-  `src/demos.tsx` and its guidance in `README.md`.
+  `src/demos.tsx`, its guidance in `README.md`, and its entry in
+  `registry.json`, then run `npm run build:dist` and commit the regenerated
+  `public/` files. CI fails if they are out of date.
+- `skills/design-system/SKILL.md` repeats the core rules for agents that
+  install the skill. Keep it in sync with the README.
 - Before committing, run `npm run lint`, `npm run format:check`,
   `npm run build`, and `npm test`.

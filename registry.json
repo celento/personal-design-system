@@ -1,0 +1,201 @@
+{
+  "//": "Source manifest for the component registry. `npm run build:dist` expands it into public/r/*.json (the installable registry) and public/llms*.txt. Descriptions here are what models see when browsing the registry.",
+  "name": "design-system",
+  "homepage": "https://github.com/celento/personal-design-system",
+  "items": [
+    {
+      "name": "design-system",
+      "type": "registry:item",
+      "title": "Design system",
+      "description": "Everything: tokens, component styles, motion and theme helpers, and every component. Install this first.",
+      "include": ["*"]
+    },
+    {
+      "name": "accordion",
+      "description": "Several expandable sections."
+    },
+    {
+      "name": "alert-dialog",
+      "description": "Confirmation for irreversible actions."
+    },
+    {
+      "name": "alert",
+      "description": "Persistent message in the page for problems the user must fix."
+    },
+    {
+      "name": "aspect-ratio",
+      "description": "Keeps media at a fixed ratio."
+    },
+    {
+      "name": "avatar",
+      "description": "A person, with an initials fallback."
+    },
+    {
+      "name": "badge",
+      "description": "Status label with an optional static dot."
+    },
+    {
+      "name": "breadcrumb",
+      "description": "Location in a hierarchy of 3 or more levels."
+    },
+    {
+      "name": "button",
+      "description": "Actions. Variants: default, secondary, outline, ghost, destructive, link."
+    },
+    {
+      "name": "calendar",
+      "description": "Inline date selection."
+    },
+    {
+      "name": "card",
+      "description": "One object with its details and actions."
+    },
+    {
+      "name": "carousel",
+      "description": "Horizontally paged content with previous and next controls."
+    },
+    {
+      "name": "checkbox",
+      "description": "On/off submitted with a form."
+    },
+    {
+      "name": "collapsible",
+      "description": "Shows and hides one block of secondary detail."
+    },
+    {
+      "name": "command",
+      "description": "Search and keyboard selection; the base for combobox and command palette."
+    },
+    {
+      "name": "context-menu",
+      "description": "Right-click shortcuts, always duplicated in a visible menu."
+    },
+    {
+      "name": "dialog",
+      "description": "Short focused task that blocks the page."
+    },
+    {
+      "name": "drawer",
+      "description": "Bottom panel; replaces dialogs and sheets on phones."
+    },
+    {
+      "name": "dropdown-menu",
+      "description": "A few actions tied to a button."
+    },
+    {
+      "name": "hover-card",
+      "description": "Preview of a linked person or object. Never the only place the info lives."
+    },
+    {
+      "name": "input-group",
+      "description": "Input or textarea with attached buttons or addons."
+    },
+    {
+      "name": "input-otp",
+      "description": "Verification code entry."
+    },
+    {
+      "name": "input",
+      "description": "Short text field."
+    },
+    {
+      "name": "label",
+      "description": "Visible label for every field."
+    },
+    {
+      "name": "menubar",
+      "description": "Application menus."
+    },
+    {
+      "name": "navigation-menu",
+      "description": "Site navigation with nested links."
+    },
+    {
+      "name": "pagination",
+      "description": "Many pages of results."
+    },
+    {
+      "name": "popover",
+      "description": "Small form or settings tied to a control."
+    },
+    {
+      "name": "progress",
+      "description": "Known progress with the value shown."
+    },
+    {
+      "name": "radio-group",
+      "description": "One choice from up to 5 visible options."
+    },
+    {
+      "name": "resizable",
+      "description": "Panels the user can resize."
+    },
+    {
+      "name": "scroll-area",
+      "description": "Contained scrolling region."
+    },
+    {
+      "name": "select",
+      "description": "One choice from about 6 to 15 options."
+    },
+    {
+      "name": "separator",
+      "description": "Horizontal or vertical divider."
+    },
+    {
+      "name": "sheet",
+      "description": "Side panel for editing while keeping the page in view."
+    },
+    {
+      "name": "skeleton",
+      "description": "Placeholder shaped like content that is loading."
+    },
+    {
+      "name": "slider",
+      "description": "Approximate number in a range, with the value shown."
+    },
+    {
+      "name": "sonner",
+      "title": "Toast",
+      "description": "Toaster for results of user actions. Mount once."
+    },
+    {
+      "name": "switch",
+      "description": "On/off that applies immediately."
+    },
+    {
+      "name": "table",
+      "description": "Compare many items across the same fields."
+    },
+    {
+      "name": "tabs",
+      "description": "Switch between views of the same thing."
+    },
+    {
+      "name": "textarea",
+      "description": "Long text field."
+    },
+    {
+      "name": "toggle-group",
+      "description": "Segmented on/off options such as formatting or filters."
+    },
+    {
+      "name": "toggle",
+      "description": "Single on/off button."
+    },
+    {
+      "name": "tooltip",
+      "description": "Names an icon-only button. Never essential information."
+    },
+    {
+      "name": "effects",
+      "type": "registry:item",
+      "title": "Special effects",
+      "description": "Border beam and metal surface adapters. Only for explicit requests; never on regular inputs, buttons, or cards.",
+      "files": [
+        "src/components/effects/beam-surface.tsx",
+        "src/components/effects/metal-surface.tsx"
+      ]
+    }
+  ]
+}
