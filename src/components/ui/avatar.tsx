@@ -1,18 +1,25 @@
 import * as React from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { cn } from 'cn'
 import { Avatar as AvatarPrimitive } from 'radix-ui'
+import { useMotionSettings } from '@/lib/motion'
 
 function Avatar({
   className,
   size = 'default',
+  name,
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Root> & {
   size?: 'default' | 'sm' | 'lg'
+  name?: string
 }) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
       data-size={size}
+      data-name={name}
+      role={name ? 'img' : undefined}
+      aria-label={name}
       className={cn(
         'group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten',
         className,
@@ -70,16 +77,78 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<'span'>) {
   )
 }
 
-function AvatarGroup({ className, ...props }: React.ComponentProps<'div'>) {
+// Pointing along the group lifts the faces nearest the pointer, falling off
+// across their neighbours, and one name label slides to whoever is closest.
+// Names come from each avatar's `name`.
+function AvatarGroup({
+  className,
+  children,
+  onPointerMove,
+  onPointerLeave,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const [label, setLabel] = React.useState<{ name: string; x: number }>()
+  const { enabled } = useMotionSettings()
   return (
     <div
       data-slot="avatar-group"
       className={cn(
-        'group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background',
+        'group/avatar-group relative flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background',
         className,
       )}
+      onPointerMove={(event) => {
+        onPointerMove?.(event)
+        if (event.pointerType !== 'mouse') return
+        const group = event.currentTarget
+        const left = group.getBoundingClientRect().left
+        let nearest: { name: string; x: number } | undefined
+        let best = Infinity
+        group
+          .querySelectorAll<HTMLElement>('[data-slot="avatar"]')
+          .forEach((avatar) => {
+            const box = avatar.getBoundingClientRect()
+            const mid = box.left + box.width / 2
+            const distance = Math.abs(event.clientX - mid)
+            const lift = enabled ? Math.max(0, 1 - distance / 56) : 0
+            avatar.style.setProperty('--lift', lift.toFixed(3))
+            if (distance < best && avatar.dataset.name) {
+              best = distance
+              nearest = { name: avatar.dataset.name, x: mid - left }
+            }
+          })
+        setLabel((current) =>
+          current?.name === nearest?.name ? current : nearest,
+        )
+      }}
+      onPointerLeave={(event) => {
+        onPointerLeave?.(event)
+        event.currentTarget
+          .querySelectorAll<HTMLElement>('[data-slot="avatar"]')
+          .forEach((avatar) => avatar.style.setProperty('--lift', '0'))
+        setLabel(undefined)
+      }}
       {...props}
-    />
+    >
+      {children}
+      <AnimatePresence>
+        {label && (
+          <motion.span
+            data-slot="avatar-group-label"
+            aria-hidden="true"
+            initial={{ opacity: 0, y: 4, x: label.x }}
+            animate={{ opacity: 1, y: 0, x: label.x }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={
+              enabled
+                ? { type: 'spring', duration: 0.3, bounce: 0.15 }
+                : { duration: 0 }
+            }
+          >
+            {label.name}
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 

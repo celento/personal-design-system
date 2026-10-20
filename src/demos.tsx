@@ -11,6 +11,8 @@ import {
   ClipboardPaste,
   Copy,
   Download,
+  House,
+  Inbox,
   Italic,
   Loader2,
   Mail,
@@ -22,6 +24,7 @@ import {
   Settings2,
   Sparkles,
   Underline,
+  UserRound,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -44,7 +47,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarGroup } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import {
   Breadcrumb,
@@ -189,7 +192,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton, SkeletonReveal } from '@/components/ui/skeleton'
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import {
@@ -209,6 +212,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { CopyField } from '@/components/ui/copy-field'
+import { NumberStepper } from '@/components/ui/number-stepper'
+import { SlideToConfirm } from '@/components/ui/slide-to-confirm'
+import { ShimmerText } from '@/components/ui/shimmer-text'
 
 const Row = ({ children }: { children: ReactNode }) => (
   <div className="flex flex-wrap items-center gap-3">{children}</div>
@@ -217,10 +224,34 @@ const Stack = ({ children }: { children: ReactNode }) => (
   <div className="w-full space-y-5">{children}</div>
 )
 const people = [
-  { initials: 'AM', from: '#ffb27a', to: '#f76b15' },
-  { initials: 'JL', from: '#fcd9a8', to: '#e89a3c' },
-  { initials: 'SK', from: '#f5b3a1', to: '#d9573a' },
-  { initials: 'RP', from: '#e8d5c4', to: '#9c7a5e' },
+  {
+    initials: 'AM',
+    name: 'Alex Morgan',
+    role: 'Product designer',
+    from: '#ffb27a',
+    to: '#f76b15',
+  },
+  {
+    initials: 'JL',
+    name: 'Jo Lindqvist',
+    role: 'Frontend engineer',
+    from: '#fcd9a8',
+    to: '#e89a3c',
+  },
+  {
+    initials: 'SK',
+    name: 'Sana Kapoor',
+    role: 'Design engineer',
+    from: '#f5b3a1',
+    to: '#d9573a',
+  },
+  {
+    initials: 'RP',
+    name: 'Rui Pereira',
+    role: 'Accessibility lead',
+    from: '#e8d5c4',
+    to: '#9c7a5e',
+  },
 ]
 const Swatch = ({ color }: { color: string }) => (
   <span style={{ background: color }} />
@@ -306,26 +337,26 @@ function Buttons() {
 function Inputs() {
   return (
     <Stack>
-      <div className="space-y-2">
-        <Label htmlFor="demo-email">Email</Label>
-        <div className="relative">
-          <Mail className="input-icon" />
-          <Input
-            id="demo-email"
-            type="email"
-            autoComplete="off"
-            data-1p-ignore
-            placeholder="you@example.com"
-            className="pl-9"
-          />
-        </div>
-      </div>
+      <Input
+        label="Email"
+        type="email"
+        autoComplete="off"
+        data-1p-ignore
+        placeholder="you@example.com"
+      />
       <div className="grid grid-cols-2 gap-3">
-        <Input aria-label="Disabled input" disabled placeholder="Disabled" />
+        <Input label="Disabled" disabled />
+        <Input label="Invalid" aria-invalid="true" defaultValue="Wrong value" />
+      </div>
+      <div className="relative">
+        <Mail className="input-icon" />
         <Input
-          aria-label="Invalid input"
-          aria-invalid="true"
-          defaultValue="Invalid value"
+          aria-label="Email with icon"
+          type="email"
+          autoComplete="off"
+          data-1p-ignore
+          placeholder="you@example.com"
+          className="pl-9"
         />
       </div>
       <div className="relative">
@@ -351,10 +382,18 @@ function Selections() {
         <Switch id="auto-save" />
       </div>
       <Separator />
-      <Row>
-        <Checkbox id="terms" defaultChecked />
-        <Label htmlFor="terms">Remember my preference</Label>
-      </Row>
+      {[
+        ['task-tokens', 'Export color tokens', true],
+        ['task-review', 'Review dark mode contrast', false],
+        ['task-docs', 'Update the README', false],
+      ].map(([id, text, done]) => (
+        <Row key={String(id)}>
+          <Checkbox id={String(id)} defaultChecked={Boolean(done)} />
+          <Label htmlFor={String(id)} data-strike>
+            {text}
+          </Label>
+        </Row>
+      ))}
       <Row>
         <Checkbox id="disabled-check" disabled />
         <Label htmlFor="disabled-check" className="text-muted-foreground">
@@ -377,6 +416,7 @@ function SliderDemo() {
       <Slider
         id="volume"
         aria-label="Volume"
+        variant="bars"
         value={value}
         onValueChange={setValue}
       />
@@ -590,20 +630,21 @@ function FormDemo() {
         toast.success('Form submitted')
       }}
     >
-      <div className="space-y-2">
-        <Label htmlFor="form-name">Name</Label>
-        <Input id="form-name" name="name" placeholder="Alex Morgan" required />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="form-email">Email</Label>
-        <Input
-          id="form-email"
-          name="email"
-          type="email"
-          placeholder="alex@example.com"
-          required
-        />
-      </div>
+      <Input
+        id="form-name"
+        label="Name"
+        name="name"
+        placeholder="Alex Morgan"
+        required
+      />
+      <Input
+        id="form-email"
+        label="Email"
+        name="email"
+        type="email"
+        placeholder="alex@example.com"
+        required
+      />
       <Button type="submit" className="w-full">
         Submit
         <ArrowRight />
@@ -634,6 +675,222 @@ function DatePickerDemo() {
         />
       </PopoverContent>
     </Popover>
+  )
+}
+const Face = ({ person }: { person: (typeof people)[number] }) => (
+  <AvatarFallback
+    className="text-[11px] text-white"
+    style={{
+      background: `linear-gradient(145deg, ${person.from}, ${person.to})`,
+    }}
+  >
+    {person.initials}
+  </AvatarFallback>
+)
+function OtpDemo() {
+  const [code, setCode] = useState('')
+  const [wrong, setWrong] = useState(false)
+  return (
+    <Stack>
+      <Label htmlFor="otp">Verification code</Label>
+      <InputOTP
+        id="otp"
+        maxLength={6}
+        value={code}
+        onChange={(next) => {
+          setCode(next)
+          setWrong(next.length === 6 && next !== '428193')
+          if (next === '428193') toast.success('Code accepted')
+        }}
+      >
+        <InputOTPGroup>
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <InputOTPSlot key={i} index={i} aria-invalid={wrong || undefined} />
+          ))}
+        </InputOTPGroup>
+      </InputOTP>
+      <p
+        className={
+          wrong ? 'text-xs text-destructive' : 'text-xs text-muted-foreground'
+        }
+        aria-live="polite"
+      >
+        {wrong
+          ? "That code didn't match. Check the latest email and try again."
+          : 'Use 428193 for this example.'}
+      </p>
+    </Stack>
+  )
+}
+function SkeletonDemo() {
+  const [loading, setLoading] = useState(true)
+  const reload = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 1400)
+  }
+  return (
+    <Stack>
+      <div className="w-full space-y-4 rounded-2xl bg-surface p-4 shadow-[var(--material-shadow)]">
+        {loading ? (
+          <>
+            <div className="flex items-center gap-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-3 w-2/3 rounded-full" />
+                <Skeleton className="h-3 w-1/3 rounded-full" />
+              </div>
+            </div>
+            <Skeleton className="h-16 w-full rounded-xl" />
+          </>
+        ) : (
+          <>
+            <SkeletonReveal order={0} className="flex items-center gap-3">
+              <Avatar className="size-10">
+                <Face person={people[0]} />
+              </Avatar>
+              <div>
+                <p className="text-[13px] font-medium">Alex Morgan</p>
+                <p className="text-xs text-muted-foreground">Edited 2h ago</p>
+              </div>
+            </SkeletonReveal>
+            <SkeletonReveal
+              order={1}
+              className="rounded-xl bg-secondary p-3 text-xs text-muted-foreground"
+            >
+              Moved the toast close button inside the card and raised the
+              contrast of muted text in dark mode.
+            </SkeletonReveal>
+          </>
+        )}
+      </div>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={loading ? () => setLoading(false) : reload}
+      >
+        {loading ? 'Load content' : 'Reload'}
+      </Button>
+    </Stack>
+  )
+}
+function AspectDemo() {
+  const ratios = { '4:3': 4 / 3, '1:1': 1, '3:4': 3 / 4 } as const
+  const [choice, setChoice] = useState<keyof typeof ratios>('4:3')
+  const ratio = ratios[choice]
+  // Same area in every shape, so a change reads as a crop, not a resize.
+  const side = 132
+  return (
+    <Stack>
+      <div className="grid h-[180px] place-items-center">
+        <div
+          className="transition-[width] duration-300 ease-out"
+          style={{ width: Math.round(side * Math.sqrt(ratio)) }}
+        >
+          <AspectRatio ratio={ratio} className="ratio-art">
+            <div />
+            <span>{choice.replace(':', ' : ')}</span>
+          </AspectRatio>
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <ToggleGroup
+          type="single"
+          value={choice}
+          onValueChange={(v) => v && setChoice(v as keyof typeof ratios)}
+          aria-label="Crop ratio"
+        >
+          {Object.keys(ratios).map((r) => (
+            <ToggleGroupItem key={r} value={r} className="w-12 text-xs">
+              {r}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
+    </Stack>
+  )
+}
+function HoverCardDemo() {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3 shadow-[var(--material-shadow)]">
+      <div className="flex -space-x-1">
+        {people.map((p) => (
+          <HoverCard key={p.initials} openDelay={150} closeDelay={60}>
+            <HoverCardTrigger asChild>
+              <a
+                href={`#${p.initials.toLowerCase()}`}
+                aria-label={p.name}
+                className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Avatar className="size-8 ring-2 ring-surface">
+                  <Face person={p} />
+                </Avatar>
+              </a>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-64" side="top">
+              <div className="flex gap-3">
+                <Avatar className="size-11">
+                  <Face person={p} />
+                </Avatar>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold">{p.name}</p>
+                  <p className="text-xs text-muted-foreground">{p.role}</p>
+                  <p className="flex items-center gap-1 pt-1 text-xs text-muted-foreground">
+                    <MapPin size={12} />
+                    Lisbon
+                  </p>
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+        ))}
+      </div>
+      <span className="text-xs text-muted-foreground">4 people liked this</span>
+    </div>
+  )
+}
+function StepperDemo() {
+  const [seats, setSeats] = useState(12)
+  return (
+    <Stack>
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="text-[13px] font-medium">Seats</p>
+          <p className="text-xs text-muted-foreground">
+            ${(seats * 8).toLocaleString()} per month
+          </p>
+        </div>
+        <NumberStepper
+          aria-label="Seats"
+          value={seats}
+          onValueChange={setSeats}
+          min={1}
+          max={250}
+        />
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Hold a button to change faster.
+      </p>
+    </Stack>
+  )
+}
+function ShimmerDemo() {
+  const phrases = ['Reading files…', 'Checking tokens…', 'Writing summary…']
+  const [index, setIndex] = useState(0)
+  return (
+    <Stack>
+      <div className="flex items-center gap-2 text-[13px]" role="status">
+        <Loader2 className="size-4 animate-spin text-muted-foreground" />
+        <ShimmerText>{phrases[index]}</ShimmerText>
+      </div>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => setIndex((index + 1) % phrases.length)}
+      >
+        Next step
+      </Button>
+    </Stack>
   )
 }
 export const specimens: Specimen[] = [
@@ -716,26 +973,20 @@ export const specimens: Specimen[] = [
           ))}
         </Row>
         <div className="flex items-center gap-3">
-          <div className="flex -space-x-1">
+          <AvatarGroup className="-space-x-1">
             {people.map((p) => (
               <Avatar
                 key={p.initials}
-                className="size-9 ring-2 ring-[var(--stage)] transition-transform duration-300 hover:z-10 hover:-translate-y-1"
+                name={p.name}
+                className="size-9 ring-2 ring-[var(--stage)]"
               >
-                <AvatarFallback
-                  className="text-[11px] text-white"
-                  style={{
-                    background: `linear-gradient(145deg, ${p.from}, ${p.to})`,
-                  }}
-                >
-                  {p.initials}
-                </AvatarFallback>
+                <Face person={p} />
               </Avatar>
             ))}
             <Avatar className="size-9 ring-2 ring-[var(--stage)]">
               <AvatarFallback className="text-[11px]">+4</AvatarFallback>
             </Avatar>
-          </div>
+          </AvatarGroup>
           <span className="text-xs text-muted-foreground">8 editors</span>
         </div>
       </Stack>
@@ -813,6 +1064,43 @@ export const specimens: Specimen[] = [
     ),
   },
   {
+    name: 'Tab Bar',
+    category: 'Navigation',
+    detail: 'Icons · label on the chosen tab',
+    render: () => (
+      <Tabs defaultValue="home" className="items-center">
+        <TabsList variant="icons" aria-label="Sections">
+          <TabsTrigger value="home" icon={<House />}>
+            Home
+          </TabsTrigger>
+          <TabsTrigger value="search" icon={<Search />}>
+            Search
+          </TabsTrigger>
+          <TabsTrigger value="inbox" icon={<Inbox />}>
+            Inbox
+          </TabsTrigger>
+          <TabsTrigger value="profile" icon={<UserRound />}>
+            Profile
+          </TabsTrigger>
+        </TabsList>
+        {[
+          ['home', '3 projects updated today'],
+          ['search', 'Search components and tokens'],
+          ['inbox', '2 unread review requests'],
+          ['profile', 'Alex Morgan · Product designer'],
+        ].map(([value, text]) => (
+          <TabsContent
+            key={value}
+            value={value}
+            className="text-center text-xs text-muted-foreground"
+          >
+            {text}
+          </TabsContent>
+        ))}
+      </Tabs>
+    ),
+  },
+  {
     name: 'Slider',
     category: 'Inputs',
     detail: 'Single · range · disabled',
@@ -859,7 +1147,7 @@ export const specimens: Specimen[] = [
     category: 'Data display',
     detail: 'Header · content · footer',
     render: () => (
-      <Card className="w-full">
+      <Card className="w-full" tilt>
         <CardHeader>
           <CardTitle className="text-[15px]">Design review</CardTitle>
           <CardDescription className="text-xs">
@@ -883,20 +1171,17 @@ export const specimens: Specimen[] = [
           <Progress value={72} aria-label="Review progress" />
         </CardContent>
         <CardFooter className="justify-between gap-3">
-          <div className="flex -space-x-1">
+          <AvatarGroup className="-space-x-1">
             {people.slice(0, 3).map((p) => (
-              <Avatar key={p.initials} className="size-8 ring-2 ring-surface">
-                <AvatarFallback
-                  className="text-[10px] text-white"
-                  style={{
-                    background: `linear-gradient(145deg, ${p.from}, ${p.to})`,
-                  }}
-                >
-                  {p.initials}
-                </AvatarFallback>
+              <Avatar
+                key={p.initials}
+                name={p.name}
+                className="size-8 ring-2 ring-surface"
+              >
+                <Face person={p} />
               </Avatar>
             ))}
-          </div>
+          </AvatarGroup>
           <Button size="sm" onClick={() => toast.success('Review opened')}>
             Open
             <ArrowRight />
@@ -1129,39 +1414,13 @@ export const specimens: Specimen[] = [
     name: 'Skeleton',
     category: 'Feedback',
     detail: 'Loading placeholders',
-    render: () => (
-      <div className="w-full space-y-4 rounded-2xl bg-surface p-4 shadow-[var(--material-shadow)]">
-        <div className="flex items-center gap-3">
-          <Skeleton className="size-10 rounded-full" />
-          <div className="flex-1 space-y-2">
-            <Skeleton className="h-3 w-2/3 rounded-full" />
-            <Skeleton className="h-3 w-1/3 rounded-full" />
-          </div>
-        </div>
-        <Skeleton className="h-24 w-full rounded-xl" />
-        <div className="flex gap-2">
-          <Skeleton className="h-7 w-16 rounded-full" />
-          <Skeleton className="h-7 w-20 rounded-full" />
-        </div>
-      </div>
-    ),
+    render: () => <SkeletonDemo />,
   },
   {
     name: 'Input OTP',
     category: 'Inputs',
-    detail: 'Six-digit verification',
-    render: () => (
-      <Stack>
-        <Label htmlFor="otp">Verification code</Label>
-        <InputOTP id="otp" maxLength={6}>
-          <InputOTPGroup>
-            {[0, 1, 2, 3, 4, 5].map((i) => (
-              <InputOTPSlot key={i} index={i} />
-            ))}
-          </InputOTPGroup>
-        </InputOTP>
-      </Stack>
-    ),
+    detail: 'Six-digit verification · wrong code',
+    render: () => <OtpDemo />,
   },
   {
     name: 'Combobox',
@@ -1300,37 +1559,7 @@ export const specimens: Specimen[] = [
     name: 'Hover Card',
     category: 'Overlays',
     detail: 'Profile preview',
-    render: () => (
-      <HoverCard openDelay={150}>
-        <HoverCardTrigger asChild>
-          <Button variant="link">@alexmorgan</Button>
-        </HoverCardTrigger>
-        <HoverCardContent className="w-72">
-          <div className="flex gap-3">
-            <Avatar className="size-11">
-              <AvatarFallback
-                className="text-white"
-                style={{
-                  background: `linear-gradient(145deg, ${people[0].from}, ${people[0].to})`,
-                }}
-              >
-                AM
-              </AvatarFallback>
-            </Avatar>
-            <div className="space-y-1">
-              <p className="text-sm font-semibold">Alex Morgan</p>
-              <p className="text-xs text-muted-foreground">
-                Product designer. Builds the components you are looking at.
-              </p>
-              <p className="flex items-center gap-1 pt-1 text-xs text-muted-foreground">
-                <MapPin size={12} />
-                Lisbon
-              </p>
-            </div>
-          </div>
-        </HoverCardContent>
-      </HoverCard>
-    ),
+    render: () => <HoverCardDemo />,
   },
   {
     name: 'Context Menu',
@@ -1508,10 +1737,15 @@ export const specimens: Specimen[] = [
     detail: 'Draggable panels',
     render: () => (
       <ResizablePanelGroup orientation="horizontal" className="min-h-40">
-        <ResizablePanel defaultSize="40%" minSize="20%">
+        <ResizablePanel
+          defaultSize="40%"
+          minSize="25%"
+          collapsible
+          collapsedSize="0%"
+        >
           <div className="panel-label">
             Sidebar
-            <span>drag the handle</span>
+            <span>drag past the edge to fold</span>
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
@@ -1585,29 +1819,27 @@ export const specimens: Specimen[] = [
   {
     name: 'Aspect Ratio',
     category: 'Layout',
-    detail: '16 : 9',
-    render: () => (
-      <div className="w-full">
-        <AspectRatio ratio={16 / 9} className="ratio-art">
-          <div />
-          <span>16 : 9</span>
-        </AspectRatio>
-      </div>
-    ),
+    detail: 'Crop · same area in every shape',
+    render: () => <AspectDemo />,
   },
   {
     name: 'Carousel',
     category: 'Data display',
     detail: 'Previous · next · swipe',
     render: () => (
-      <Carousel className="mx-10 w-[calc(100%-5rem)]">
+      <Carousel
+        className="mx-10 w-[calc(100%-5rem)]"
+        opts={{ loop: true, align: 'center' }}
+      >
         <CarouselContent>
           {[
             ['01', 'Materials', 'linear-gradient(145deg, #ffb27a, #f76b15)'],
             ['02', 'Motion', 'linear-gradient(145deg, #3a2a20, #1a1310)'],
             ['03', 'Tokens', 'linear-gradient(145deg, #f5b3a1, #c2410c)'],
+            ['04', 'Type', 'linear-gradient(145deg, #e8d5c4, #9c7a5e)'],
+            ['05', 'Icons', 'linear-gradient(145deg, #fcd9a8, #e89a3c)'],
           ].map(([n, label, bg]) => (
-            <CarouselItem key={n}>
+            <CarouselItem key={n} className="basis-[72%]">
               <div className="slide-card" style={{ background: bg }}>
                 <span>{label}</span>
                 <strong>{n}</strong>
@@ -1619,6 +1851,45 @@ export const specimens: Specimen[] = [
         <CarouselNext />
       </Carousel>
     ),
+  },
+  {
+    name: 'Copy Field',
+    category: 'Actions',
+    detail: 'Copy a link or key',
+    render: () => (
+      <Stack>
+        <p className="text-[13px] font-medium">Invite link</p>
+        <CopyField
+          value="https://example.com/invite/7Hq2-Lk9P"
+          label="Copy invite link"
+        />
+      </Stack>
+    ),
+  },
+  {
+    name: 'Slide to Confirm',
+    category: 'Actions',
+    detail: 'Deliberate, hard-to-trigger actions',
+    render: () => (
+      <SlideToConfirm
+        label="Slide to publish"
+        confirmedLabel="Published"
+        resetAfter={2400}
+        onConfirm={() => toast.success('Release published')}
+      />
+    ),
+  },
+  {
+    name: 'Number Stepper',
+    category: 'Inputs',
+    detail: 'Exact counts · hold to repeat',
+    render: () => <StepperDemo />,
+  },
+  {
+    name: 'Shimmer Text',
+    category: 'Feedback',
+    detail: 'Status line while work runs',
+    render: () => <ShimmerDemo />,
   },
 ]
 export function slug(name: string) {

@@ -1,15 +1,49 @@
 import * as React from 'react'
 import { cn } from 'cn'
 
+// With `tilt`, the card sinks under the pointer instead of rising to meet
+// it, with light catching the far edge. Fine pointers only.
+function tiltTo(event: React.PointerEvent<HTMLDivElement>) {
+  if (event.pointerType !== 'mouse') return
+  const card = event.currentTarget
+  const rect = card.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width - 0.5
+  const y = (event.clientY - rect.top) / rect.height - 0.5
+  card.style.setProperty('--tilt-x', (y * 7).toFixed(2))
+  card.style.setProperty('--tilt-y', (-x * 7).toFixed(2))
+  card.style.setProperty('--light-x', `${((0.5 - x) * 100).toFixed(1)}%`)
+  card.style.setProperty('--light-y', `${((0.5 - y) * 100).toFixed(1)}%`)
+}
+function tiltReset(event: React.PointerEvent<HTMLDivElement>) {
+  const card = event.currentTarget
+  card.style.setProperty('--tilt-x', '0')
+  card.style.setProperty('--tilt-y', '0')
+}
+
 function Card({
   className,
   size = 'default',
+  tilt = false,
+  onPointerMove,
+  onPointerLeave,
   ...props
-}: React.ComponentProps<'div'> & { size?: 'default' | 'sm' }) {
+}: React.ComponentProps<'div'> & {
+  size?: 'default' | 'sm'
+  tilt?: boolean
+}) {
   return (
     <div
       data-slot="card"
       data-size={size}
+      data-tilt={tilt || undefined}
+      onPointerMove={(event) => {
+        if (tilt) tiltTo(event)
+        onPointerMove?.(event)
+      }}
+      onPointerLeave={(event) => {
+        if (tilt) tiltReset(event)
+        onPointerLeave?.(event)
+      }}
       className={cn(
         'group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl',
         className,

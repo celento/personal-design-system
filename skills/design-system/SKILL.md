@@ -76,7 +76,11 @@ radii, shadows, and states.
   `Drawer` instead of a `Dialog` for forms on phones. No sideways scroll.
 - Motion: under 300ms (sheets and drawers 400ms), ease-out, only
   `transform` and `opacity`. Nothing loops except loading indicators.
-  Respect reduced motion.
+  Respect reduced motion. The components carry their own interaction
+  motion (stretching tab indicator, ticking progress, rolling digits,
+  floating labels); use them as shipped and don't add more on top.
+- Fields: pass `label` to `Input` for a floating label, or put a `Label`
+  above it. Never use the placeholder as the label.
 - Dark mode works everywhere via the `.dark` class and tokens.
 - Components in the Special category (glows, animated borders, metal) are
   only for explicit requests.

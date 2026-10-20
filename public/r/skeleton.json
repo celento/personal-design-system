@@ -2,14 +2,14 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "skeleton",
   "title": "Skeleton",
-  "description": "Placeholder shaped like content that is loading.",
+  "description": "Placeholder shaped like content that is loading. SkeletonReveal eases the real content in.",
   "dependencies": [
     "cn@^0.4.0"
   ],
   "files": [
     {
       "path": "src/components/ui/skeleton.tsx",
-      "content": "import { cn } from 'cn'\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn('animate-pulse rounded-md bg-muted', className)}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n",
+      "content": "import { cn } from 'cn'\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn('animate-pulse rounded-md bg-muted', className)}\n      {...props}\n    />\n  )\n}\n\n// Wraps content that replaces a skeleton. Pieces ease up out of a soft blur\n// top to bottom, in `order`.\nfunction SkeletonReveal({\n  className,\n  order = 0,\n  style,\n  ...props\n}: React.ComponentProps<'div'> & { order?: number }) {\n  return (\n    <div\n      data-slot=\"skeleton-reveal\"\n      className={className}\n      style={{ '--order': order, ...style } as React.CSSProperties}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton, SkeletonReveal }\n",
       "type": "registry:ui"
     }
   ],

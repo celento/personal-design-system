@@ -9,7 +9,7 @@ test('renders the gallery without browser errors or horizontal overflow', async 
   await expect(
     page.getByRole('heading', { name: 'Components', exact: true }),
   ).toBeVisible()
-  await expect(page.locator('.specimen')).toHaveCount(49)
+  await expect(page.locator('.specimen')).toHaveCount(54)
   expect(await page.evaluate(() => window.scrollY)).toBe(0)
   expect(
     await page.evaluate(
@@ -35,7 +35,7 @@ test('search and category filters return relevant components and recover from em
     page.getByRole('heading', { name: 'No components found' }),
   ).toBeVisible()
   await page.getByRole('button', { name: 'Clear filters' }).click()
-  await expect(page.locator('.specimen')).toHaveCount(49)
+  await expect(page.locator('.specimen')).toHaveCount(54)
   await page.getByRole('button', { name: /^Overlays/ }).click()
   await expect(page.locator('.specimen')).toHaveCount(9)
 })
@@ -110,6 +110,41 @@ test('selection, combobox, tabs, progress, pagination, and form work', async ({
     .fill('sam@example.com')
   await page.locator('#form').getByRole('button', { name: 'Submit' }).click()
   await expect(page.getByText('Form submitted', { exact: true })).toBeVisible()
+})
+
+test('stepper, slide to confirm, code entry, and tab bar work from the keyboard', async ({
+  page,
+}) => {
+  await page.goto('/')
+  const seats = page.getByRole('spinbutton', { name: 'Seats' })
+  await seats.focus()
+  await page.keyboard.press('ArrowUp')
+  await page.keyboard.press('ArrowUp')
+  await expect(seats).toHaveAttribute('aria-valuenow', '14')
+  await page.keyboard.press('Home')
+  await expect(seats).toHaveAttribute('aria-valuenow', '1')
+  await expect(page.getByRole('button', { name: 'Decrease' })).toBeDisabled()
+
+  await page.getByRole('button', { name: 'Slide to publish' }).focus()
+  await page.keyboard.press('Enter')
+  await expect(
+    page.getByText('Release published', { exact: true }),
+  ).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Published' })).toBeDisabled()
+
+  const code = page.locator('#otp')
+  await code.fill('111111')
+  await expect(
+    page.getByText("That code didn't match.", { exact: false }),
+  ).toBeVisible()
+  await code.fill('428193')
+  await expect(page.getByText('Code accepted', { exact: true })).toBeVisible()
+
+  await page.getByRole('tab', { name: 'Inbox' }).click()
+  await expect(page.getByText('2 unread review requests')).toBeVisible()
+  await expect(
+    page.locator('#input').getByRole('textbox', { name: 'Email', exact: true }),
+  ).toBeVisible()
 })
 
 test('foundations and navigation are available at each viewport', async ({

@@ -1,5 +1,7 @@
 import * as React from 'react'
+import { motion } from 'motion/react'
 import { cn } from 'cn'
+import { useMotionSettings } from '@/lib/motion'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -8,7 +10,14 @@ import {
   MoreHorizontalIcon,
 } from 'lucide-react'
 
-function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
+const PaginationContext = React.createContext('')
+
+function Pagination({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'nav'>) {
+  const id = React.useId()
   return (
     <nav
       role="navigation"
@@ -16,7 +25,11 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
       data-slot="pagination"
       className={cn('mx-auto flex w-full justify-center', className)}
       {...props}
-    />
+    >
+      <PaginationContext.Provider value={id}>
+        {children}
+      </PaginationContext.Provider>
+    </nav>
   )
 }
 
@@ -42,25 +55,47 @@ type PaginationLinkProps = {
 } & Pick<React.ComponentProps<typeof Button>, 'size'> &
   React.ComponentProps<'a'>
 
+// The current page's fill slides to the new page on a spring with a little
+// overshoot instead of jumping.
 function PaginationLink({
   className,
   isActive,
   size = 'icon',
+  children,
   ...props
 }: PaginationLinkProps) {
+  const id = React.useContext(PaginationContext)
+  const { enabled } = useMotionSettings()
   return (
     <Button
       asChild
       variant={isActive ? 'outline' : 'ghost'}
       size={size}
-      className={cn(className)}
+      className={cn('relative', className)}
     >
       <a
         aria-current={isActive ? 'page' : undefined}
         data-slot="pagination-link"
         data-active={isActive}
         {...props}
-      />
+      >
+        {isActive && size === 'icon' && (
+          <motion.span
+            data-slot="pagination-indicator"
+            layoutId={`pagination-${id}`}
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full"
+            transition={
+              enabled
+                ? { type: 'spring', duration: 0.4, bounce: 0.25 }
+                : { duration: 0 }
+            }
+          />
+        )}
+        <span className="relative inline-flex items-center gap-1">
+          {children}
+        </span>
+      </a>
     </Button>
   )
 }

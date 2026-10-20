@@ -339,14 +339,23 @@ Tokens in `tokens.css`: `--duration-micro` 100ms, `--duration-quick` 150ms,
 | Sheet and drawer          | 400ms in, 250ms out              | drawer curve | Slide from the edge                                    |
 | Toggle, switch, checkbox  | 150 to 200ms                     | ease-out     | Thumb or check only                                    |
 | List entrance             | 300ms, 30ms stagger, max 8 items | ease-out     | Fade + 12px rise                                       |
-| Tab or segment indicator  | Spring, no bounce, about 300ms   | spring       | Position                                               |
+| Tab or segment indicator  | Spring, about 300ms              | spring       | Leading edge first, trailing edge catches up           |
+| Floating label            | 250ms, 16ms letter stagger       | ease-out     | Label lifts into the top edge; letters hop on focus    |
+| Progress ticks            | 250ms, 14ms stagger              | ease-out     | Ticks light in order from the old value                |
+| Number stepper digits     | 320ms                            | ease-out     | Only the changing digit columns roll                   |
+| Accordion answer          | 250ms, 12ms word stagger         | ease-out     | Words rise out of a slight blur; plus turns to a cross |
 
 Rules:
 
 - **Don't animate things people do many times a minute** (typing, keyboard
   shortcuts, opening the command palette, switching rows with arrow keys).
 - **Never `ease-in` for UI**, never animate from `scale(0)`, never animate
-  width, height, top, or left. Animate `transform` and `opacity`.
+  width, height, top, or left. Animate `transform` and `opacity`. The
+  exceptions are inside the components (tab indicator width, tab label
+  reveal) and are already tuned; don't copy them elsewhere.
+- **Use the motion the components ship with.** Don't add more on top of
+  it, and don't build your own version of an interaction a component
+  already has.
 - **Keep UI motion under 300ms.** Only sheets and drawers go longer.
 - **Menus grow from their trigger**, not from the center. Dialogs stay
   centered.
@@ -395,6 +404,8 @@ Pick with these rules before reaching for anything custom.
 | Deleting or other destructive actions | `Button variant="destructive"`. Add a confirmation only if it can't be undone. |
 | Inline navigation in text             | `Button variant="link"` or a plain link                                        |
 | On/off formatting or view options     | `Toggle` or `ToggleGroup`                                                      |
+| Copying a link, key, or command       | `CopyField`                                                                    |
+| A deliberate action, such as publish  | `SlideToConfirm`. Not for destructive actions; those use `AlertDialog`.        |
 
 ### Inputs
 
@@ -408,6 +419,7 @@ Pick with these rules before reaching for anything custom.
 | On/off that applies immediately                                | `Switch`                                                                                    |
 | On/off that is submitted with a form, or agreeing to something | `Checkbox`                                                                                  |
 | Approximate number in a range                                  | `Slider`, always with the value shown                                                       |
+| An exact count, such as seats or quantity                      | `NumberStepper`                                                                             |
 | A date                                                         | Date picker (`Popover` + `Calendar`); `Calendar` inline only when the date is the main task |
 | Verification codes                                             | `InputOTP`                                                                                  |
 
@@ -437,6 +449,7 @@ Pick with these rules before reaching for anything custom.
 | An invalid field                                                   | `aria-invalid` on the field and 12px text under it. Never a toast. |
 | Loading content for the first time                                 | `Skeleton` shaped like the content                                 |
 | Known progress                                                     | `Progress` with the value shown                                    |
+| A status line while a job or assistant works                       | `ShimmerText`, with the current step ("Reading files…")            |
 | Nothing to show yet                                                | Empty state (see below)                                            |
 
 ### Showing data
@@ -447,7 +460,7 @@ Pick with these rules before reaching for anything custom.
 | One object with its details and actions     | `Card`                                                          |
 | Status of an item                           | `Badge` with a static dot. One badge per row is usually enough. |
 | A person                                    | `Avatar` with initials fallback                                 |
-| Switching between views of the same thing   | `Tabs`                                                          |
+| Switching between views of the same thing   | `Tabs`; `TabsList variant="icons"` for a compact tab bar        |
 | Showing and hiding secondary detail         | `Accordion` (several sections) or `Collapsible` (one)           |
 | Many pages of results                       | `Pagination`                                                    |
 | Where the user is in a hierarchy            | `Breadcrumb`, only when there are 3+ levels                     |
@@ -459,10 +472,48 @@ Put an icon before the label for actions (`<Plus /> New project`) and after it
 only for direction (`Continue <ArrowRight />`). While a request runs, disable
 the button, show `<Loader2 className="animate-spin" />`, and keep the label.
 
-**Fields.** Every field has a visible `Label` above it. Placeholder text shows
-an example ("you@example.com"), never the label. Leading icons use the
-`.input-icon` pattern with `pl-9`. Helper and error text is 12px, 8px below the
-field.
+**Fields.** Every field has a visible label. Either pass `label` to `Input`,
+which rests inside the field and lifts into its top edge on focus or once
+there is a value, or put a `Label` above the field. Placeholder text shows an
+example ("you@example.com"), never the label, and only appears once a
+floating label has lifted. Leading icons use the `.input-icon` pattern with
+`pl-9` and a `Label` above, not a floating label. Helper and error text is
+12px, 8px below the field.
+
+**Checkbox.** The check draws itself. In a task list, add `data-strike` to the
+`Label` that follows the checkbox and it is crossed out when checked.
+
+**Slider.** `variant="bars"` draws the track as thin bars with no visible
+thumb; dragging quickly lifts the bars the pointer sweeps past. Use it for a
+single prominent value such as volume. Ranges keep the default variant.
+
+**Progress.** A row of ticks. When the value changes, ticks light one after
+another from the old value toward the new one. Always show the number.
+
+**Number stepper.** Tap for one step, hold to repeat faster the longer it is
+held. Arrow keys, Page Up/Down, Home, and End work on the number. Give it an
+`aria-label`.
+
+**Copy field.** Shows the value in monospace with a copy button. The icon
+turns into a check and a screen reader hears "Copied to clipboard". If the
+clipboard is unavailable, nothing changes.
+
+**Slide to confirm.** The handle follows the finger; past 80% it finishes on
+its own, short of 60% it springs back. Enter or Space confirms from the
+keyboard. Use `resetAfter` when the action can be repeated.
+
+**Shimmer text.** A loading indicator, so it loops. Keep the text to the
+current step, and put it in a `role="status"` region.
+
+**Avatar group.** Give each `Avatar` a `name`. Pointing along the group lifts
+the nearest faces and slides one name label between them. Names are also the
+avatars' accessible names, so the label is never the only place they live.
+
+**Card.** `tilt` makes the card sink under a mouse pointer with light on the
+far edge. Use it on one featured card at most, never on a grid of cards.
+
+**Select.** Opens out of the chosen value: the list unclips from the selected
+row over the trigger and the other options spring out above and below it.
 
 **Forms.** One column. Primary action at the bottom, left-aligned in pages and
 right-aligned in dialog footers, with Cancel to its left. Validate on submit
@@ -497,7 +548,10 @@ the space the content would fill.
 
 **Tabs and segmented controls.** Pill container on `--secondary`, active
 segment on `--surface` with the raised shadow. Up to 5 options; beyond that,
-use a `Select`.
+use a `Select`. The indicator stretches across both tabs as it moves. For a
+compact tab bar, use `TabsList variant="icons"` and pass `icon` to each
+`TabsTrigger`; only the chosen tab shows its name. Pressing a `ToggleGroup`
+item briefly shoves its neighbours aside.
 
 **Icons.** `lucide-react` only. 16px in buttons and menus, 15px in fields
 (18px on touch), 20px in empty states, default stroke. Icons sit in

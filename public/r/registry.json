@@ -87,6 +87,10 @@
           "type": "registry:ui"
         },
         {
+          "path": "src/components/ui/copy-field.tsx",
+          "type": "registry:ui"
+        },
+        {
           "path": "src/components/ui/dialog.tsx",
           "type": "registry:ui"
         },
@@ -127,6 +131,10 @@
           "type": "registry:ui"
         },
         {
+          "path": "src/components/ui/number-stepper.tsx",
+          "type": "registry:ui"
+        },
+        {
           "path": "src/components/ui/pagination.tsx",
           "type": "registry:ui"
         },
@@ -163,7 +171,15 @@
           "type": "registry:ui"
         },
         {
+          "path": "src/components/ui/shimmer-text.tsx",
+          "type": "registry:ui"
+        },
+        {
           "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/slide-to-confirm.tsx",
           "type": "registry:ui"
         },
         {
@@ -408,7 +424,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "accordion",
       "title": "Accordion",
-      "description": "Several expandable sections.",
+      "description": "Several expandable sections. A plus turns into a cross and plain-text answers ease in a word at a time.",
       "dependencies": [
         "cn@^0.4.0",
         "lucide-react@^1.48.0",
@@ -417,6 +433,24 @@
       "files": [
         {
           "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "alert",
+      "title": "Alert",
+      "description": "Persistent message in the page for problems the user must fix.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
           "type": "registry:ui"
         }
       ],
@@ -448,24 +482,6 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-      "name": "alert",
-      "title": "Alert",
-      "description": "Persistent message in the page for problems the user must fix.",
-      "dependencies": [
-        "class-variance-authority@^0.7.1",
-        "cn@^0.4.0"
-      ],
-      "files": [
-        {
-          "path": "src/components/ui/alert.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
-      "type": "registry:ui"
-    },
-    {
-      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "aspect-ratio",
       "title": "Aspect Ratio",
       "description": "Keeps media at a fixed ratio.",
@@ -485,15 +501,24 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "avatar",
       "title": "Avatar",
-      "description": "A person, with an initials fallback.",
+      "description": "A person, with an initials fallback. AvatarGroup lifts faces near the pointer and slides one name label between them.",
       "dependencies": [
         "cn@^0.4.0",
+        "motion@^13.4.3",
         "radix-ui@^1.6.7"
       ],
       "files": [
         {
           "path": "src/components/ui/avatar.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
         }
       ],
       "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
@@ -585,7 +610,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "card",
       "title": "Card",
-      "description": "One object with its details and actions.",
+      "description": "One object with its details and actions. `tilt` makes it sink under the pointer.",
       "dependencies": [
         "cn@^0.4.0"
       ],
@@ -602,12 +627,13 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "carousel",
       "title": "Carousel",
-      "description": "Horizontally paged content with previous and next controls.",
+      "description": "Horizontally paged content on a turntable: off-centre slides turn away and recede.",
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.4.0",
         "embla-carousel-react@^8.6.0",
         "lucide-react@^1.48.0",
+        "motion@^13.4.3",
         "radix-ui@^1.6.7"
       ],
       "files": [
@@ -618,6 +644,14 @@
         {
           "path": "src/components/ui/carousel.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
         }
       ],
       "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
@@ -627,10 +661,9 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "checkbox",
       "title": "Checkbox",
-      "description": "On/off submitted with a form.",
+      "description": "On/off submitted with a form. The check draws itself; a label with data-strike is crossed out.",
       "dependencies": [
         "cn@^0.4.0",
-        "lucide-react@^1.48.0",
         "radix-ui@^1.6.7"
       ],
       "files": [
@@ -721,6 +754,23 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "copy-field",
+      "title": "Copy Field",
+      "description": "A value with a copy button whose icon turns into a check.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/copy-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "dialog",
       "title": "Dialog",
       "description": "Short focused task that blocks the page.",
@@ -800,6 +850,23 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input",
+      "title": "Input",
+      "description": "Short text field. With `label`, the label rests inside and lifts into the top edge on focus.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "input-group",
       "title": "Input Group",
       "description": "Input or textarea with attached buttons or addons.",
@@ -833,7 +900,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "input-otp",
       "title": "Input Otp",
-      "description": "Verification code entry.",
+      "description": "Verification code entry. Digits land with a small swell; aria-invalid on the slots shakes the row.",
       "dependencies": [
         "cn@^0.4.0",
         "input-otp@^1.5.0",
@@ -842,23 +909,6 @@
       "files": [
         {
           "path": "src/components/ui/input-otp.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
-      "type": "registry:ui"
-    },
-    {
-      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-      "name": "input",
-      "title": "Input",
-      "description": "Short text field.",
-      "dependencies": [
-        "cn@^0.4.0"
-      ],
-      "files": [
-        {
-          "path": "src/components/ui/input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -924,13 +974,32 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "number-stepper",
+      "title": "Number Stepper",
+      "description": "Exact counts between a minus and a plus, with rolling digits and hold to repeat.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "lucide-react@^1.48.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/number-stepper.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "pagination",
       "title": "Pagination",
-      "description": "Many pages of results.",
+      "description": "Many pages of results. The current page fill slides between pages.",
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.4.0",
         "lucide-react@^1.48.0",
+        "motion@^13.4.3",
         "radix-ui@^1.6.7"
       ],
       "files": [
@@ -941,6 +1010,14 @@
         {
           "path": "src/components/ui/pagination.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
         }
       ],
       "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
@@ -968,7 +1045,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "progress",
       "title": "Progress",
-      "description": "Known progress with the value shown.",
+      "description": "Known progress with the value shown, drawn as ticks that light in sequence.",
       "dependencies": [
         "cn@^0.4.0",
         "radix-ui@^1.6.7"
@@ -1040,7 +1117,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "select",
       "title": "Select",
-      "description": "One choice from about 6 to 15 options.",
+      "description": "One choice from about 6 to 15 options. Opens out of the chosen value.",
       "dependencies": [
         "cn@^0.4.0",
         "lucide-react@^1.48.0",
@@ -1099,9 +1176,26 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "shimmer-text",
+      "title": "Shimmer Text",
+      "description": "Loading status line with a sweeping band of ink.",
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/shimmer-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "skeleton",
       "title": "Skeleton",
-      "description": "Placeholder shaped like content that is loading.",
+      "description": "Placeholder shaped like content that is loading. SkeletonReveal eases the real content in.",
       "dependencies": [
         "cn@^0.4.0"
       ],
@@ -1116,17 +1210,53 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-      "name": "slider",
-      "title": "Slider",
-      "description": "Approximate number in a range, with the value shown.",
+      "name": "slide-to-confirm",
+      "title": "Slide To Confirm",
+      "description": "A handle pushed across a track for deliberate actions such as publishing.",
       "dependencies": [
         "cn@^0.4.0",
+        "lucide-react@^1.48.0",
+        "motion@^13.4.3"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slide-to-confirm.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "slider",
+      "title": "Slider",
+      "description": "Approximate number in a range, with the value shown. `variant=\"bars\"` is a thumbless bar slider that lifts in a wake when dragged fast.",
+      "dependencies": [
+        "cn@^0.4.0",
+        "motion@^13.4.3",
         "radix-ui@^1.6.7"
       ],
       "files": [
         {
           "path": "src/components/ui/slider.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
         }
       ],
       "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
@@ -1154,7 +1284,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "switch",
       "title": "Switch",
-      "description": "On/off that applies immediately.",
+      "description": "On/off that applies immediately. The thumb stretches toward where it is going.",
       "dependencies": [
         "cn@^0.4.0",
         "radix-ui@^1.6.7"
@@ -1189,7 +1319,7 @@
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "tabs",
       "title": "Tabs",
-      "description": "Switch between views of the same thing.",
+      "description": "Switch between views of the same thing. The indicator stretches across tabs as it moves; `variant=\"icons\"` shows the name only on the chosen tab.",
       "dependencies": [
         "class-variance-authority@^0.7.1",
         "cn@^0.4.0",
@@ -1232,29 +1362,6 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-      "name": "toggle-group",
-      "title": "Toggle Group",
-      "description": "Segmented on/off options such as formatting or filters.",
-      "dependencies": [
-        "class-variance-authority@^0.7.1",
-        "cn@^0.4.0",
-        "radix-ui@^1.6.7"
-      ],
-      "files": [
-        {
-          "path": "src/components/ui/toggle-group.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/toggle.tsx",
-          "type": "registry:ui"
-        }
-      ],
-      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
-      "type": "registry:ui"
-    },
-    {
-      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "toggle",
       "title": "Toggle",
       "description": "Single on/off button.",
@@ -1267,6 +1374,38 @@
         {
           "path": "src/components/ui/toggle.tsx",
           "type": "registry:ui"
+        }
+      ],
+      "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+      "type": "registry:ui"
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toggle-group",
+      "title": "Toggle Group",
+      "description": "Segmented on/off options such as formatting or filters. A press shoves neighbours aside.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "motion@^13.4.3",
+        "radix-ui@^1.6.7"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/theme.ts",
+          "type": "registry:lib"
         }
       ],
       "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",

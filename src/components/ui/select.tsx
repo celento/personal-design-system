@@ -56,16 +56,43 @@ function SelectTrigger({
   )
 }
 
+// The list opens out of the chosen value: it starts as the selected row
+// sitting over the trigger, and the other options spring out above and
+// below it.
+function unfoldFromValue(content: HTMLDivElement | null) {
+  if (!content) return
+  const items = [
+    ...content.querySelectorAll<HTMLElement>('[data-slot="select-item"]'),
+  ]
+  const at = Math.max(
+    0,
+    items.findIndex((item) => item.dataset.state === 'checked'),
+  )
+  items.forEach((item, i) => item.style.setProperty('--fold', String(i - at)))
+  const chosen = items[at]
+  if (!chosen) return
+  const box = content.getBoundingClientRect()
+  const row = chosen.getBoundingClientRect()
+  content.style.setProperty('--clip-top', `${row.top - box.top}px`)
+  content.style.setProperty('--clip-bottom', `${box.bottom - row.bottom}px`)
+}
+
 function SelectContent({
   className,
   children,
   position = 'item-aligned',
   align = 'center',
+  ref,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        ref={(node) => {
+          unfoldFromValue(node)
+          if (typeof ref === 'function') ref(node)
+          else if (ref) ref.current = node
+        }}
         data-slot="select-content"
         data-align-trigger={position === 'item-aligned'}
         className={cn(

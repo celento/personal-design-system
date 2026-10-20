@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shimmer-text",
+  "title": "Shimmer Text",
+  "description": "Loading status line with a sweeping band of ink.",
+  "dependencies": [
+    "cn@^0.4.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/shimmer-text.tsx",
+      "content": "import * as React from 'react'\nimport { cn } from 'cn'\n\n// Loading text with a band of ink sweeping across it on a loop. For short\n// status lines while something works, like \"Reading files…\".\nfunction ShimmerText({ className, ...props }: React.ComponentProps<'span'>) {\n  return (\n    <span\n      data-slot=\"shimmer-text\"\n      className={cn('inline-block', className)}\n      {...props}\n    />\n  )\n}\n\nexport { ShimmerText }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Needs the tokens and styles from https://raw.githubusercontent.com/celento/personal-design-system/main/public/r/design-system.json. Install that first if the project doesn't have it.",
+  "type": "registry:ui"
+}

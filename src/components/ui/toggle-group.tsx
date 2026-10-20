@@ -4,6 +4,7 @@ import { cn } from 'cn'
 import { ToggleGroup as ToggleGroupPrimitive } from 'radix-ui'
 
 import { toggleVariants } from '@/components/ui/toggle'
+import { useMotionSettings } from '@/lib/motion'
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants> & {
@@ -17,6 +18,34 @@ const ToggleGroupContext = React.createContext<
   orientation: 'horizontal',
 })
 
+// Pressing an item swells it and shoves its neighbours aside, hardest next
+// to it and barely at all at the ends, before everything settles back.
+function nudge(group: HTMLElement, pressed: HTMLElement, vertical: boolean) {
+  const items = [
+    ...group.querySelectorAll<HTMLElement>('[data-slot="toggle-group-item"]'),
+  ]
+  const at = items.indexOf(pressed)
+  if (at < 0) return
+  const options = { duration: 320, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+  pressed.animate(
+    [{ scale: '0.92' }, { scale: '1.08', offset: 0.45 }, { scale: '1' }],
+    options,
+  )
+  items.forEach((item, i) => {
+    if (i === at) return
+    const push = (Math.sign(i - at) * 5) / Math.abs(i - at)
+    const shift = vertical ? `0 ${push}px` : `${push}px 0`
+    item.animate(
+      [
+        { translate: '0 0' },
+        { translate: shift, offset: 0.4 },
+        { translate: '0 0' },
+      ],
+      options,
+    )
+  })
+}
+
 function ToggleGroup({
   className,
   variant,
@@ -24,14 +53,24 @@ function ToggleGroup({
   spacing = 2,
   orientation = 'horizontal',
   children,
+  onPointerDown,
   ...props
 }: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
   VariantProps<typeof toggleVariants> & {
     spacing?: number
     orientation?: 'horizontal' | 'vertical'
   }) {
+  const { enabled } = useMotionSettings()
   return (
     <ToggleGroupPrimitive.Root
+      onPointerDown={(event) => {
+        const item = (event.target as HTMLElement).closest<HTMLElement>(
+          '[data-slot="toggle-group-item"]:not(:disabled)',
+        )
+        if (enabled && item)
+          nudge(event.currentTarget, item, orientation === 'vertical')
+        onPointerDown?.(event)
+      }}
       data-slot="toggle-group"
       data-variant={variant}
       data-size={size}

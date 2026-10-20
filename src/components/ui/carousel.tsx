@@ -5,6 +5,7 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react'
 
 import { Button } from '@/components/ui/button'
+import { useMotionSettings } from '@/lib/motion'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -90,6 +91,37 @@ function Carousel({
     if (!api || !setApi) return
     setApi(api)
   }, [api, setApi])
+
+  // Slides sit on a turntable: each one turns away and recedes by how far
+  // it is from the centre of the viewport.
+  const { enabled } = useMotionSettings()
+  React.useEffect(() => {
+    if (!api) return
+    const turn = () => {
+      const view = api.rootNode().getBoundingClientRect()
+      const horizontal = api.internalEngine().options.axis === 'x'
+      const centre = horizontal
+        ? view.left + view.width / 2
+        : view.top + view.height / 2
+      for (const node of api.slideNodes()) {
+        const box = node.getBoundingClientRect()
+        const size = horizontal ? box.width : box.height
+        const mid = horizontal
+          ? box.left + box.width / 2
+          : box.top + box.height / 2
+        const offset = enabled
+          ? Math.max(-1.5, Math.min(1.5, (mid - centre) / size))
+          : 0
+        node.style.setProperty('--offset', offset.toFixed(3))
+        node.style.setProperty('--distance', Math.abs(offset).toFixed(3))
+      }
+    }
+    turn()
+    api.on('scroll', turn).on('reInit', turn).on('resize', turn)
+    return () => {
+      api.off('scroll', turn).off('reInit', turn).off('resize', turn)
+    }
+  }, [api, enabled])
 
   React.useEffect(() => {
     if (!api) return

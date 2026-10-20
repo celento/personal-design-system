@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "progress",
   "title": "Progress",
-  "description": "Known progress with the value shown.",
+  "description": "Known progress with the value shown, drawn as ticks that light in sequence.",
   "dependencies": [
     "cn@^0.4.0",
     "radix-ui@^1.6.7"
@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "src/components/ui/progress.tsx",
-      "content": "'use client'\n\nimport * as React from 'react'\nimport { cn } from 'cn'\nimport { Progress as ProgressPrimitive } from 'radix-ui'\n\nfunction Progress({\n  className,\n  value,\n  ...props\n}: React.ComponentProps<typeof ProgressPrimitive.Root>) {\n  return (\n    <ProgressPrimitive.Root\n      data-slot=\"progress\"\n      value={value}\n      className={cn(\n        'relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted',\n        className,\n      )}\n      {...props}\n    >\n      <ProgressPrimitive.Indicator\n        data-slot=\"progress-indicator\"\n        className=\"size-full flex-1 bg-primary transition-all\"\n        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}\n      />\n    </ProgressPrimitive.Root>\n  )\n}\n\nexport { Progress }\n",
+      "content": "'use client'\n\nimport * as React from 'react'\nimport { cn } from 'cn'\nimport { Progress as ProgressPrimitive } from 'radix-ui'\n\n// Progress is a row of ticks. When the value changes, the ticks between the\n// old and new value light (or dim) one after another, starting from the\n// old value.\nfunction Progress({\n  className,\n  value,\n  ticks = 32,\n  ...props\n}: React.ComponentProps<typeof ProgressPrimitive.Root> & { ticks?: number }) {\n  const lit = Math.round(((value ?? 0) / 100) * ticks)\n  const [shown, setShown] = React.useState(lit)\n  const [from, setFrom] = React.useState(lit)\n  if (lit !== shown) {\n    setFrom(shown)\n    setShown(lit)\n  }\n  return (\n    <ProgressPrimitive.Root\n      data-slot=\"progress\"\n      value={value}\n      className={cn('relative flex w-full items-center', className)}\n      {...props}\n    >\n      {Array.from({ length: ticks }, (_, i) => {\n        const step = lit >= from ? i - from : from - 1 - i\n        return (\n          <span\n            key={i}\n            data-slot=\"progress-tick\"\n            data-on={i < lit || undefined}\n            style={{ '--step': Math.max(0, step) } as React.CSSProperties}\n          />\n        )\n      })}\n    </ProgressPrimitive.Root>\n  )\n}\n\nexport { Progress }\n",
       "type": "registry:ui"
     }
   ],

@@ -339,14 +339,23 @@ Tokens in `tokens.css`: `--duration-micro` 100ms, `--duration-quick` 150ms,
 | Sheet and drawer          | 400ms in, 250ms out              | drawer curve | Slide from the edge                                    |
 | Toggle, switch, checkbox  | 150 to 200ms                     | ease-out     | Thumb or check only                                    |
 | List entrance             | 300ms, 30ms stagger, max 8 items | ease-out     | Fade + 12px rise                                       |
-| Tab or segment indicator  | Spring, no bounce, about 300ms   | spring       | Position                                               |
+| Tab or segment indicator  | Spring, about 300ms              | spring       | Leading edge first, trailing edge catches up           |
+| Floating label            | 250ms, 16ms letter stagger       | ease-out     | Label lifts into the top edge; letters hop on focus    |
+| Progress ticks            | 250ms, 14ms stagger              | ease-out     | Ticks light in order from the old value                |
+| Number stepper digits     | 320ms                            | ease-out     | Only the changing digit columns roll                   |
+| Accordion answer          | 250ms, 12ms word stagger         | ease-out     | Words rise out of a slight blur; plus turns to a cross |
 
 Rules:
 
 - **Don't animate things people do many times a minute** (typing, keyboard
   shortcuts, opening the command palette, switching rows with arrow keys).
 - **Never `ease-in` for UI**, never animate from `scale(0)`, never animate
-  width, height, top, or left. Animate `transform` and `opacity`.
+  width, height, top, or left. Animate `transform` and `opacity`. The
+  exceptions are inside the components (tab indicator width, tab label
+  reveal) and are already tuned; don't copy them elsewhere.
+- **Use the motion the components ship with.** Don't add more on top of
+  it, and don't build your own version of an interaction a component
+  already has.
 - **Keep UI motion under 300ms.** Only sheets and drawers go longer.
 - **Menus grow from their trigger**, not from the center. Dialogs stay
   centered.
@@ -395,6 +404,8 @@ Pick with these rules before reaching for anything custom.
 | Deleting or other destructive actions | `Button variant="destructive"`. Add a confirmation only if it can't be undone. |
 | Inline navigation in text             | `Button variant="link"` or a plain link                                        |
 | On/off formatting or view options     | `Toggle` or `ToggleGroup`                                                      |
+| Copying a link, key, or command       | `CopyField`                                                                    |
+| A deliberate action, such as publish  | `SlideToConfirm`. Not for destructive actions; those use `AlertDialog`.        |
 
 ### Inputs
 
@@ -408,6 +419,7 @@ Pick with these rules before reaching for anything custom.
 | On/off that applies immediately                                | `Switch`                                                                                    |
 | On/off that is submitted with a form, or agreeing to something | `Checkbox`                                                                                  |
 | Approximate number in a range                                  | `Slider`, always with the value shown                                                       |
+| An exact count, such as seats or quantity                      | `NumberStepper`                                                                             |
 | A date                                                         | Date picker (`Popover` + `Calendar`); `Calendar` inline only when the date is the main task |
 | Verification codes                                             | `InputOTP`                                                                                  |
 
@@ -437,6 +449,7 @@ Pick with these rules before reaching for anything custom.
 | An invalid field                                                   | `aria-invalid` on the field and 12px text under it. Never a toast. |
 | Loading content for the first time                                 | `Skeleton` shaped like the content                                 |
 | Known progress                                                     | `Progress` with the value shown                                    |
+| A status line while a job or assistant works                       | `ShimmerText`, with the current step ("Reading files…")            |
 | Nothing to show yet                                                | Empty state (see below)                                            |
 
 ### Showing data
@@ -447,7 +460,7 @@ Pick with these rules before reaching for anything custom.
 | One object with its details and actions     | `Card`                                                          |
 | Status of an item                           | `Badge` with a static dot. One badge per row is usually enough. |
 | A person                                    | `Avatar` with initials fallback                                 |
-| Switching between views of the same thing   | `Tabs`                                                          |
+| Switching between views of the same thing   | `Tabs`; `TabsList variant="icons"` for a compact tab bar        |
 | Showing and hiding secondary detail         | `Accordion` (several sections) or `Collapsible` (one)           |
 | Many pages of results                       | `Pagination`                                                    |
 | Where the user is in a hierarchy            | `Breadcrumb`, only when there are 3+ levels                     |
@@ -459,10 +472,48 @@ Put an icon before the label for actions (`<Plus /> New project`) and after it
 only for direction (`Continue <ArrowRight />`). While a request runs, disable
 the button, show `<Loader2 className="animate-spin" />`, and keep the label.
 
-**Fields.** Every field has a visible `Label` above it. Placeholder text shows
-an example ("you@example.com"), never the label. Leading icons use the
-`.input-icon` pattern with `pl-9`. Helper and error text is 12px, 8px below the
-field.
+**Fields.** Every field has a visible label. Either pass `label` to `Input`,
+which rests inside the field and lifts into its top edge on focus or once
+there is a value, or put a `Label` above the field. Placeholder text shows an
+example ("you@example.com"), never the label, and only appears once a
+floating label has lifted. Leading icons use the `.input-icon` pattern with
+`pl-9` and a `Label` above, not a floating label. Helper and error text is
+12px, 8px below the field.
+
+**Checkbox.** The check draws itself. In a task list, add `data-strike` to the
+`Label` that follows the checkbox and it is crossed out when checked.
+
+**Slider.** `variant="bars"` draws the track as thin bars with no visible
+thumb; dragging quickly lifts the bars the pointer sweeps past. Use it for a
+single prominent value such as volume. Ranges keep the default variant.
+
+**Progress.** A row of ticks. When the value changes, ticks light one after
+another from the old value toward the new one. Always show the number.
+
+**Number stepper.** Tap for one step, hold to repeat faster the longer it is
+held. Arrow keys, Page Up/Down, Home, and End work on the number. Give it an
+`aria-label`.
+
+**Copy field.** Shows the value in monospace with a copy button. The icon
+turns into a check and a screen reader hears "Copied to clipboard". If the
+clipboard is unavailable, nothing changes.
+
+**Slide to confirm.** The handle follows the finger; past 80% it finishes on
+its own, short of 60% it springs back. Enter or Space confirms from the
+keyboard. Use `resetAfter` when the action can be repeated.
+
+**Shimmer text.** A loading indicator, so it loops. Keep the text to the
+current step, and put it in a `role="status"` region.
+
+**Avatar group.** Give each `Avatar` a `name`. Pointing along the group lifts
+the nearest faces and slides one name label between them. Names are also the
+avatars' accessible names, so the label is never the only place they live.
+
+**Card.** `tilt` makes the card sink under a mouse pointer with light on the
+far edge. Use it on one featured card at most, never on a grid of cards.
+
+**Select.** Opens out of the chosen value: the list unclips from the selected
+row over the trigger and the other options spring out above and below it.
 
 **Forms.** One column. Primary action at the bottom, left-aligned in pages and
 right-aligned in dialog footers, with Cancel to its left. Validate on submit
@@ -497,7 +548,10 @@ the space the content would fill.
 
 **Tabs and segmented controls.** Pill container on `--secondary`, active
 segment on `--surface` with the raised shadow. Up to 5 options; beyond that,
-use a `Select`.
+use a `Select`. The indicator stretches across both tabs as it moves. For a
+compact tab bar, use `TabsList variant="icons"` and pass `icon` to each
+`TabsTrigger`; only the chosen tab shows its name. Pressing a `ToggleGroup`
+item briefly shoves its neighbours aside.
 
 **Icons.** `lucide-react` only. 16px in buttons and menus, 15px in fields
 (18px on touch), 20px in empty states, default stroke. Icons sit in
@@ -1015,9 +1069,27 @@ Every file below is part of the design system. Paths are relative to the project
 [data-slot='checkbox'] {
   border-radius: 6px;
 }
-[data-slot='checkbox-indicator'] svg,
 [data-slot='radio-group-indicator'] > * {
   animation: check-pop var(--duration-quick) var(--ease-out);
+}
+/* The check draws itself rather than popping in. */
+[data-slot='checkbox-check'] {
+  stroke-dasharray: 1;
+  animation: check-draw var(--duration-medium) var(--ease-out) both;
+}
+/* A label marked data-strike is crossed out when its checkbox is checked. */
+[data-slot='label'][data-strike] {
+  width: fit-content;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 55% / 0%
+    1.5px;
+  transition:
+    background-size var(--duration-medium) var(--ease-out),
+    color var(--duration-medium);
+}
+[data-slot='checkbox'][data-state='checked']
+  + [data-slot='label'][data-strike] {
+  background-size: 100% 1.5px;
+  color: var(--muted-foreground);
 }
 [data-slot='switch'] {
   height: 24px;
@@ -1061,6 +1133,18 @@ Every file below is part of the design system. Paths are relative to the project
   width: 22px;
   transform: translateX(14px);
 }
+/* After the first change, the thumb stretches toward where it is going and
+   settles. Two keyframe names so the animation restarts on every change. */
+[data-slot='switch'][data-moved]
+  [data-slot='switch-thumb'][data-state='checked'] {
+  transform-origin: left center;
+  animation: thumb-stretch-on 300ms var(--ease-out);
+}
+[data-slot='switch'][data-moved]
+  [data-slot='switch-thumb'][data-state='unchecked'] {
+  transform-origin: right center;
+  animation: thumb-stretch-off 300ms var(--ease-out);
+}
 
 /* Slider and progress */
 [data-slot='slider-track'] {
@@ -1102,33 +1186,65 @@ Every file below is part of the design system. Paths are relative to the project
 [data-slot='slider-thumb']:active {
   scale: 0.95;
 }
-[data-slot='slider-range'],
-[data-slot='progress-indicator'] {
+[data-slot='slider-range'] {
   border-radius: 99px;
 }
+/* Bars variant: thin bars, no visible thumb. The bars in the chosen range
+   take the ink; bars swept past quickly lift by --lift (set from script). */
+[data-slot='slider'][data-variant='bars'] [data-slot='slider-track'] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px !important;
+  overflow: visible;
+  background: transparent;
+}
+[data-slot='slider-bar'] {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--foreground) 16%, transparent);
+  transform: scaleY(calc(0.38 + var(--lift, 0) * 0.62));
+  transition:
+    background-color var(--duration-quick),
+    transform var(--duration-micro) linear;
+}
+[data-slot='slider-bar'][data-on] {
+  background: var(--primary-bright);
+  transform: scaleY(calc(0.62 + var(--lift, 0) * 0.38));
+}
+[data-slot='slider'][data-variant='bars'] [data-slot='slider-thumb'] {
+  width: 14px;
+  height: 32px;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: none;
+  scale: 1;
+}
+[data-slot='slider'][data-variant='bars']
+  [data-slot='slider-thumb']:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+/* Progress is a row of ticks; they light one after another from the old
+   value toward the new one (--step, set per tick). */
 [data-slot='progress'] {
-  height: 8px;
-  border-radius: 99px;
-  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  gap: 3px;
+  height: 14px;
 }
-[data-slot='progress-indicator'] {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(90deg, var(--primary-bright), var(--primary));
-  transition: transform 300ms var(--ease-out);
+[data-slot='progress-tick'] {
+  flex: 1;
+  height: 100%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  transform: scaleY(0.5);
+  transition:
+    transform var(--duration-medium) var(--ease-out),
+    background-color var(--duration-fast);
+  transition-delay: calc(min(var(--step, 0), 24) * 14ms);
 }
-[data-slot='progress-indicator']::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.45),
-    transparent
-  );
-  transform: translateX(-100%);
-  animation: sheen 2.2s var(--ease-smooth-out) infinite;
+[data-slot='progress-tick'][data-on] {
+  background: var(--primary-bright);
+  transform: scaleY(1);
 }
 
 /* Badges and avatars */
@@ -1222,8 +1338,24 @@ Every file below is part of the design system. Paths are relative to the project
   animation-duration: var(--duration-medium);
   animation-timing-function: var(--ease-smooth-out);
 }
-[data-slot='accordion-content'][data-state='open'] > * {
+[data-slot='accordion-content'][data-state='open']
+  > *:not(:has([data-slot='accordion-word'])) {
   animation: content-enter var(--duration-medium) var(--ease-smooth-out);
+}
+/* The plus turns into a cross as the answer opens. */
+[data-slot='accordion-trigger-icon'] {
+  transition: rotate var(--duration-medium) var(--ease-out);
+}
+[data-slot='accordion-trigger'][data-state='open']
+  [data-slot='accordion-trigger-icon'] {
+  rotate: 45deg;
+}
+/* Plain-text answers ease in a word at a time. */
+[data-slot='accordion-content'][data-state='open']
+  [data-slot='accordion-word'] {
+  display: inline-block;
+  animation: word-in var(--duration-medium) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 30) * 12ms);
 }
 [data-slot='collapsible-content'][data-state='open'] > * {
   animation: content-enter var(--duration-medium) var(--ease-smooth-out) both;
@@ -1297,6 +1429,36 @@ Every file below is part of the design system. Paths are relative to the project
 }
 [data-slot='tabs-content'] {
   animation: content-enter var(--duration-medium) var(--ease-smooth-out);
+}
+/* Icons variant: only the chosen tab shows its name. */
+[data-slot='tabs-list'][data-variant='icons'] [data-slot='tabs-trigger'] {
+  padding-inline: 10px;
+}
+[data-slot='tabs-trigger'] svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+[data-slot='tabs-label'] {
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns var(--duration-medium) var(--ease-out);
+}
+[data-slot='tabs-label'] > span {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--duration-fast);
+}
+[data-slot='tabs-trigger'][data-state='active'] [data-slot='tabs-label'] {
+  grid-template-columns: 1fr;
+}
+[data-slot='tabs-trigger'][data-state='active']
+  [data-slot='tabs-label']
+  > span {
+  padding-left: 6px;
+  opacity: 1;
 }
 [data-slot='toggle-group-item'] {
   width: 36px;
@@ -1603,8 +1765,12 @@ Every file below is part of the design system. Paths are relative to the project
     transform var(--duration-quick) var(--ease-out);
 }
 [data-slot='pagination-link'][data-active='true'] {
-  background: var(--foreground) !important;
+  background: transparent !important;
   color: var(--background) !important;
+  box-shadow: none;
+}
+[data-slot='pagination-indicator'] {
+  background: var(--foreground);
   box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.3);
 }
 [data-slot='pagination-link']:active {
@@ -1623,6 +1789,11 @@ Every file below is part of the design system. Paths are relative to the project
   height: 28px;
   background: var(--surface);
   box-shadow: var(--material-shadow);
+  transition: scale var(--duration-fast) var(--ease-out);
+}
+/* The grip stretches while it is held. */
+[data-slot='resizable-handle'][data-separator='active'] > div {
+  scale: 1 1.5;
 }
 [data-slot='scroll-area-thumb'] {
   background: color-mix(in srgb, var(--foreground) 18%, transparent);
@@ -1643,6 +1814,17 @@ Every file below is part of the design system. Paths are relative to the project
     border-color var(--duration-quick),
     box-shadow var(--duration-fast),
     transform var(--duration-quick) var(--ease-out);
+}
+/* Each digit lands with a small swell; a wrong code shakes the row. */
+[data-slot='input-otp-char'] {
+  display: inline-block;
+  animation: digit-land 260ms var(--ease-out);
+}
+[data-slot='input-otp-group']:has([aria-invalid='true']) {
+  animation: shake 360ms var(--ease-out);
+}
+[data-slot='input-otp-slot'][aria-invalid='true'] {
+  border-color: var(--destructive) !important;
 }
 [data-slot='input-otp-slot'][data-active='true'] {
   border-color: var(--ring) !important;
@@ -1919,7 +2101,574 @@ html
   }
 }
 
+/* Interactions. Each component's moving parts, keyed off the same slots. */
+
+/* Floating label: rests in the field like a placeholder, lifts into the top
+   edge on focus or once there is a value. The outline parts behind it, and
+   on focus its letters hop one after another. */
+[data-slot='input-field'] [data-slot='input']:not(:focus)::placeholder {
+  color: transparent;
+}
+[data-slot='input-floating-label'] {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--field-px) - 4px);
+  padding-inline: 4px;
+  font-size: var(--field-font);
+  line-height: 1;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  z-index: 1;
+  transform-origin: left center;
+  translate: 0 -50%;
+  transition:
+    translate var(--duration-medium) var(--ease-out),
+    scale var(--duration-medium) var(--ease-out),
+    color var(--duration-quick);
+}
+[data-slot='input-floating-label']::before {
+  content: '';
+  position: absolute;
+  inset: 40% 0 auto;
+  height: 2px;
+  background: var(--surface);
+  scale: 0 1;
+  transition: scale var(--duration-medium) var(--ease-out);
+  z-index: -1;
+}
+[data-slot='input-floating-label'] > span {
+  position: relative;
+  display: inline-flex;
+}
+[data-slot='input-floating-label'] > span > span {
+  display: inline-block;
+  white-space: pre;
+}
+[data-slot='input-field']
+  [data-slot='input']:is(:focus, :not(:placeholder-shown))
+  + [data-slot='input-floating-label'] {
+  translate: 0 calc(-50% - var(--field-h) / 2);
+  scale: 0.82;
+}
+[data-slot='input-field']
+  [data-slot='input']:is(:focus, :not(:placeholder-shown))
+  + [data-slot='input-floating-label']::before {
+  scale: 1 1;
+}
+[data-slot='input-field']
+  [data-slot='input']:focus
+  + [data-slot='input-floating-label'] {
+  color: var(--primary);
+}
+[data-slot='input-field']
+  [data-slot='input']:focus
+  + [data-slot='input-floating-label']
+  > span
+  > span {
+  animation: letter-hop 300ms var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 16) * 16ms);
+}
+[data-slot='input-field']
+  [data-slot='input'][aria-invalid='true']
+  + [data-slot='input-floating-label'] {
+  color: var(--destructive);
+}
+.dark [data-slot='input-field'] [data-slot='input']:focus + label {
+  color: var(--primary-bright);
+}
+
+/* Avatar group: faces near the pointer lift, and one name label slides to
+   the closest. */
+[data-slot='avatar-group'] [data-slot='avatar'] {
+  translate: 0 calc(var(--lift, 0) * -5px);
+  scale: calc(1 + var(--lift, 0) * 0.08);
+  z-index: calc(var(--lift, 0) * 10);
+  transition:
+    translate var(--duration-quick) var(--ease-out),
+    scale var(--duration-quick) var(--ease-out);
+}
+[data-slot='avatar-group-label'] {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  translate: -50% 0;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* Hover card grows out from under its trigger. */
+[data-slot='hover-card-content'] {
+  transform-origin: var(--radix-hover-card-content-transform-origin);
+}
+[data-slot='hover-card-content'][data-state='open'] {
+  animation: card-grow 280ms var(--ease-out);
+}
+
+/* Tilt card: sinks under the pointer, light on the far edge. */
+@media (hover: hover) and (pointer: fine) {
+  [data-slot='card'][data-tilt] {
+    transform: perspective(900px) rotateX(calc(var(--tilt-x, 0) * 1deg))
+      rotateY(calc(var(--tilt-y, 0) * 1deg));
+    transition:
+      transform var(--duration-medium) var(--ease-out),
+      box-shadow var(--duration-medium);
+  }
+  [data-slot='card'][data-tilt]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--light-x, 50%) var(--light-y, 50%),
+      rgba(255, 255, 255, 0.22),
+      transparent 55%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-medium);
+  }
+  [data-slot='card'][data-tilt]:hover::after {
+    opacity: 1;
+  }
+  .dark [data-slot='card'][data-tilt]::after {
+    background: radial-gradient(
+      circle at var(--light-x, 50%) var(--light-y, 50%),
+      rgba(255, 255, 255, 0.07),
+      transparent 55%
+    );
+  }
+}
+[data-slot='card'][data-tilt] {
+  position: relative;
+}
+[data-motion='off'] [data-slot='card'][data-tilt] {
+  transform: none;
+}
+
+/* Carousel: slides on a turntable, turned and receded by their distance
+   from the centre (--offset and --distance, set from script). */
+[data-slot='carousel-item'] > * {
+  transform: perspective(700px) rotateY(calc(var(--offset, 0) * -20deg))
+    scale(calc(1 - var(--distance, 0) * 0.1));
+  opacity: calc(1 - var(--distance, 0) * 0.35);
+}
+
+/* Select opens out of its value: the box unclips from the chosen row and the
+   other options spring out of it. */
+[data-slot='select-content'][data-align-trigger='true'][data-state='open'] {
+  animation: select-unclip 260ms var(--ease-out);
+}
+[data-slot='select-content'][data-align-trigger='true'][data-state='open']
+  [data-slot='select-item']:not([data-state='checked']) {
+  animation: select-unfold 300ms var(--ease-out) both;
+}
+
+/* Menus: items cascade in from the trigger side. */
+:is(
+    [data-slot='dropdown-menu-content'],
+    [data-slot='context-menu-content'],
+    [data-slot='menubar-content']
+  )[data-state='open']
+  > * {
+  animation: item-in var(--duration-fast) var(--ease-out) both;
+}
+:is(
+    [data-slot='dropdown-menu-content'],
+    [data-slot='context-menu-content'],
+    [data-slot='menubar-content']
+  )[data-state='open']
+  > :nth-child(2) {
+  animation-delay: 20ms;
+}
+:is(
+    [data-slot='dropdown-menu-content'],
+    [data-slot='context-menu-content'],
+    [data-slot='menubar-content']
+  )[data-state='open']
+  > :nth-child(3) {
+  animation-delay: 40ms;
+}
+:is(
+    [data-slot='dropdown-menu-content'],
+    [data-slot='context-menu-content'],
+    [data-slot='menubar-content']
+  )[data-state='open']
+  > :nth-child(4) {
+  animation-delay: 60ms;
+}
+:is(
+    [data-slot='dropdown-menu-content'],
+    [data-slot='context-menu-content'],
+    [data-slot='menubar-content']
+  )[data-state='open']
+  > :nth-child(n + 5) {
+  animation-delay: 80ms;
+}
+
+/* Content replacing a skeleton eases up out of a blur, top to bottom. */
+[data-slot='skeleton-reveal'] {
+  animation: skeleton-reveal 360ms var(--ease-out) both;
+  animation-delay: calc(min(var(--order, 0), 8) * 60ms);
+}
+
+/* Copy field */
+[data-slot='copy-field'] {
+  gap: 8px;
+  height: var(--field-h);
+  padding-left: var(--field-px);
+  padding-right: 4px;
+  border: 1px solid var(--input);
+  border-radius: var(--field-radius);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(28, 20, 10, 0.04);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+}
+[data-slot='copy-field-value'] {
+  color: var(--foreground);
+}
+[data-slot='copy-field'][data-copied] [data-slot='copy-field-value'] {
+  background: linear-gradient(
+      100deg,
+      var(--foreground) 40%,
+      var(--primary-bright) 50%,
+      var(--foreground) 60%
+    )
+    0 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-sheen 700ms var(--ease-out) both;
+}
+[data-slot='copy-field-button'] {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--field-h) - 8px);
+  height: calc(var(--field-h) - 8px);
+  border-radius: calc(var(--field-radius) - 4px);
+  color: var(--muted-foreground);
+  transition:
+    background-color var(--duration-quick),
+    color var(--duration-quick),
+    scale var(--duration-quick) var(--ease-out);
+}
+[data-slot='copy-field-button']:hover {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+[data-slot='copy-field-button']:active {
+  scale: 0.92;
+}
+[data-slot='copy-field-button']:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+[data-slot='copy-field-button'] svg {
+  width: var(--field-icon);
+  height: var(--field-icon);
+  overflow: visible;
+}
+[data-slot='copy-field-button'] [data-part] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    translate var(--duration-fast) var(--ease-out),
+    scale var(--duration-fast) var(--ease-out),
+    opacity var(--duration-quick);
+}
+[data-slot='copy-field-button'] [data-part='check'] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+[data-slot='copy-field'][data-copied] [data-slot='copy-field-button'] {
+  color: var(--primary);
+}
+[data-slot='copy-field'][data-copied] [data-part='front'] {
+  translate: 4px 4px;
+  opacity: 0;
+}
+[data-slot='copy-field'][data-copied] [data-part='back'] {
+  scale: 0.4;
+  opacity: 0;
+}
+[data-slot='copy-field'][data-copied] [data-part='check'] {
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transition:
+    stroke-dashoffset var(--duration-medium) var(--ease-out) 80ms,
+    opacity var(--duration-micro) 80ms;
+}
+
+/* Number stepper: odometer digits. */
+[data-slot='number-stepper'] {
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--secondary);
+  box-shadow: inset 0 1px 2px rgba(28, 20, 10, 0.04);
+}
+[data-slot='number-stepper-button'] {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: var(--material-shadow);
+  touch-action: manipulation;
+  transition:
+    scale var(--duration-quick) var(--ease-out),
+    opacity var(--duration-quick);
+}
+[data-slot='number-stepper-button']:active:not(:disabled) {
+  scale: 0.9;
+}
+[data-slot='number-stepper-button']:disabled {
+  opacity: 0.4;
+}
+[data-slot='number-stepper-button']:focus-visible,
+[data-slot='number-stepper-value']:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+[data-slot='number-stepper-button'] svg {
+  width: 15px;
+  height: 15px;
+}
+[data-slot='number-stepper-value'] {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 52px;
+  padding-inline: 6px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+[data-slot='number-stepper-digit'] {
+  display: inline-block;
+  height: 24px;
+  overflow: hidden;
+}
+[data-slot='number-stepper-digit'] > span {
+  display: flex;
+  flex-direction: column;
+  translate: 0 calc(var(--digit) * -24px);
+  transition: translate 320ms var(--ease-out);
+}
+@media (pointer: coarse) {
+  [data-slot='number-stepper-button'] {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Slide to confirm */
+[data-slot='slide-to-confirm'] {
+  height: 48px;
+  border-radius: 999px;
+  background: var(--secondary);
+  box-shadow: inset 0 1px 2px rgba(28, 20, 10, 0.06);
+  overflow: hidden;
+}
+[data-slot='slide-to-confirm-fill'] {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--primary-soft);
+}
+[data-slot='slide-to-confirm-label'] {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-left: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+[data-slot='slide-to-confirm'][data-done] [data-slot='slide-to-confirm-label'] {
+  padding-left: 0;
+  padding-right: 40px;
+  color: var(--primary-soft-foreground);
+}
+[data-slot='slide-to-confirm-handle'] {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 2px 8px -2px color-mix(in srgb, var(--primary) 60%, transparent);
+  cursor: grab;
+  touch-action: none;
+}
+[data-slot='slide-to-confirm-handle']:active {
+  cursor: grabbing;
+}
+[data-slot='slide-to-confirm-handle']:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+[data-slot='slide-to-confirm-handle']:disabled {
+  cursor: default;
+}
+[data-slot='slide-to-confirm'][data-disabled] {
+  opacity: 0.45;
+}
+[data-slot='slide-to-confirm-handle'] svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Shimmer text: a band of ink sweeping across muted text. A loading
+   indicator, so it loops. */
+[data-slot='shimmer-text'] {
+  background: linear-gradient(
+      100deg,
+      var(--muted-foreground) 35%,
+      var(--foreground) 50%,
+      var(--muted-foreground) 65%
+    )
+    0 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-sweep 1.8s linear infinite;
+}
+[data-motion='off'] [data-slot='shimmer-text'] {
+  background: none;
+  color: var(--muted-foreground);
+}
+
 /* Keyframes */
+@keyframes check-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes thumb-stretch-on {
+  45% {
+    scale: 1.4 0.9;
+  }
+}
+@keyframes thumb-stretch-off {
+  45% {
+    scale: 1.4 0.9;
+  }
+}
+@keyframes word-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+    filter: blur(3px);
+  }
+}
+@keyframes letter-hop {
+  40% {
+    translate: 0 -3px;
+  }
+}
+@keyframes digit-land {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+  60% {
+    opacity: 1;
+    scale: 1.18;
+  }
+}
+@keyframes shake {
+  20% {
+    translate: -6px 0;
+  }
+  40% {
+    translate: 5px 0;
+  }
+  60% {
+    translate: -3px 0;
+  }
+  80% {
+    translate: 2px 0;
+  }
+}
+@keyframes card-grow {
+  from {
+    opacity: 0;
+    scale: 0.6;
+    filter: blur(4px);
+  }
+  60% {
+    filter: blur(0);
+  }
+}
+@keyframes select-unclip {
+  from {
+    clip-path: inset(var(--clip-top, 0) 0 var(--clip-bottom, 0) 0 round 12px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 16px);
+  }
+}
+@keyframes select-unfold {
+  from {
+    opacity: 0;
+    translate: 0 calc(var(--fold, 0) * -60%);
+    scale: 1 0.7;
+  }
+}
+@keyframes item-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+@keyframes skeleton-reveal {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+    filter: blur(6px);
+  }
+}
+@keyframes text-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+@keyframes text-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
 @keyframes material-enter {
   from {
     opacity: 0;
@@ -2068,7 +2817,7 @@ html
 import * as React from 'react'
 import { cn } from 'cn'
 import { Accordion as AccordionPrimitive } from 'radix-ui'
-import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 
 function Accordion({
   className,
@@ -2112,16 +2861,31 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <ChevronDownIcon
+        <PlusIcon
           data-slot="accordion-trigger-icon"
-          className="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
-        />
-        <ChevronUpIcon
-          data-slot="accordion-trigger-icon"
-          className="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          className="pointer-events-none shrink-0"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
+  )
+}
+
+// Plain-text answers are split into words so they can ease in one after
+// another. Other content enters as one block.
+function splitWords(children: React.ReactNode) {
+  if (typeof children !== 'string') return children
+  return children.split(/(\s+)/).map((part, i) =>
+    /^\s+$/.test(part) ? (
+      part
+    ) : (
+      <span
+        key={i}
+        data-slot="accordion-word"
+        style={{ '--i': i / 2 } as React.CSSProperties}
+      >
+        {part}
+      </span>
+    ),
   )
 }
 
@@ -2142,7 +2906,7 @@ function AccordionContent({
           className,
         )}
       >
-        {children}
+        {splitWords(children)}
       </div>
     </AccordionPrimitive.Content>
   )
@@ -2453,20 +3217,27 @@ export { AspectRatio }
 
 ```tsx
 import * as React from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { cn } from 'cn'
 import { Avatar as AvatarPrimitive } from 'radix-ui'
+import { useMotionSettings } from '@/lib/motion'
 
 function Avatar({
   className,
   size = 'default',
+  name,
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Root> & {
   size?: 'default' | 'sm' | 'lg'
+  name?: string
 }) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
       data-size={size}
+      data-name={name}
+      role={name ? 'img' : undefined}
+      aria-label={name}
       className={cn(
         'group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten',
         className,
@@ -2524,16 +3295,78 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<'span'>) {
   )
 }
 
-function AvatarGroup({ className, ...props }: React.ComponentProps<'div'>) {
+// Pointing along the group lifts the faces nearest the pointer, falling off
+// across their neighbours, and one name label slides to whoever is closest.
+// Names come from each avatar's `name`.
+function AvatarGroup({
+  className,
+  children,
+  onPointerMove,
+  onPointerLeave,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const [label, setLabel] = React.useState<{ name: string; x: number }>()
+  const { enabled } = useMotionSettings()
   return (
     <div
       data-slot="avatar-group"
       className={cn(
-        'group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background',
+        'group/avatar-group relative flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background',
         className,
       )}
+      onPointerMove={(event) => {
+        onPointerMove?.(event)
+        if (event.pointerType !== 'mouse') return
+        const group = event.currentTarget
+        const left = group.getBoundingClientRect().left
+        let nearest: { name: string; x: number } | undefined
+        let best = Infinity
+        group
+          .querySelectorAll<HTMLElement>('[data-slot="avatar"]')
+          .forEach((avatar) => {
+            const box = avatar.getBoundingClientRect()
+            const mid = box.left + box.width / 2
+            const distance = Math.abs(event.clientX - mid)
+            const lift = enabled ? Math.max(0, 1 - distance / 56) : 0
+            avatar.style.setProperty('--lift', lift.toFixed(3))
+            if (distance < best && avatar.dataset.name) {
+              best = distance
+              nearest = { name: avatar.dataset.name, x: mid - left }
+            }
+          })
+        setLabel((current) =>
+          current?.name === nearest?.name ? current : nearest,
+        )
+      }}
+      onPointerLeave={(event) => {
+        onPointerLeave?.(event)
+        event.currentTarget
+          .querySelectorAll<HTMLElement>('[data-slot="avatar"]')
+          .forEach((avatar) => avatar.style.setProperty('--lift', '0'))
+        setLabel(undefined)
+      }}
       {...props}
-    />
+    >
+      {children}
+      <AnimatePresence>
+        {label && (
+          <motion.span
+            data-slot="avatar-group-label"
+            aria-hidden="true"
+            initial={{ opacity: 0, y: 4, x: label.x }}
+            animate={{ opacity: 1, y: 0, x: label.x }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={
+              enabled
+                ? { type: 'spring', duration: 0.3, bounce: 0.15 }
+                : { duration: 0 }
+            }
+          >
+            {label.name}
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 
@@ -3051,15 +3884,49 @@ export { Calendar, CalendarDayButton }
 import * as React from 'react'
 import { cn } from 'cn'
 
+// With `tilt`, the card sinks under the pointer instead of rising to meet
+// it, with light catching the far edge. Fine pointers only.
+function tiltTo(event: React.PointerEvent<HTMLDivElement>) {
+  if (event.pointerType !== 'mouse') return
+  const card = event.currentTarget
+  const rect = card.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width - 0.5
+  const y = (event.clientY - rect.top) / rect.height - 0.5
+  card.style.setProperty('--tilt-x', (y * 7).toFixed(2))
+  card.style.setProperty('--tilt-y', (-x * 7).toFixed(2))
+  card.style.setProperty('--light-x', `${((0.5 - x) * 100).toFixed(1)}%`)
+  card.style.setProperty('--light-y', `${((0.5 - y) * 100).toFixed(1)}%`)
+}
+function tiltReset(event: React.PointerEvent<HTMLDivElement>) {
+  const card = event.currentTarget
+  card.style.setProperty('--tilt-x', '0')
+  card.style.setProperty('--tilt-y', '0')
+}
+
 function Card({
   className,
   size = 'default',
+  tilt = false,
+  onPointerMove,
+  onPointerLeave,
   ...props
-}: React.ComponentProps<'div'> & { size?: 'default' | 'sm' }) {
+}: React.ComponentProps<'div'> & {
+  size?: 'default' | 'sm'
+  tilt?: boolean
+}) {
   return (
     <div
       data-slot="card"
       data-size={size}
+      data-tilt={tilt || undefined}
+      onPointerMove={(event) => {
+        if (tilt) tiltTo(event)
+        onPointerMove?.(event)
+      }}
+      onPointerLeave={(event) => {
+        if (tilt) tiltReset(event)
+        onPointerLeave?.(event)
+      }}
       className={cn(
         'group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl',
         className,
@@ -3162,6 +4029,7 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react'
 
 import { Button } from '@/components/ui/button'
+import { useMotionSettings } from '@/lib/motion'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -3247,6 +4115,37 @@ function Carousel({
     if (!api || !setApi) return
     setApi(api)
   }, [api, setApi])
+
+  // Slides sit on a turntable: each one turns away and recedes by how far
+  // it is from the centre of the viewport.
+  const { enabled } = useMotionSettings()
+  React.useEffect(() => {
+    if (!api) return
+    const turn = () => {
+      const view = api.rootNode().getBoundingClientRect()
+      const horizontal = api.internalEngine().options.axis === 'x'
+      const centre = horizontal
+        ? view.left + view.width / 2
+        : view.top + view.height / 2
+      for (const node of api.slideNodes()) {
+        const box = node.getBoundingClientRect()
+        const size = horizontal ? box.width : box.height
+        const mid = horizontal
+          ? box.left + box.width / 2
+          : box.top + box.height / 2
+        const offset = enabled
+          ? Math.max(-1.5, Math.min(1.5, (mid - centre) / size))
+          : 0
+        node.style.setProperty('--offset', offset.toFixed(3))
+        node.style.setProperty('--distance', Math.abs(offset).toFixed(3))
+      }
+    }
+    turn()
+    api.on('scroll', turn).on('reInit', turn).on('resize', turn)
+    return () => {
+      api.off('scroll', turn).off('reInit', turn).off('resize', turn)
+    }
+  }, [api, enabled])
 
   React.useEffect(() => {
     if (!api) return
@@ -3405,7 +4304,6 @@ export {
 import * as React from 'react'
 import { cn } from 'cn'
 import { Checkbox as CheckboxPrimitive } from 'radix-ui'
-import { CheckIcon } from 'lucide-react'
 
 function Checkbox({
   className,
@@ -3424,7 +4322,21 @@ function Checkbox({
         data-slot="checkbox-indicator"
         className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
       >
-        <CheckIcon />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            data-slot="checkbox-check"
+            d="M5 12.5l4.5 4.5L19 7.5"
+            pathLength={1}
+          />
+        </svg>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )
@@ -3935,6 +4847,80 @@ export {
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
 }
+```
+
+### src/components/ui/copy-field.tsx
+
+```tsx
+import * as React from 'react'
+import { cn } from 'cn'
+
+// A value with a copy button. On copy the two pages of the icon slide into
+// one and turn into a check that draws itself, and a band of light passes
+// through the value.
+function CopyField({
+  value,
+  label = 'Copy',
+  className,
+  ...props
+}: Omit<React.ComponentProps<'div'>, 'children'> & {
+  value: string
+  label?: string
+}) {
+  const [copied, setCopied] = React.useState(false)
+  const timer = React.useRef<number>(undefined)
+  React.useEffect(() => () => window.clearTimeout(timer.current), [])
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(value)
+    } catch {
+      return
+    }
+    setCopied(true)
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => setCopied(false), 1800)
+  }
+  return (
+    <div
+      data-slot="copy-field"
+      data-copied={copied || undefined}
+      className={cn('flex w-full min-w-0 items-center', className)}
+      {...props}
+    >
+      <span data-slot="copy-field-value" className="min-w-0 flex-1 truncate">
+        {value}
+      </span>
+      <button
+        type="button"
+        data-slot="copy-field-button"
+        aria-label={copied ? 'Copied' : label}
+        onClick={copy}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <rect data-part="back" x="8" y="8" width="12" height="12" rx="2.5" />
+          <path
+            data-part="front"
+            d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"
+          />
+          <path data-part="check" d="M6 12.5l4 4L18 8.5" pathLength={1} />
+        </svg>
+      </button>
+      <span className="sr-only" aria-live="polite">
+        {copied ? 'Copied to clipboard' : ''}
+      </span>
+    </div>
+  )
+}
+
+export { CopyField }
 ```
 
 ### src/components/ui/dialog.tsx
@@ -4793,7 +5779,11 @@ function InputOTPSlot({
       )}
       {...props}
     >
-      {char}
+      {char && (
+        <span key={char} data-slot="input-otp-char">
+          {char}
+        </span>
+      )}
       {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
@@ -4825,17 +5815,48 @@ export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
 import * as React from 'react'
 import { cn } from 'cn'
 
-function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
-  return (
+// With `label`, the label sits in the field like a placeholder and lifts
+// into the top edge on focus or once there is a value.
+function Input({
+  className,
+  type,
+  label,
+  id,
+  placeholder,
+  ...props
+}: React.ComponentProps<'input'> & { label?: string }) {
+  const generatedId = React.useId()
+  const inputId = label ? (id ?? generatedId) : id
+  const field = (
     <input
       type={type}
+      id={inputId}
+      // The floating label is split into letters, which some browsers
+      // read as separate words, so the field carries the name itself.
+      aria-label={label ?? props['aria-label']}
       data-slot="input"
+      placeholder={label ? (placeholder ?? ' ') : placeholder}
       className={cn(
         'h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
         className,
       )}
       {...props}
     />
+  )
+  if (!label) return field
+  return (
+    <div data-slot="input-field" className="relative w-full">
+      {field}
+      <label htmlFor={inputId} data-slot="input-floating-label">
+        <span>
+          {[...label].map((char, i) => (
+            <span key={i} style={{ '--i': i } as React.CSSProperties}>
+              {char}
+            </span>
+          ))}
+        </span>
+      </label>
+    </div>
   )
 }
 
@@ -5327,11 +6348,153 @@ export {
 }
 ```
 
-### src/components/ui/pagination.tsx
+### src/components/ui/number-stepper.tsx
 
 ```tsx
 import * as React from 'react'
 import { cn } from 'cn'
+import { MinusIcon, PlusIcon } from 'lucide-react'
+
+// A number between a minus and a plus. Digits roll like an odometer, only
+// the columns that change turn, and holding a button repeats faster the
+// longer it is held. Arrow keys work on the number itself.
+function Digit({ digit }: { digit: number }) {
+  return (
+    <span data-slot="number-stepper-digit" aria-hidden="true">
+      <span style={{ '--digit': digit } as React.CSSProperties}>
+        {Array.from({ length: 10 }, (_, n) => (
+          <span key={n}>{n}</span>
+        ))}
+      </span>
+    </span>
+  )
+}
+
+function NumberStepper({
+  value: valueProp,
+  defaultValue = 0,
+  min = -Infinity,
+  max = Infinity,
+  step = 1,
+  onValueChange,
+  className,
+  'aria-label': ariaLabel,
+  ...props
+}: Omit<React.ComponentProps<'div'>, 'defaultValue' | 'onChange'> & {
+  value?: number
+  defaultValue?: number
+  min?: number
+  max?: number
+  step?: number
+  onValueChange?: (value: number) => void
+}) {
+  const [internal, setInternal] = React.useState(defaultValue)
+  const value = valueProp ?? internal
+  const latest = React.useRef(value)
+  React.useLayoutEffect(() => {
+    latest.current = value
+  }, [value])
+  const set = React.useCallback(
+    (next: number) => {
+      const clamped = Math.min(max, Math.max(min, next))
+      if (clamped === latest.current) return
+      latest.current = clamped
+      setInternal(clamped)
+      onValueChange?.(clamped)
+    },
+    [min, max, onValueChange],
+  )
+  const timer = React.useRef<number>(undefined)
+  const stop = () => window.clearTimeout(timer.current)
+  React.useEffect(() => stop, [])
+  const hold = (direction: 1 | -1) => {
+    set(latest.current + direction * step)
+    let delay = 380
+    const repeat = () => {
+      set(latest.current + direction * step)
+      delay = Math.max(40, delay * 0.8)
+      timer.current = window.setTimeout(repeat, delay)
+    }
+    timer.current = window.setTimeout(repeat, delay)
+  }
+  const digits = String(Math.abs(value)).split('').map(Number)
+  const button = (direction: 1 | -1) => ({
+    type: 'button' as const,
+    'data-slot': 'number-stepper-button',
+    disabled: direction > 0 ? value >= max : value <= min,
+    'aria-label': direction > 0 ? 'Increase' : 'Decrease',
+    onPointerDown: (event: React.PointerEvent) => {
+      if (event.button !== 0) return
+      hold(direction)
+    },
+    onPointerUp: stop,
+    onPointerLeave: stop,
+    onPointerCancel: stop,
+    // Pointer presses are handled on pointerdown; this covers the keyboard.
+    onClick: (event: React.MouseEvent) => {
+      if (event.detail === 0) set(latest.current + direction * step)
+    },
+  })
+  return (
+    <div
+      data-slot="number-stepper"
+      className={cn('inline-flex items-center', className)}
+      {...props}
+    >
+      <button {...button(-1)}>
+        <MinusIcon />
+      </button>
+      <span
+        role="spinbutton"
+        tabIndex={0}
+        aria-label={ariaLabel}
+        aria-valuenow={value}
+        aria-valuemin={Number.isFinite(min) ? min : undefined}
+        aria-valuemax={Number.isFinite(max) ? max : undefined}
+        data-slot="number-stepper-value"
+        onKeyDown={(event) => {
+          const moves: Record<string, number> = {
+            ArrowUp: step,
+            ArrowRight: step,
+            ArrowDown: -step,
+            ArrowLeft: -step,
+            PageUp: step * 10,
+            PageDown: step * -10,
+          }
+          if (event.key in moves) {
+            event.preventDefault()
+            set(latest.current + moves[event.key])
+          } else if (event.key === 'Home' && Number.isFinite(min)) {
+            event.preventDefault()
+            set(min)
+          } else if (event.key === 'End' && Number.isFinite(max)) {
+            event.preventDefault()
+            set(max)
+          }
+        }}
+      >
+        {value < 0 && <span aria-hidden="true">−</span>}
+        {digits.map((digit, i) => (
+          <Digit key={digits.length - i} digit={digit} />
+        ))}
+      </span>
+      <button {...button(1)}>
+        <PlusIcon />
+      </button>
+    </div>
+  )
+}
+
+export { NumberStepper }
+```
+
+### src/components/ui/pagination.tsx
+
+```tsx
+import * as React from 'react'
+import { motion } from 'motion/react'
+import { cn } from 'cn'
+import { useMotionSettings } from '@/lib/motion'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -5340,7 +6503,14 @@ import {
   MoreHorizontalIcon,
 } from 'lucide-react'
 
-function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
+const PaginationContext = React.createContext('')
+
+function Pagination({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'nav'>) {
+  const id = React.useId()
   return (
     <nav
       role="navigation"
@@ -5348,7 +6518,11 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
       data-slot="pagination"
       className={cn('mx-auto flex w-full justify-center', className)}
       {...props}
-    />
+    >
+      <PaginationContext.Provider value={id}>
+        {children}
+      </PaginationContext.Provider>
+    </nav>
   )
 }
 
@@ -5374,25 +6548,47 @@ type PaginationLinkProps = {
 } & Pick<React.ComponentProps<typeof Button>, 'size'> &
   React.ComponentProps<'a'>
 
+// The current page's fill slides to the new page on a spring with a little
+// overshoot instead of jumping.
 function PaginationLink({
   className,
   isActive,
   size = 'icon',
+  children,
   ...props
 }: PaginationLinkProps) {
+  const id = React.useContext(PaginationContext)
+  const { enabled } = useMotionSettings()
   return (
     <Button
       asChild
       variant={isActive ? 'outline' : 'ghost'}
       size={size}
-      className={cn(className)}
+      className={cn('relative', className)}
     >
       <a
         aria-current={isActive ? 'page' : undefined}
         data-slot="pagination-link"
         data-active={isActive}
         {...props}
-      />
+      >
+        {isActive && size === 'icon' && (
+          <motion.span
+            data-slot="pagination-indicator"
+            layoutId={`pagination-${id}`}
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full"
+            transition={
+              enabled
+                ? { type: 'spring', duration: 0.4, bounce: 0.25 }
+                : { duration: 0 }
+            }
+          />
+        )}
+        <span className="relative inline-flex items-center gap-1">
+          {children}
+        </span>
+      </a>
     </Button>
   )
 }
@@ -5564,26 +6760,40 @@ import * as React from 'react'
 import { cn } from 'cn'
 import { Progress as ProgressPrimitive } from 'radix-ui'
 
+// Progress is a row of ticks. When the value changes, the ticks between the
+// old and new value light (or dim) one after another, starting from the
+// old value.
 function Progress({
   className,
   value,
+  ticks = 32,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root> & { ticks?: number }) {
+  const lit = Math.round(((value ?? 0) / 100) * ticks)
+  const [shown, setShown] = React.useState(lit)
+  const [from, setFrom] = React.useState(lit)
+  if (lit !== shown) {
+    setFrom(shown)
+    setShown(lit)
+  }
   return (
     <ProgressPrimitive.Root
       data-slot="progress"
       value={value}
-      className={cn(
-        'relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted',
-        className,
-      )}
+      className={cn('relative flex w-full items-center', className)}
       {...props}
     >
-      <ProgressPrimitive.Indicator
-        data-slot="progress-indicator"
-        className="size-full flex-1 bg-primary transition-all"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-      />
+      {Array.from({ length: ticks }, (_, i) => {
+        const step = lit >= from ? i - from : from - 1 - i
+        return (
+          <span
+            key={i}
+            data-slot="progress-tick"
+            data-on={i < lit || undefined}
+            style={{ '--step': Math.max(0, step) } as React.CSSProperties}
+          />
+        )
+      })}
     </ProgressPrimitive.Root>
   )
 }
@@ -5810,16 +7020,43 @@ function SelectTrigger({
   )
 }
 
+// The list opens out of the chosen value: it starts as the selected row
+// sitting over the trigger, and the other options spring out above and
+// below it.
+function unfoldFromValue(content: HTMLDivElement | null) {
+  if (!content) return
+  const items = [
+    ...content.querySelectorAll<HTMLElement>('[data-slot="select-item"]'),
+  ]
+  const at = Math.max(
+    0,
+    items.findIndex((item) => item.dataset.state === 'checked'),
+  )
+  items.forEach((item, i) => item.style.setProperty('--fold', String(i - at)))
+  const chosen = items[at]
+  if (!chosen) return
+  const box = content.getBoundingClientRect()
+  const row = chosen.getBoundingClientRect()
+  content.style.setProperty('--clip-top', `${row.top - box.top}px`)
+  content.style.setProperty('--clip-bottom', `${box.bottom - row.bottom}px`)
+}
+
 function SelectContent({
   className,
   children,
   position = 'item-aligned',
   align = 'center',
+  ref,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        ref={(node) => {
+          unfoldFromValue(node)
+          if (typeof ref === 'function') ref(node)
+          else if (ref) ref.current = node
+        }}
         data-slot="select-content"
         data-align-trigger={position === 'item-aligned'}
         className={cn(
@@ -6127,6 +7364,27 @@ export {
 }
 ```
 
+### src/components/ui/shimmer-text.tsx
+
+```tsx
+import * as React from 'react'
+import { cn } from 'cn'
+
+// Loading text with a band of ink sweeping across it on a loop. For short
+// status lines while something works, like "Reading files…".
+function ShimmerText({ className, ...props }: React.ComponentProps<'span'>) {
+  return (
+    <span
+      data-slot="shimmer-text"
+      className={cn('inline-block', className)}
+      {...props}
+    />
+  )
+}
+
+export { ShimmerText }
+```
+
 ### src/components/ui/skeleton.tsx
 
 ```tsx
@@ -6142,7 +7400,165 @@ function Skeleton({ className, ...props }: React.ComponentProps<'div'>) {
   )
 }
 
-export { Skeleton }
+// Wraps content that replaces a skeleton. Pieces ease up out of a soft blur
+// top to bottom, in `order`.
+function SkeletonReveal({
+  className,
+  order = 0,
+  style,
+  ...props
+}: React.ComponentProps<'div'> & { order?: number }) {
+  return (
+    <div
+      data-slot="skeleton-reveal"
+      className={className}
+      style={{ '--order': order, ...style } as React.CSSProperties}
+      {...props}
+    />
+  )
+}
+
+export { Skeleton, SkeletonReveal }
+```
+
+### src/components/ui/slide-to-confirm.tsx
+
+```tsx
+import * as React from 'react'
+import { animate, motion, useMotionValue, useTransform } from 'motion/react'
+import { cn } from 'cn'
+import { ArrowRightIcon, CheckIcon } from 'lucide-react'
+import { useMotionSettings } from '@/lib/motion'
+
+const HANDLE = 40
+const PAD = 4
+
+// A handle pushed across a track. It follows the finger exactly; past the
+// mark it takes over and finishes the journey on its own. Let go short of
+// the mark and it springs back. Enter or Space confirms from the keyboard.
+function SlideToConfirm({
+  label = 'Slide to confirm',
+  confirmedLabel = 'Confirmed',
+  onConfirm,
+  resetAfter,
+  disabled,
+  className,
+  ...props
+}: Omit<React.ComponentProps<'div'>, 'children'> & {
+  label?: string
+  confirmedLabel?: string
+  onConfirm?: () => void
+  resetAfter?: number
+  disabled?: boolean
+}) {
+  const track = React.useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const [range, setRange] = React.useState(1)
+  const [done, setDone] = React.useState(false)
+  const drag = React.useRef<{ start: number; from: number } | null>(null)
+  const { enabled } = useMotionSettings()
+  const progress = useTransform(x, (v) => Math.min(1, v / range))
+  const labelOpacity = useTransform(progress, [0, 0.6], [1, 0])
+  const fill = useTransform(x, (v) => v + HANDLE + PAD * 2)
+
+  React.useLayoutEffect(() => {
+    const node = track.current
+    if (!node) return
+    const measure = () =>
+      setRange(Math.max(1, node.clientWidth - HANDLE - PAD * 2))
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+
+  React.useEffect(() => {
+    if (!done || !resetAfter) return
+    const id = window.setTimeout(() => {
+      setDone(false)
+      animate(x, 0, enabled ? { duration: 0.25 } : { duration: 0 })
+    }, resetAfter)
+    return () => window.clearTimeout(id)
+  }, [done, resetAfter, x, enabled])
+
+  const finish = () => {
+    if (done) return
+    drag.current = null
+    setDone(true)
+    animate(
+      x,
+      range,
+      enabled ? { type: 'spring', duration: 0.3, bounce: 0 } : { duration: 0 },
+    )
+    onConfirm?.()
+  }
+
+  return (
+    <div
+      ref={track}
+      data-slot="slide-to-confirm"
+      data-done={done || undefined}
+      data-disabled={disabled || undefined}
+      className={cn('relative w-full select-none', className)}
+      {...props}
+    >
+      <motion.span
+        data-slot="slide-to-confirm-fill"
+        aria-hidden="true"
+        style={{ width: fill }}
+      />
+      <motion.span
+        data-slot="slide-to-confirm-label"
+        aria-hidden="true"
+        style={{ opacity: done ? 1 : labelOpacity }}
+      >
+        {done ? confirmedLabel : label}
+      </motion.span>
+      <motion.button
+        type="button"
+        data-slot="slide-to-confirm-handle"
+        aria-label={done ? confirmedLabel : label}
+        disabled={disabled || done}
+        style={{ x }}
+        onClick={(event) => {
+          if (event.detail === 0) finish()
+        }}
+        onPointerDown={(event) => {
+          if (disabled || done || event.button !== 0) return
+          event.currentTarget.setPointerCapture(event.pointerId)
+          drag.current = { start: event.clientX, from: x.get() }
+        }}
+        onPointerMove={(event) => {
+          if (!drag.current) return
+          const next = drag.current.from + event.clientX - drag.current.start
+          x.set(Math.min(range, Math.max(0, next)))
+          if (x.get() >= range * 0.8) finish()
+        }}
+        onPointerUp={() => {
+          if (!drag.current) return
+          drag.current = null
+          if (x.get() >= range * 0.6) finish()
+          else
+            animate(
+              x,
+              0,
+              enabled
+                ? { type: 'spring', duration: 0.35, bounce: 0.3 }
+                : { duration: 0 },
+            )
+        }}
+        onPointerCancel={() => {
+          drag.current = null
+          animate(x, 0, enabled ? { duration: 0.2 } : { duration: 0 })
+        }}
+      >
+        {done ? <CheckIcon /> : <ArrowRightIcon />}
+      </motion.button>
+    </div>
+  )
+}
+
+export { SlideToConfirm }
 ```
 
 ### src/components/ui/slider.tsx
@@ -6153,6 +7569,50 @@ export { Skeleton }
 import * as React from 'react'
 import { cn } from 'cn'
 import { Slider as SliderPrimitive } from 'radix-ui'
+import { useMotionSettings } from '@/lib/motion'
+
+const BAR_COUNT = 36
+
+// The bars variant has no visible thumb. Dragging quickly lifts the bars
+// the pointer sweeps past, and they settle back once it slows down.
+function useWake(count: number, enabled: boolean) {
+  const bars = React.useRef<(HTMLSpanElement | null)[]>([])
+  const energy = React.useRef(new Float32Array(count))
+  const last = React.useRef<{ x: number; t: number } | null>(null)
+  const frame = React.useRef(0)
+  function tick() {
+    let active = false
+    energy.current.forEach((e, i) => {
+      const next = e < 0.005 ? 0 : e * 0.86
+      energy.current[i] = next
+      if (next) active = true
+      bars.current[i]?.style.setProperty('--lift', next.toFixed(3))
+    })
+    frame.current = active ? requestAnimationFrame(tick) : 0
+  }
+  React.useEffect(() => () => cancelAnimationFrame(frame.current), [])
+  const onPointerMove = (event: React.PointerEvent<HTMLElement>) => {
+    if (!enabled || !event.buttons) {
+      last.current = null
+      return
+    }
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const t = event.timeStamp
+    const previous = last.current
+    last.current = { x, t }
+    if (!previous || t <= previous.t) return
+    const speed = Math.min(Math.abs(x - previous.x) / (t - previous.t), 3)
+    const at = (x / rect.width) * count
+    energy.current.forEach((e, i) => {
+      const distance = Math.abs(i + 0.5 - at)
+      if (distance < 4)
+        energy.current[i] = Math.min(1, e + speed * 0.22 * (1 - distance / 4))
+    })
+    if (!frame.current) frame.current = requestAnimationFrame(tick)
+  }
+  return { bars, onPointerMove }
+}
 
 function Slider({
   className,
@@ -6160,25 +7620,41 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  variant = 'default',
+  onValueChange,
+  onPointerMove,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: React.ComponentProps<typeof SliderPrimitive.Root> & {
+  variant?: 'default' | 'bars'
+}) {
+  const [internal, setInternal] = React.useState(defaultValue)
+  const current = value ?? internal
   const _values = React.useMemo(
-    () =>
-      Array.isArray(value)
-        ? value
-        : Array.isArray(defaultValue)
-          ? defaultValue
-          : [min, max],
-    [value, defaultValue, min, max],
+    () => (Array.isArray(current) ? current : [min, max]),
+    [current, min, max],
   )
+  const { enabled } = useMotionSettings()
+  const wake = useWake(BAR_COUNT, enabled)
+  const bars = variant === 'bars'
+  const low = _values.length > 1 ? Math.min(..._values) : min
+  const high = Math.max(..._values)
 
   return (
     <SliderPrimitive.Root
       data-slot="slider"
+      data-variant={variant}
       defaultValue={defaultValue}
       value={value}
       min={min}
       max={max}
+      onValueChange={(v) => {
+        setInternal(v)
+        onValueChange?.(v)
+      }}
+      onPointerMove={(event) => {
+        if (bars) wake.onPointerMove(event)
+        onPointerMove?.(event)
+      }}
       className={cn(
         'relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:min-h-40 data-vertical:w-auto data-vertical:flex-col',
         className,
@@ -6189,10 +7665,26 @@ function Slider({
         data-slot="slider-track"
         className="relative grow overflow-hidden rounded-full bg-muted data-horizontal:h-1 data-horizontal:w-full data-vertical:h-full data-vertical:w-1"
       >
-        <SliderPrimitive.Range
-          data-slot="slider-range"
-          className="absolute bg-primary select-none data-horizontal:h-full data-vertical:w-full"
-        />
+        {bars ? (
+          Array.from({ length: BAR_COUNT }, (_, i) => {
+            const at = min + ((i + 0.5) / BAR_COUNT) * (max - min)
+            return (
+              <span
+                key={i}
+                ref={(node) => {
+                  wake.bars.current[i] = node
+                }}
+                data-slot="slider-bar"
+                data-on={(at >= low && at <= high) || undefined}
+              />
+            )
+          })
+        ) : (
+          <SliderPrimitive.Range
+            data-slot="slider-range"
+            className="absolute bg-primary select-none data-horizontal:h-full data-vertical:w-full"
+          />
+        )}
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
         <SliderPrimitive.Thumb
@@ -6273,17 +7765,26 @@ import * as React from 'react'
 import { cn } from 'cn'
 import { Switch as SwitchPrimitive } from 'radix-ui'
 
+// The thumb stretches toward where it is going, then settles. The stretch
+// only plays after the first change so switches don't bounce on load.
 function Switch({
   className,
   size = 'default',
+  onCheckedChange,
   ...props
 }: React.ComponentProps<typeof SwitchPrimitive.Root> & {
   size?: 'sm' | 'default'
 }) {
+  const [moved, setMoved] = React.useState(false)
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
       data-size={size}
+      data-moved={moved || undefined}
+      onCheckedChange={(checked) => {
+        setMoved(true)
+        onCheckedChange?.(checked)
+      }}
       className={cn(
         'peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline-none group-has-[:focus-visible]/field-label:border-transparent group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80 data-disabled:cursor-not-allowed data-disabled:opacity-50',
         className,
@@ -6423,12 +7924,13 @@ export {
 
 ```tsx
 import * as React from 'react'
-import { motion } from 'motion/react'
+import { animate, motion, useMotionValue, useTransform } from 'motion/react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from 'cn'
 import { Tabs as TabsPrimitive } from 'radix-ui'
 import { useMotionSettings } from '@/lib/motion'
 const TabsContext = React.createContext({ value: '', id: '' })
+const TabsListContext = React.createContext<string | null>('default')
 function Tabs({
   className,
   orientation = 'horizontal',
@@ -6465,57 +7967,156 @@ function Tabs({
 const tabsListVariants = cva(
   'relative inline-flex w-fit items-center justify-center gap-1 rounded-full p-1 text-muted-foreground',
   {
-    variants: { variant: { default: 'bg-muted', line: 'bg-transparent' } },
+    variants: {
+      variant: {
+        default: 'bg-muted',
+        line: 'bg-transparent',
+        icons: 'bg-muted',
+      },
+    },
     defaultVariants: { variant: 'default' },
   },
 )
+// The indicator moves in two phases: the edge on the side it is heading
+// leaves first, the indicator stretches across both tabs, then the far edge
+// catches up and overshoots a little as it lands.
+function useStretchIndicator(
+  list: React.RefObject<HTMLDivElement | null>,
+  value: string,
+  enabled: boolean,
+) {
+  const left = useMotionValue(0)
+  const right = useMotionValue(0)
+  const opacity = useMotionValue(0)
+  const width = useTransform(() => right.get() - left.get())
+  const placed = React.useRef(false)
+  const measure = React.useCallback(() => {
+    const active = list.current?.querySelector<HTMLElement>(
+      '[data-slot="tabs-trigger"][data-state="active"]',
+    )
+    return active
+      ? { l: active.offsetLeft, r: active.offsetLeft + active.offsetWidth }
+      : null
+  }, [list])
+  React.useLayoutEffect(() => {
+    const box = measure()
+    if (!box) return
+    if (!placed.current || !enabled) {
+      left.jump(box.l)
+      right.jump(box.r)
+      opacity.jump(1)
+      placed.current = true
+      return
+    }
+    const forward = box.l > left.get()
+    const lead = { type: 'spring', stiffness: 560, damping: 40 } as const
+    const trail = {
+      type: 'spring',
+      stiffness: 320,
+      damping: 25,
+      delay: 0.04,
+    } as const
+    const a = animate(left, box.l, forward ? trail : lead)
+    const b = animate(right, box.r, forward ? lead : trail)
+    return () => {
+      a.stop()
+      b.stop()
+    }
+  }, [value, enabled, measure, left, right, opacity])
+  React.useEffect(() => {
+    const node = list.current
+    if (!node) return
+    const observer = new ResizeObserver(() => {
+      const box = measure()
+      if (!box) return
+      left.jump(box.l)
+      right.jump(box.r)
+    })
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [list, measure, left, right])
+  return { x: left, width, opacity }
+}
 function TabsList({
   className,
   variant = 'default',
+  children,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List> &
   VariantProps<typeof tabsListVariants>) {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const { value } = React.useContext(TabsContext)
+  const { enabled } = useMotionSettings()
+  const style = useStretchIndicator(ref, value, enabled)
   return (
     <TabsPrimitive.List
+      ref={ref}
       data-slot="tabs-list"
       data-variant={variant}
       className={cn(tabsListVariants({ variant }), className)}
       {...props}
-    />
+    >
+      {variant !== 'icons' && (
+        <motion.span
+          data-slot="tabs-indicator"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-[3px] left-0 rounded-full bg-background"
+          style={style}
+        />
+      )}
+      <TabsListContext.Provider value={variant}>
+        {children}
+      </TabsListContext.Provider>
+    </TabsPrimitive.List>
   )
 }
+// In the icons variant each tab shows only its icon until it is chosen,
+// then opens to show its name while the tile slides under it.
 function TabsTrigger({
   className,
   children,
   value,
+  icon,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+}: React.ComponentProps<typeof TabsPrimitive.Trigger> & {
+  icon?: React.ReactNode
+}) {
   const context = React.useContext(TabsContext)
+  const variant = React.useContext(TabsListContext)
   const { enabled } = useMotionSettings()
+  const iconTabs = variant === 'icons'
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       value={value}
       className={cn(
-        'relative flex flex-1 items-center justify-center gap-1.5 px-3 py-1.5 text-sm outline-none disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-ring',
+        'relative flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm outline-none disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-ring',
+        iconTabs ? 'flex-none' : 'flex-1',
         className,
       )}
       {...props}
     >
-      {context.value === value && (
+      {iconTabs && context.value === value && (
         <motion.span
           data-slot="tabs-indicator"
           layoutId={`tabs-${context.id}`}
           className="absolute inset-0 rounded-full bg-background"
           transition={
             enabled
-              ? { type: 'spring', duration: 0.3, bounce: 0 }
+              ? { type: 'spring', duration: 0.35, bounce: 0.2 }
               : { duration: 0 }
           }
         />
       )}
-      <span className="relative z-10 flex items-center gap-1.5">
-        {children}
+      <span className="relative z-10 flex items-center">
+        {icon}
+        {iconTabs ? (
+          <span data-slot="tabs-label">
+            <span>{children}</span>
+          </span>
+        ) : (
+          <span className="flex items-center gap-1.5">{children}</span>
+        )}
       </span>
     </TabsPrimitive.Trigger>
   )
@@ -6566,6 +8167,7 @@ import { cn } from 'cn'
 import { ToggleGroup as ToggleGroupPrimitive } from 'radix-ui'
 
 import { toggleVariants } from '@/components/ui/toggle'
+import { useMotionSettings } from '@/lib/motion'
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants> & {
@@ -6579,6 +8181,34 @@ const ToggleGroupContext = React.createContext<
   orientation: 'horizontal',
 })
 
+// Pressing an item swells it and shoves its neighbours aside, hardest next
+// to it and barely at all at the ends, before everything settles back.
+function nudge(group: HTMLElement, pressed: HTMLElement, vertical: boolean) {
+  const items = [
+    ...group.querySelectorAll<HTMLElement>('[data-slot="toggle-group-item"]'),
+  ]
+  const at = items.indexOf(pressed)
+  if (at < 0) return
+  const options = { duration: 320, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }
+  pressed.animate(
+    [{ scale: '0.92' }, { scale: '1.08', offset: 0.45 }, { scale: '1' }],
+    options,
+  )
+  items.forEach((item, i) => {
+    if (i === at) return
+    const push = (Math.sign(i - at) * 5) / Math.abs(i - at)
+    const shift = vertical ? `0 ${push}px` : `${push}px 0`
+    item.animate(
+      [
+        { translate: '0 0' },
+        { translate: shift, offset: 0.4 },
+        { translate: '0 0' },
+      ],
+      options,
+    )
+  })
+}
+
 function ToggleGroup({
   className,
   variant,
@@ -6586,14 +8216,24 @@ function ToggleGroup({
   spacing = 2,
   orientation = 'horizontal',
   children,
+  onPointerDown,
   ...props
 }: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
   VariantProps<typeof toggleVariants> & {
     spacing?: number
     orientation?: 'horizontal' | 'vertical'
   }) {
+  const { enabled } = useMotionSettings()
   return (
     <ToggleGroupPrimitive.Root
+      onPointerDown={(event) => {
+        const item = (event.target as HTMLElement).closest<HTMLElement>(
+          '[data-slot="toggle-group-item"]:not(:disabled)',
+        )
+        if (enabled && item)
+          nudge(event.currentTarget, item, orientation === 'vertical')
+        onPointerDown?.(event)
+      }}
       data-slot="toggle-group"
       data-variant={variant}
       data-size={size}

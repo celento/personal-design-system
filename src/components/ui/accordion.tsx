@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cn } from 'cn'
 import { Accordion as AccordionPrimitive } from 'radix-ui'
-import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 
 function Accordion({
   className,
@@ -45,16 +45,31 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <ChevronDownIcon
+        <PlusIcon
           data-slot="accordion-trigger-icon"
-          className="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
-        />
-        <ChevronUpIcon
-          data-slot="accordion-trigger-icon"
-          className="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          className="pointer-events-none shrink-0"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
+  )
+}
+
+// Plain-text answers are split into words so they can ease in one after
+// another. Other content enters as one block.
+function splitWords(children: React.ReactNode) {
+  if (typeof children !== 'string') return children
+  return children.split(/(\s+)/).map((part, i) =>
+    /^\s+$/.test(part) ? (
+      part
+    ) : (
+      <span
+        key={i}
+        data-slot="accordion-word"
+        style={{ '--i': i / 2 } as React.CSSProperties}
+      >
+        {part}
+      </span>
+    ),
   )
 }
 
@@ -75,7 +90,7 @@ function AccordionContent({
           className,
         )}
       >
-        {children}
+        {splitWords(children)}
       </div>
     </AccordionPrimitive.Content>
   )

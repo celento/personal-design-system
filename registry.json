@@ -12,15 +12,15 @@
     },
     {
       "name": "accordion",
-      "description": "Several expandable sections."
-    },
-    {
-      "name": "alert-dialog",
-      "description": "Confirmation for irreversible actions."
+      "description": "Several expandable sections. A plus turns into a cross and plain-text answers ease in a word at a time."
     },
     {
       "name": "alert",
       "description": "Persistent message in the page for problems the user must fix."
+    },
+    {
+      "name": "alert-dialog",
+      "description": "Confirmation for irreversible actions."
     },
     {
       "name": "aspect-ratio",
@@ -28,7 +28,7 @@
     },
     {
       "name": "avatar",
-      "description": "A person, with an initials fallback."
+      "description": "A person, with an initials fallback. AvatarGroup lifts faces near the pointer and slides one name label between them."
     },
     {
       "name": "badge",
@@ -48,15 +48,15 @@
     },
     {
       "name": "card",
-      "description": "One object with its details and actions."
+      "description": "One object with its details and actions. `tilt` makes it sink under the pointer."
     },
     {
       "name": "carousel",
-      "description": "Horizontally paged content with previous and next controls."
+      "description": "Horizontally paged content on a turntable: off-centre slides turn away and recede."
     },
     {
       "name": "checkbox",
-      "description": "On/off submitted with a form."
+      "description": "On/off submitted with a form. The check draws itself; a label with data-strike is crossed out."
     },
     {
       "name": "collapsible",
@@ -69,6 +69,10 @@
     {
       "name": "context-menu",
       "description": "Right-click shortcuts, always duplicated in a visible menu."
+    },
+    {
+      "name": "copy-field",
+      "description": "A value with a copy button whose icon turns into a check."
     },
     {
       "name": "dialog",
@@ -87,16 +91,16 @@
       "description": "Preview of a linked person or object. Never the only place the info lives."
     },
     {
+      "name": "input",
+      "description": "Short text field. With `label`, the label rests inside and lifts into the top edge on focus."
+    },
+    {
       "name": "input-group",
       "description": "Input or textarea with attached buttons or addons."
     },
     {
       "name": "input-otp",
-      "description": "Verification code entry."
-    },
-    {
-      "name": "input",
-      "description": "Short text field."
+      "description": "Verification code entry. Digits land with a small swell; aria-invalid on the slots shakes the row."
     },
     {
       "name": "label",
@@ -111,8 +115,12 @@
       "description": "Site navigation with nested links."
     },
     {
+      "name": "number-stepper",
+      "description": "Exact counts between a minus and a plus, with rolling digits and hold to repeat."
+    },
+    {
       "name": "pagination",
-      "description": "Many pages of results."
+      "description": "Many pages of results. The current page fill slides between pages."
     },
     {
       "name": "popover",
@@ -120,7 +128,7 @@
     },
     {
       "name": "progress",
-      "description": "Known progress with the value shown."
+      "description": "Known progress with the value shown, drawn as ticks that light in sequence."
     },
     {
       "name": "radio-group",
@@ -136,7 +144,7 @@
     },
     {
       "name": "select",
-      "description": "One choice from about 6 to 15 options."
+      "description": "One choice from about 6 to 15 options. Opens out of the chosen value."
     },
     {
       "name": "separator",
@@ -147,12 +155,20 @@
       "description": "Side panel for editing while keeping the page in view."
     },
     {
+      "name": "shimmer-text",
+      "description": "Loading status line with a sweeping band of ink."
+    },
+    {
       "name": "skeleton",
-      "description": "Placeholder shaped like content that is loading."
+      "description": "Placeholder shaped like content that is loading. SkeletonReveal eases the real content in."
+    },
+    {
+      "name": "slide-to-confirm",
+      "description": "A handle pushed across a track for deliberate actions such as publishing."
     },
     {
       "name": "slider",
-      "description": "Approximate number in a range, with the value shown."
+      "description": "Approximate number in a range, with the value shown. `variant=\"bars\"` is a thumbless bar slider that lifts in a wake when dragged fast."
     },
     {
       "name": "sonner",
@@ -161,7 +177,7 @@
     },
     {
       "name": "switch",
-      "description": "On/off that applies immediately."
+      "description": "On/off that applies immediately. The thumb stretches toward where it is going."
     },
     {
       "name": "table",
@@ -169,19 +185,19 @@
     },
     {
       "name": "tabs",
-      "description": "Switch between views of the same thing."
+      "description": "Switch between views of the same thing. The indicator stretches across tabs as it moves; `variant=\"icons\"` shows the name only on the chosen tab."
     },
     {
       "name": "textarea",
       "description": "Long text field."
     },
     {
-      "name": "toggle-group",
-      "description": "Segmented on/off options such as formatting or filters."
-    },
-    {
       "name": "toggle",
       "description": "Single on/off button."
+    },
+    {
+      "name": "toggle-group",
+      "description": "Segmented on/off options such as formatting or filters. A press shoves neighbours aside."
     },
     {
       "name": "tooltip",

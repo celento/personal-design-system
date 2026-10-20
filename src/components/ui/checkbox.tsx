@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { cn } from 'cn'
 import { Checkbox as CheckboxPrimitive } from 'radix-ui'
-import { CheckIcon } from 'lucide-react'
 
 function Checkbox({
   className,
@@ -22,7 +21,21 @@ function Checkbox({
         data-slot="checkbox-indicator"
         className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
       >
-        <CheckIcon />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            data-slot="checkbox-check"
+            d="M5 12.5l4.5 4.5L19 7.5"
+            pathLength={1}
+          />
+        </svg>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )
